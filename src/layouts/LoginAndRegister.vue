@@ -1,14 +1,14 @@
 <template>
   <div class="layout-for-forms">
     <div class="block-for-window">
-      <button class="close-btn"></button>
+      <button @click.prevent="closeLoginMenu" class="close-btn"></button>
       <div class="block-for-links">
-        <button class="forms-header__link" :class="{ active: isLoginOpen }">Login</button> |
-        <button class="forms-header__link" :class="{ active: isRegisterOpen }">Register</button>
+        <button @click="changeShow" class="forms-header__link" :class="{ active: getLoginShow }">Login</button> |
+        <button @click="changeShow" class="forms-header__link" :class="{ active: getRegisterShow }">Register</button>
       </div>
       <div class="block-for-forms">
-        <login v-if="isLoginOpen"></login>
-        <register v-if="isRegisterOpen"></register>
+        <login v-if="getLoginShow"></login>
+        <register v-if="getRegisterShow"></register>
       </div>
     </div>
   </div>
@@ -17,15 +17,23 @@
 <script>
 import Login from '@/components/Login.vue';
 import Register from '@/components/Register.vue';
+import { mapMutations, mapGetters } from 'vuex';
 export default {
   data() {
     return {
-      isLoginOpen: true,
-      isRegisterOpen: false,
     }
   },
   components: {
     Login, Register,
+  },
+  methods: {
+    ...mapMutations(['changeShow', 'closeLoginMenu']),
+  },
+  computed: {
+    ...mapGetters(['getRegisterShow', 'getLoginShow']),
+  },
+  mounted() {
+
   }
 }
 </script>
@@ -50,7 +58,7 @@ export default {
   right: 11px;
   width: 18px;
   height: 18px;
-  background: url("../assets/img/header/X.svg") no-repeat;
+  background: url("../assets/img/loginAndRegister/X.svg") no-repeat;
   background-size: 18px 18px;
   cursor: pointer;
 }
@@ -59,13 +67,15 @@ export default {
   position: relative;
   width: 500px;
   background: #FFF;
-  padding: 50px 100px 60px 100px;
   text-align: center;
+  padding: 40px 0;
+  border-bottom: 10px solid #46A358;
+  ;
 }
 
 .block-for-links {
   z-index: 5;
-  margin-bottom: 53px;
+  margin-bottom: 15px;
 }
 
 .active {

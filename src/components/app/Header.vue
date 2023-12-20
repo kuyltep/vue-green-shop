@@ -13,14 +13,17 @@
         <button alt="" class="header__search"></button>
       </div>
       <router-link alt="" class="header__chunk" to="/chunk"></router-link>
-      <button class="header__login-link">Login</button>
+      <button @click.prevent="showLoginMenu" class="header__login-link">Login</button>
     </div>
   </header>
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
 export default {
-
+  methods: {
+    ...mapMutations(['showLoginMenu'])
+  }
 }
 </script>
 
@@ -109,6 +112,7 @@ export default {
   background: #46A358;
   padding: 8px 17px 7px 17px;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .header__login-link::before {

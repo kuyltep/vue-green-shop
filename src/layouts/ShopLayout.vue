@@ -1,7 +1,7 @@
 <template>
   <Header></Header>
   <router-view></router-view>
-  <login-and-register></login-and-register>
+  <login-and-register v-if="getLoginMenuOpen"></login-and-register>
   <Footer></Footer>
 </template>
 
@@ -9,6 +9,7 @@
 import LoginAndRegister from './LoginAndRegister.vue';
 import Footer from '@/components/app/Footer.vue';
 import Header from '@/components/app/Header.vue';
+import { mapGetters, mapMutations } from 'vuex';
 export default {
   components: {
     Header,
@@ -17,9 +18,12 @@ export default {
   },
   data() {
     return {
-      isLoginMenuOpen: false,
     }
-  }
+  },
+  computed: {
+    ...mapGetters(['getLoginMenuOpen']),
+  },
+
 }
 </script>
 

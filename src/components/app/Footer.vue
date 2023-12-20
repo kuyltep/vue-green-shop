@@ -37,8 +37,12 @@
       <div class="footer__form">
         <h4 class="footer-title form-title title_h4">Would you like to join newsletters?</h4>
         <form class="join-form">
-          <input placeholder="enter your email adress" class="join-form__input" type="text" name="" id="">
-          <button class="join-form__btn white-text-btns" type="submit">Join</button>
+
+          <div class="input-field">
+            <input :class="{ invalid: formValidation }" v-model="email" placeholder="enter your email adress"
+              class="join-form__input" type="text" name="footer-input" id="footer-input">
+          </div>
+          <button @click.prevent="submitForm" class="join-form__btn white-text-btns" type="submit">Join</button>
         </form>
         <p class="join-form__text text_descr">We usually post offers and challenges in newsletter. We’re your online
           houseplant
@@ -117,8 +121,37 @@
 </template>
 
 <script>
+import { useVuelidate } from '@vuelidate/core';
+import { required, email } from '@vuelidate/validators';
 export default {
+  setup() {
+    return { v$: useVuelidate() }
+  },
+  data() {
+    return {
+      email: '',
+    }
+  },
+  methods: {
+    async submitForm() {
+      const isFormCorrect = await this.v$.$validate();
+      if (!isFormCorrect) {
+        this.v$.$touch();
+        return;
+      }
 
+    }
+  },
+  computed: {
+    formValidation() {
+      return this.v$.email.$dirty && this.v$.email.required.$invalid || this.v$.email.$dirty && this.v$.email.email.$invalid;
+    }
+  },
+  validations() {
+    return {
+      email: { required, email },
+    }
+  }
 }
 </script>
 
@@ -154,7 +187,6 @@ export default {
   padding-top: 7px;
 }
 
-
 .third-card {
   grid-column: 3/4;
   padding: 25px;
@@ -169,6 +201,14 @@ export default {
 .card-img__block {
   position: relative;
   margin-bottom: 15px;
+}
+
+.invalid {
+  outline: 1px solid red;
+}
+
+.invalid-text {
+  color: red;
 }
 
 .form-title {
