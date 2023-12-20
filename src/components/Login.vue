@@ -4,12 +4,12 @@
     <div class="input-field">
       <input :class="{ invalid: isEmailInvalid }" v-model="userEmail" placeholder="almamun_uxui@outlook.com" type="text"
         name="" id="login-email" class="login-form__email-input">
-      <span v-if="isEmailInvalid" class="helper-text invalid-text">Input your email</span>
+      <span v-if="isEmailInvalid" class="invalid-text">Input your email</span>
     </div>
     <div class="input-field">
       <input :class="{ invalid: isPasswordInvalid }" v-model="userPassword" placeholder="123456789" type="password"
         name="" id="login-pas" class="login-form__password-input">
-      <span v-if="isPasswordInvalid" class="helper-text invalid-text">Input your password</span>
+      <span v-if="isPasswordInvalid" class="invalid-text">Input your password</span>
     </div>
 
     <a href="" class="login-form__forgot-password">Forgot Password?</a>

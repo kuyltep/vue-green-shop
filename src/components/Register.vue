@@ -1,12 +1,28 @@
 <template>
   <form action="" class="register-form">
     <p class="register-form__text">Enter your email and password to register.</p>
-    <input placeholder="Username" type="text" id="register-username" class="register-form__username-input">
-    <input placeholder="Enter yout email adress" id="register-email" type="text" class="register-form__email-input">
-    <input placeholder="Password" type="password" id="register-password" class="register-form__password-input">
-    <input placeholder="Confirm password" type="password" id="register-confirm-password"
-      class="register-form__confirm-password-input">
-    <button class="register-form__btn">Register</button>
+    <div class="input-field">
+      <input :class="{ invalid: isUsernameInvalid }" v-model="userUsername" placeholder="Username" type="text"
+        id="register-username" class="register-form__username-input">
+      <span v-if="isUsernameInvalid" class="invalid-text">Input your name</span>
+    </div>
+    <div class="input-field">
+      <input :class="{ invalid: isEmailInvalid }" v-model="userEmail" placeholder="Enter yout email adress"
+        id="register-email" type="text" class="register-form__email-input">
+      <span v-if="isEmailInvalid" class="invalid-text">Input your email</span>
+    </div>
+    <div class="input-field">
+      <input :class="{ invalid: isPasswordInvalid }" v-model="userPassword" placeholder="Password" type="password"
+        id="register-password" class="register-form__password-input">
+      <span v-if="isPasswordInvalid" class="invalid-text">Input your password</span>
+    </div>
+    <div class="input-field">
+      <input :class="{ invalid: isConfirmPasswordInvalid }" v-model="userConfirmPassword" placeholder="Confirm password"
+        type="password" id="register-confirm-password" class="register-form__confirm-password-input">
+      <span v-if="isConfirmPasswordInvalid" class="invalid-text">Input your correct password</span>
+    </div>
+
+    <button @click.prevent="submitHandler" class="register-form__btn">Register</button>
   </form>
   <div class="register-with">
     <p class="register-with__text">Or register with</p>
@@ -30,6 +46,30 @@ export default {
       userEmail: '',
       userPassword: '',
       userConfirmPassword: '',
+    }
+  },
+  methods: {
+    async submitHandler() {
+      const isFormCorrect = await this.v$.$validate();
+      if (!isFormCorrect) {
+        this.v$.$touch();
+        return;
+      }
+    }
+  },
+  computed: {
+    isUsernameInvalid() {
+      return this.v$.userUsername.$dirty && this.v$.userUsername.required.$invalid || this.v$.userUsername.$dirty && this.v$.userUsername.minLength.$invalid;
+    },
+    isEmailInvalid() {
+      return this.v$.userEmail.$dirty && this.v$.userEmail.required.$invalid || this.v$.userEmail.$dirty && this.v$.userEmail.email.$invalid;
+    },
+    isPasswordInvalid() {
+      return this.v$.userPassword.$dirty && this.v$.userPassword.required.$invalid || this.v$.userPassword.$dirty && this.v$.userPassword.minLength.$invalid;
+    },
+    isConfirmPasswordInvalid() {
+      return this.v$.userConfirmPassword.$dirty && this.v$.userConfirmPassword.required.$invalid || this.v$.userConfirmPassword.$dirty && this.v$.userConfirmPassword.minLength.$invalid || this.v$.userConfirmPassword.$dirty && this.userPassword !== this.userConfirmPassword;
+
     }
   },
   validations() {
@@ -68,17 +108,14 @@ export default {
   border: 1px solid #EAEAEA;
   padding: 12px 0 12px 15px;
   width: 280px;
+}
+
+.input-field {
   margin-bottom: 10px;
 }
 
-.register-form__forgot-password {
-  text-decoration: none;
-  color: #46A358;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 16px;
-  margin-bottom: 27px;
-  /* 114.286% */
+.invalid {
+  outline: 1px solid red;
 }
 
 .register-form__btn {
