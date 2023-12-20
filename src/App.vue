@@ -48,13 +48,33 @@ li,
 p,
 a,
 img,
+h1,
+h2,
+h3,
+h4,
 html {
   margin: 0;
   padding: 0;
 }
 
+button {
+  border: none;
+  outline: none;
+  background: none;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+}
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
+  display: grid;
+  grid-template-rows: auto minmax(500px, 1fr) auto;
 }
 </style>

@@ -10,8 +10,22 @@ const routes = [
   // }
   {
     path: "/",
-    name: "home",
-    component: () => import("@/views/HomePage"),
+    name: "page",
+    redirect: "/",
+    component: () => import("@/layouts/ShopLayout"),
+    children: [
+      {
+        path: "/",
+        name: "home",
+        component: () => import("@/views/HomePage"),
+      },
+
+      // {
+      //   path:"/shop",
+      //   name: "shop",
+      //   component: () => import('@/views/ShopPage')
+      // }
+    ],
   },
 ];
 
