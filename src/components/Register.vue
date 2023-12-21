@@ -1,5 +1,5 @@
 <template>
-  <form action="" class="register-form">
+  <form @submit.prevent="submitHandler" action="" class="register-form">
     <p class="register-form__text">Enter your email and password to register.</p>
     <div class="input-field">
       <input :class="{ invalid: isUsernameInvalid }" v-model="userUsername" placeholder="Username" type="text"
@@ -22,7 +22,7 @@
       <span v-if="isConfirmPasswordInvalid" class="invalid-text">Input your correct password</span>
     </div>
 
-    <button @click.prevent="submitHandler" class="register-form__btn">Register</button>
+    <button class="register-form__btn">Register</button>
   </form>
   <div class="register-with">
     <p class="register-with__text">Or register with</p>
@@ -32,11 +32,15 @@
 </template>
 
 <script>
+import { useToast } from "primevue/usetoast";
+
 import { useVuelidate } from '@vuelidate/core'
 import { required, minLength, email } from '@vuelidate/validators'
 export default {
   setup() {
+
     return {
+
       v$: useVuelidate(),
     }
   },
@@ -55,6 +59,19 @@ export default {
         this.v$.$touch();
         return;
       }
+      await this.$store.dispatch('registerUser', { userUsername: this.userUsername, userEmail: this.userEmail, password: this.userPassword });
+      const toast = useToast();
+      const show = () => {
+        toast.add({ severity: 'info', summary: 'Info', detail: 'Message Content', life: 3000 });
+      };
+      show();
+      setTimeout(() => this.clearInputs())
+    },
+    clearInputs() {
+      this.userUsername = '';
+      this.userEmail = '';
+      this.userPassword = '';
+      this.userConfirmPassword = '';
     }
   },
   computed: {

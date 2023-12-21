@@ -1,5 +1,5 @@
 <template>
-  <form action="" class="login-form">
+  <form @submit.prevent="submitForm" class="login-form">
     <p class="login-form__text">Enter your username and password to login.</p>
     <div class="input-field">
       <input :class="{ invalid: isEmailInvalid }" v-model="userEmail" placeholder="almamun_uxui@outlook.com" type="text"
@@ -13,7 +13,7 @@
     </div>
 
     <a href="" class="login-form__forgot-password">Forgot Password?</a>
-    <button @click.prevent="submitForm" class="login-form__btn" type="submit">Login</button>
+    <button class="login-form__btn" type="submit">Login</button>
   </form>
   <div class="login-with">
     <p class="login-with__text">Or login with</p>
@@ -42,6 +42,12 @@ export default {
         this.v$.$touch();
         return;
       }
+      await this.$store.dispatch('loginUser', { userEmail: this.userEmail, userPassword: this.userPassword });
+      setTimeout(() => this.clearInputs(), 0);
+    },
+    clearInputs() {
+      this.userEmail = '';
+      this.userPassword = '';
     }
   },
   computed: {

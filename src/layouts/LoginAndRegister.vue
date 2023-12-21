@@ -1,5 +1,6 @@
 <template>
   <div class="layout-for-forms">
+
     <div class="block-for-window">
       <button @click.prevent="closeLoginMenu" class="close-btn"></button>
       <div class="block-for-links">
@@ -51,6 +52,7 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
 
 .close-btn {
   position: absolute;

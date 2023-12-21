@@ -1,5 +1,6 @@
 import { createStore } from "vuex";
-import loginAndRegister from "@/store/loginAndRegister";
+import loginAndRegister from "@/store/loginAndRegisterWindows";
+import user from "./user";
 
 export default createStore({
   state: {},
@@ -8,5 +9,6 @@ export default createStore({
   actions: {},
   modules: {
     loginAndRegister,
+    user,
   },
 });
