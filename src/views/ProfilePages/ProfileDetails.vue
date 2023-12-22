@@ -1,5 +1,6 @@
 <template>
-  <div>PlantCarePage</div>
+  <router-view></router-view>
+  <div>Profile details</div>
 </template>
 
 <script>

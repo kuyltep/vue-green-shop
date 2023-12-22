@@ -19,6 +19,43 @@ const routes = [
     name: "profile",
     meta: { layout: "profile-layout" },
     component: () => import("@/views/ProfilePage"),
+    children: [
+      {
+        path: "details",
+        name: "details",
+        component: () => import("@/views/ProfilePages/ProfileDetails"),
+      },
+      {
+        path: "address",
+        name: "address",
+        component: () => import("@/views/ProfilePages/ProfileAddress"),
+      },
+      {
+        path: "downloads",
+        name: "downloads",
+        component: () => import("@/views/ProfilePages/ProfileDownloads"),
+      },
+      {
+        path: "orders",
+        name: "orders",
+        component: () => import("@/views/ProfilePages/ProfileOrders"),
+      },
+      {
+        path: "reports",
+        name: "reports",
+        component: () => import("@/views/ProfilePages/ProfileReports"),
+      },
+      {
+        path: "support",
+        name: "support",
+        component: () => import("@/views/ProfilePages/ProfileSupport"),
+      },
+      {
+        path: "wishlist",
+        name: "wishlist",
+        component: () => import("@/views/ProfilePages/ProfileWishlist"),
+      },
+    ],
   },
   {
     path: "/shop",
@@ -30,13 +67,13 @@ const routes = [
     path: "/plant-care",
     name: "plant-care",
     meta: { layout: "shop-layout" },
-    component: () => import("@/views/ShopPage.vue"),
+    component: () => import("@/views/PlantCarePage.vue"),
   },
   {
     path: "/blogs",
     name: "blogs",
     meta: { layout: "shop-layout" },
-    component: () => import("@/views/ShopPage.vue"),
+    component: () => import("@/views/BlogsPage.vue"),
   },
 ];
 

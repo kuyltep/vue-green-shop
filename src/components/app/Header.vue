@@ -16,7 +16,7 @@
       <router-link alt="" class="header__chunk" to="/chunk"></router-link>
       <button v-if="!this.$store.getters.getJwt" @click.prevent="showLoginMenu" class="header__login-link">Login</button>
       <!-- TODO: Make a router-link for profile page -->
-      <router-link v-else to="/profile" class="header__profile-link">Profile</router-link>
+      <router-link v-else to="/profile/details" class="header__profile-link">Profile</router-link>
     </div>
   </header>
 </template>

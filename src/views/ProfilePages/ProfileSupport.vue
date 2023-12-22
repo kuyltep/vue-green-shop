@@ -1,5 +1,5 @@
 <template>
-  <div>PlantCarePage</div>
+  <div>Profile support</div>
 </template>
 
 <script>

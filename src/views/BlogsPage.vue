@@ -1,4 +1,6 @@
-<template></template>
+<template>
+  <div>Blogs page</div>
+</template>
 
 <script>
 export default {
