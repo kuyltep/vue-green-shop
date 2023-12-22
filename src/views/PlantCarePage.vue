@@ -1,6 +1,4 @@
-<template>
-  <div>Home page</div>
-</template>
+<template></template>
 
 <script>
 export default {

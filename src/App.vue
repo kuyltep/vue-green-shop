@@ -1,12 +1,24 @@
 <template>
   <div class="container">
-    <router-view></router-view>
+    <component :is="layout">
+      <router-view></router-view>
+    </component>
   </div>
 </template>
 
 <script>
+import ShopLayout from './layouts/ShopLayout.vue';
+import ProfileLayout from './layouts/ProfileLayout.vue';
 export default {
-
+  components: {
+    ShopLayout,
+    ProfileLayout,
+  },
+  computed: {
+    layout() {
+      return this.$route.meta.layout;
+    }
+  }
 }
 </script>
 <style>

@@ -32,15 +32,13 @@
 </template>
 
 <script>
-import { useToast } from "primevue/usetoast";
-
+import errorToast from '@/toasts-plugins/error.tost';
+import successToast from '@/toasts-plugins/success.tost';
 import { useVuelidate } from '@vuelidate/core'
 import { required, minLength, email } from '@vuelidate/validators'
 export default {
   setup() {
-
     return {
-
       v$: useVuelidate(),
     }
   },
@@ -57,15 +55,12 @@ export default {
       const isFormCorrect = await this.v$.$validate();
       if (!isFormCorrect) {
         this.v$.$touch();
+        errorToast("Error register");
         return;
       }
-      await this.$store.dispatch('registerUser', { userUsername: this.userUsername, userEmail: this.userEmail, password: this.userPassword });
-      const toast = useToast();
-      const show = () => {
-        toast.add({ severity: 'info', summary: 'Info', detail: 'Message Content', life: 3000 });
-      };
-      show();
-      setTimeout(() => this.clearInputs())
+      await this.$store.dispatch('registerUser', { userUsername: this.userUsername, userEmail: this.userEmail, userPassword: this.userPassword });
+      successToast("Success register");
+      setTimeout(() => this.clearInputs(), 0)
     },
     clearInputs() {
       this.userUsername = '';
@@ -148,6 +143,8 @@ export default {
 }
 
 .register-form__email-input:focus,
+.register-form__username-input:focus,
+.register-form__confirm-password-input:focus,
 .register-form__password-input:focus {
   outline: 1px solid #46A358;
 }

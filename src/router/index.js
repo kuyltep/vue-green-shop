@@ -10,22 +10,33 @@ const routes = [
   // }
   {
     path: "/",
-    name: "page",
-    redirect: "/",
-    component: () => import("@/layouts/ShopLayout"),
-    children: [
-      {
-        path: "/",
-        name: "home",
-        component: () => import("@/views/HomePage"),
-      },
-
-      // {
-      //   path:"/shop",
-      //   name: "shop",
-      //   component: () => import('@/views/ShopPage')
-      // }
-    ],
+    name: "home",
+    meta: { layout: "shop-layout" },
+    component: () => import("@/views/HomePage"),
+  },
+  {
+    path: "/profile",
+    name: "profile",
+    meta: { layout: "profile-layout" },
+    component: () => import("@/views/ProfilePage"),
+  },
+  {
+    path: "/shop",
+    name: "shop",
+    meta: { layout: "shop-layout" },
+    component: () => import("@/views/ShopPage.vue"),
+  },
+  {
+    path: "/plant-care",
+    name: "plant-care",
+    meta: { layout: "shop-layout" },
+    component: () => import("@/views/ShopPage.vue"),
+  },
+  {
+    path: "/blogs",
+    name: "blogs",
+    meta: { layout: "shop-layout" },
+    component: () => import("@/views/ShopPage.vue"),
   },
 ];
 

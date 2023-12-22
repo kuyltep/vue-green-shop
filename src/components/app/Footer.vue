@@ -38,10 +38,8 @@
         <h4 class="footer-title form-title title_h4">Would you like to join newsletters?</h4>
         <form class="join-form">
 
-          <div class="input-field">
-            <input :class="{ invalid: formValidation }" v-model="email" placeholder="enter your email adress"
-              class="join-form__input" type="text" name="footer-input" id="footer-input">
-          </div>
+          <input :class="{ invalid: formValidation }" v-model="email" placeholder="enter your email adress"
+            class="join-form__input" type="text" name="footer-input" id="footer-input">
           <button @click.prevent="submitForm" class="join-form__btn white-text-btns" type="submit">Join</button>
         </form>
         <p class="join-form__text text_descr">We usually post offers and challenges in newsletter. We’re your online
@@ -121,6 +119,8 @@
 </template>
 
 <script>
+import errorToast from '@/toasts-plugins/error.tost';
+import successToast from '@/toasts-plugins/success.tost';
 import { useVuelidate } from '@vuelidate/core';
 import { required, email } from '@vuelidate/validators';
 export default {
@@ -137,9 +137,11 @@ export default {
       const isFormCorrect = await this.v$.$validate();
       if (!isFormCorrect) {
         this.v$.$touch();
+        errorToast('Join error')
         return;
       }
-
+      // TODO: Make a request to email join
+      successToast('Join success');
     }
   },
   computed: {

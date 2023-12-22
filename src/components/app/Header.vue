@@ -2,6 +2,7 @@
   <header class="header">
     <router-link alt="Logo" class="header__logo" to="/"></router-link>
     <ul class="header__menu">
+      <!-- TODO: Make a router-links for this items -->
       <li class="header__menu-item"><router-link class="header__menu-link" to="/">Home</router-link></li>
       <li class="header__menu-item"><router-link class="header__menu-link" to="/shop">Shop</router-link></li>
       <li class="header__menu-item"><router-link class="header__menu-link" to="/plant-care">Plant Care</router-link></li>
@@ -13,7 +14,9 @@
         <button alt="" class="header__search"></button>
       </div>
       <router-link alt="" class="header__chunk" to="/chunk"></router-link>
-      <button @click.prevent="showLoginMenu" class="header__login-link">Login</button>
+      <button v-if="!this.$store.getters.getJwt" @click.prevent="showLoginMenu" class="header__login-link">Login</button>
+      <!-- TODO: Make a router-link for profile page -->
+      <router-link v-else to="/profile" class="header__profile-link">Profile</router-link>
     </div>
   </header>
 </template>
@@ -23,7 +26,7 @@ import { mapMutations } from 'vuex';
 export default {
   methods: {
     ...mapMutations(['showLoginMenu'])
-  }
+  },
 }
 </script>
 
@@ -113,6 +116,25 @@ export default {
   padding: 8px 17px 7px 17px;
   text-decoration: none;
   cursor: pointer;
+}
+
+.header__profile-link {
+  color: #FFF;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 6px;
+  background: #46A358;
+  padding: 8px 17px 7px 17px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.header__profile-link::before {
+  content: url("../../assets/img/header/User.svg");
+  width: 20px;
+  height: 20px;
+  margin-right: 4px;
+  vertical-align: middle;
 }
 
 .header__login-link::before {

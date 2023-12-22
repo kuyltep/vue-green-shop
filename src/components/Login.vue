@@ -17,12 +17,14 @@
   </form>
   <div class="login-with">
     <p class="login-with__text">Or login with</p>
-    <button class="login-with__google login-with__btn">Login with Google</button>
-    <button class="login-with__facebook login-with__btn">Login with Facebook</button>
+    <button @click.prevent="loginWithGoogle" class="login-with__google login-with__btn">Login with Google</button>
+    <button @click.prevent="loginWithFacebook" class="login-with__facebook login-with__btn">Login with Facebook</button>
   </div>
 </template>
 
 <script>
+import errorToast from '@/toasts-plugins/error.tost';
+import successToast from '@/toasts-plugins/success.tost';
 import { useVuelidate } from '@vuelidate/core'
 import { required, email, minLength } from '@vuelidate/validators'
 export default {
@@ -40,14 +42,22 @@ export default {
       const isFormCorrect = await this.v$.$validate();
       if (!isFormCorrect) {
         this.v$.$touch();
+        errorToast("Error login")
         return;
       }
       await this.$store.dispatch('loginUser', { userEmail: this.userEmail, userPassword: this.userPassword });
+      successToast("Success login")
       setTimeout(() => this.clearInputs(), 0);
     },
     clearInputs() {
       this.userEmail = '';
       this.userPassword = '';
+    },
+    async loginWithFacebook() {
+      await this.$store.dispatch('loginWithFacebook');
+    },
+    async loginWithGoogle() {
+      await this.$store.dispatch('loginWithGoogle');
     }
   },
   computed: {

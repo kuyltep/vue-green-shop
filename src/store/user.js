@@ -1,20 +1,27 @@
 import axios from "axios";
 export default {
   state: {
-    userInfo: {},
+    user: null,
+    jwt: null,
     error: null,
   },
   getters: {
     getError(state) {
       return state.error;
     },
-    getUserInfo(state) {
-      return state.userInfo;
+    getUser(state) {
+      return state.user;
+    },
+    getJwt(state) {
+      return state.user;
     },
   },
   mutations: {
-    updateUserInfo(state, userInfo) {
-      state.userInfo = userInfo;
+    updateUser(state, user) {
+      state.user = user;
+    },
+    updateJwt(state, jwt) {
+      state.jwt = jwt;
     },
     setError(state, error) {
       state.error = error;
@@ -29,12 +36,7 @@ export default {
           password: userPassword,
         })
         .then((response) => {
-          const userInfo = {
-            ...response.data.user,
-            jwt: response.data.jwt,
-          };
-          commit("updateUserInfo", userInfo);
-          commit("closeLoginMenu");
+          commit("changeShow");
         })
         .catch((error) => {
           commit("setError", error);
@@ -48,11 +50,11 @@ export default {
           password: userPassword,
         })
         .then((response) => {
-          const userInfo = {
-            ...response.data.user,
-            jwt: response.data.jwt,
-          };
-          commit("updateUserInfo", userInfo);
+          const { jwt, user } = response.data;
+          window.localStorage.setItem("jwt", jwt);
+          window.localStorage.setItem("userData", JSON.stringify(user));
+          commit("updateUser", user);
+          commit("updateJwt", jwt);
           commit("closeLoginMenu");
         })
         .catch((error) => {
@@ -60,5 +62,9 @@ export default {
           throw error;
         });
     },
+    loginWithGoogle({ commit }) {
+      document.location.href = "http://localhost:1337/api/connect/google";
+    },
+    loginWithFacebook({ commit }) {},
   },
 };
