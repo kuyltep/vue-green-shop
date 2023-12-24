@@ -1,6 +1,8 @@
 <template>
-  <ProfileSidebar></ProfileSidebar>
-  <router-view></router-view>
+  <div class="profile-page">
+    <ProfileSidebar></ProfileSidebar>
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
@@ -12,4 +14,19 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.profile-page {
+  padding-top: 60px;
+  display: grid;
+  grid-template-columns: 310px 1fr;
+  grid-gap: 30px;
+}
+
+ProfileSidebar {
+  grid-column: 1/2;
+}
+
+router-view {
+  grid-column: 2/3;
+}
+</style>

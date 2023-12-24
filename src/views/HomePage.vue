@@ -1,9 +1,13 @@
 <template>
-  <div>Home page</div>
+  <Carousel></Carousel>
 </template>
 
 <script>
+import Carousel from '@/components/Carousel.vue';
 export default {
+  components: {
+    Carousel
+  },
 
 }
 </script>

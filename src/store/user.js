@@ -1,4 +1,6 @@
 import axios from "axios";
+import errorToast from "@/toasts-plugins/error.tost";
+import successToast from "@/toasts-plugins/success.tost";
 export default {
   state: {
     user: null,
@@ -37,10 +39,11 @@ export default {
         })
         .then((response) => {
           commit("changeShow");
+          successToast("Success register");
         })
         .catch((error) => {
+          errorToast("User already exists");
           commit("setError", error);
-          throw error;
         });
     },
     loginUser({ commit }, { userEmail, userPassword }) {
@@ -55,16 +58,24 @@ export default {
           window.localStorage.setItem("userData", JSON.stringify(user));
           commit("updateUser", user);
           commit("updateJwt", jwt);
+          successToast("Success login");
           commit("closeLoginMenu");
         })
         .catch((error) => {
+          errorToast("Invalid user");
           commit("setError", error);
-          throw error;
+          // throw error;
         });
     },
     loginWithGoogle({ commit }) {
-      document.location.href = "http://localhost:1337/api/connect/google";
+      axios.get("http://localhost:1337/api/connect/google");
     },
     loginWithFacebook({ commit }) {},
+    logoutUser({ commit }) {
+      window.localStorage.removeItem("jwt");
+      window.localStorage.removeItem("userData");
+      commit("updateUser", null);
+      commit("updateJwt", null);
+    },
   },
 };

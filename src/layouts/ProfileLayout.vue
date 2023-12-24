@@ -10,7 +10,7 @@ export default {
     Header,
   },
   mounted() {
-    this.$store.commit('updateUser', window.localStorage.getItem('userData'))
+    this.$store.commit('updateUser', JSON.parse(window.localStorage.getItem('userData')))
     this.$store.commit('updateJwt', window.localStorage.getItem('jwt'))
   }
 }

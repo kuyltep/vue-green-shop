@@ -1,6 +1,8 @@
 <template>
   <Header></Header>
-  <router-view></router-view>
+  <main class="main">
+    <router-view></router-view>
+  </main>
   <login-and-register v-if="getLoginMenuOpen"></login-and-register>
   <Footer></Footer>
 </template>

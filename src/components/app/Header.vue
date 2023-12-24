@@ -34,7 +34,7 @@ export default {
 .header {
   padding: 0 10px;
   display: grid;
-  grid-template-columns: minmax(210px, 33%);
+  grid-template-columns: repeat(3, 1fr);
   padding-top: 18px;
   padding-bottom: 18px;
   border-bottom: 0.3px solid rgba(70, 163, 88, 0.50);

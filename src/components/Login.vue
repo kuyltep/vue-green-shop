@@ -46,7 +46,6 @@ export default {
         return;
       }
       await this.$store.dispatch('loginUser', { userEmail: this.userEmail, userPassword: this.userPassword });
-      successToast("Success login")
       setTimeout(() => this.clearInputs(), 0);
     },
     clearInputs() {
@@ -55,9 +54,11 @@ export default {
     },
     async loginWithFacebook() {
       await this.$store.dispatch('loginWithFacebook');
+      this.$router.push('/')
     },
     async loginWithGoogle() {
       await this.$store.dispatch('loginWithGoogle');
+      this.$router.push('/')
     }
   },
   computed: {

@@ -53,6 +53,7 @@ export default {
 * {
   font-family: 'CeraPro';
   font-weight: 400;
+  box-sizing: border-box;
 }
 
 ul,

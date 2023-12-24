@@ -59,7 +59,6 @@ export default {
         return;
       }
       await this.$store.dispatch('registerUser', { userUsername: this.userUsername, userEmail: this.userEmail, userPassword: this.userPassword });
-      successToast("Success register");
       setTimeout(() => this.clearInputs(), 0)
     },
     clearInputs() {
