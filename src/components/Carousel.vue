@@ -46,7 +46,6 @@ export default {
   async created() {
     await this.$store.dispatch('getDataForSlider');
     this.dataForSlider = this.$store.getters.getSliderData;
-    console.log(this.dataForSlider);
   }
 }
 </script>

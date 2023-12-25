@@ -26,8 +26,10 @@
   </form>
   <div class="register-with">
     <p class="register-with__text">Or register with</p>
-    <button class="register-with__google login-with__btn">Continue with Google</button>
-    <button class="register-with__facebook login-with__btn">Continue with Facebook</button>
+    <a href="http://localhost:1337/api/connect/google" class="register-with__google login-with__btn">Continue with
+      Google</a>
+    <a href="http://localhost:1337/api/connect/discord" class="register-with__discord login-with__btn">Continue with
+      Discord</a>
   </div>
 </template>
 
@@ -173,8 +175,8 @@ export default {
   padding-right: 5px;
 }
 
-.register-with__facebook::before {
-  content: url("../assets/img/loginAndRegister/facebook.svg");
+.register-with__discord::before {
+  content: url("../assets/img/loginAndRegister/discord.svg");
   width: 20px;
   height: 20px;
   vertical-align: middle;
@@ -191,5 +193,6 @@ export default {
   font-size: 13px;
   font-weight: 500;
   padding: 12px 0;
+  display: inline-block;
 }
 </style>

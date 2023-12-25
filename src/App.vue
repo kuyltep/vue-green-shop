@@ -9,10 +9,12 @@
 <script>
 import ShopLayout from './layouts/ShopLayout.vue';
 import ProfileLayout from './layouts/ProfileLayout.vue';
+import EmptyLayout from './layouts/EmptyLayout.vue';
 export default {
   components: {
     ShopLayout,
     ProfileLayout,
+    EmptyLayout,
   },
   computed: {
     layout() {

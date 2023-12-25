@@ -67,10 +67,6 @@ export default {
           // throw error;
         });
     },
-    loginWithGoogle({ commit }) {
-      axios.get("http://localhost:1337/api/connect/google");
-    },
-    loginWithFacebook({ commit }) {},
     logoutUser({ commit }) {
       window.localStorage.removeItem("jwt");
       window.localStorage.removeItem("userData");

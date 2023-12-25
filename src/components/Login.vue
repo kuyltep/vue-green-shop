@@ -17,14 +17,16 @@
   </form>
   <div class="login-with">
     <p class="login-with__text">Or login with</p>
-    <button @click.prevent="loginWithGoogle" class="login-with__google login-with__btn">Login with Google</button>
-    <button @click.prevent="loginWithFacebook" class="login-with__facebook login-with__btn">Login with Facebook</button>
+    <a href="http://localhost:1337/api/connect/google" class="login-with__google login-with__btn">Login
+      with
+      Google</a>
+    <a href="http://localhost:1337/api/connect/discord" class="login-with__discord login-with__btn">Login with
+      Discord</a>
   </div>
 </template>
 
 <script>
 import errorToast from '@/toasts-plugins/error.tost';
-import successToast from '@/toasts-plugins/success.tost';
 import { useVuelidate } from '@vuelidate/core'
 import { required, email, minLength } from '@vuelidate/validators'
 export default {
@@ -52,14 +54,6 @@ export default {
       this.userEmail = '';
       this.userPassword = '';
     },
-    async loginWithFacebook() {
-      await this.$store.dispatch('loginWithFacebook');
-      this.$router.push('/')
-    },
-    async loginWithGoogle() {
-      await this.$store.dispatch('loginWithGoogle');
-      this.$router.push('/')
-    }
   },
   computed: {
     isEmailInvalid() {
@@ -152,6 +146,7 @@ export default {
   align-items: center;
 }
 
+
 .login-with__text {
   color: #3D3D3D;
   font-size: 13px;
@@ -161,6 +156,7 @@ export default {
 
 .login-with__google {
   margin-bottom: 15px;
+
 }
 
 .login-with__google::before {
@@ -171,8 +167,8 @@ export default {
   padding-right: 5px;
 }
 
-.login-with__facebook::before {
-  content: url("../assets/img/loginAndRegister/facebook.svg");
+.login-with__discord::before {
+  content: url("../assets/img/loginAndRegister/discord.svg");
   width: 20px;
   height: 20px;
   vertical-align: middle;
@@ -189,5 +185,7 @@ export default {
   font-size: 13px;
   font-weight: 500;
   padding: 12px 0;
+  text-decoration: none;
+  display: inline-block;
 }
 </style>

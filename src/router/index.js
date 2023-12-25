@@ -75,6 +75,11 @@ const routes = [
     meta: { layout: "shop-layout" },
     component: () => import("@/views/BlogsPage.vue"),
   },
+  {
+    path: "/connect/:providerName/redirect",
+    meta: { layout: "empty-layout" },
+    component: () => import("@/views/ProvidersPages/RedirectingPage.vue"),
+  },
 ];
 
 const router = createRouter({
