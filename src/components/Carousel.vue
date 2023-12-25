@@ -52,7 +52,6 @@ export default {
 
 <style >
 .swiper {
-  margin-top: 15px;
   height: 450px;
   width: 1200px;
 }

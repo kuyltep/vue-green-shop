@@ -26,10 +26,15 @@ export default {
     ...mapGetters(['getLoginMenuOpen']),
   },
   mounted() {
-    this.$store.commit('updateUser', window.localStorage.getItem('userData'))
+    this.$store.commit('updateUser', JSON.parse(window.localStorage.getItem('userData')))
     this.$store.commit('updateJwt', window.localStorage.getItem('jwt'))
   },
+
 }
 </script>
 
-<style></style>
+<style scoped>
+.main {
+  margin-top: 15px;
+}
+</style>

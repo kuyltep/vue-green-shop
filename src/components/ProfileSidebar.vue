@@ -1,29 +1,6 @@
 <template>
   <div class="sidebar">
-    <h4 class="title_h4">My Account</h4>
-    <!-- <ul class="sidebar__links">
-      <li class="sidebar__links-item profile-details">
-        <router-link to="/profile/details">Account Details</router-link>
-      </li>
-      <li class="sidebar__links-item profile-address">
-        <router-link to="/profile/address">Address</router-link>
-      </li>
-      <li class="sidebar__links-item profile-orders">
-        <router-link to="/profile/orders">Orders</router-link>
-      </li>
-      <li class="sidebar__links-item profile-wishlist">
-        <router-link to="/profile/wishlist">Wishlist</router-link>
-      </li>
-      <li class="sidebar__links-item profile-reports">
-        <router-link to="/profile/reports">Reports</router-link>
-      </li>
-      <li class="sidebar__links-item profile-downloads">
-        <router-link to="/profile/downloads">Downloads</router-link>
-      </li>
-      <li class="sidebar__links-item profile-support">
-        <router-link to="/profile/support">Support</router-link>
-      </li>
-    </ul> -->
+    <h3 class="title_h4">My Account</h3>
     <div class="sidebar__links">
       <router-link class="sidebar__links-item profile-details" to="/profile/details">Account Details</router-link>
       <router-link class="sidebar__links-item profile-address" to="/profile/address">Address</router-link>
@@ -41,10 +18,12 @@
 </template>
 
 <script>
+import successTost from '@/toasts-plugins/success.tost';
 export default {
   methods: {
     logout() {
       this.$store.dispatch('logoutUser');
+      successTost('Success logout');
       this.$router.push('/');
     }
   }

@@ -1,7 +1,9 @@
 <template>
   <div class="profile-page">
     <ProfileSidebar></ProfileSidebar>
-    <router-view></router-view>
+    <div class="profile-page-content">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
@@ -26,7 +28,7 @@ ProfileSidebar {
   grid-column: 1/2;
 }
 
-router-view {
+.profile-page-content {
   grid-column: 2/3;
 }
 </style>
