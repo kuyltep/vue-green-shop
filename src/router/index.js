@@ -80,6 +80,16 @@ const routes = [
     meta: { layout: "empty-layout" },
     component: () => import("@/views/ProvidersPages/RedirectingPage.vue"),
   },
+  {
+    path: "/forgot-user-password",
+    meta: { layout: "empty-layout" },
+    component: () => import("@/views/ProvidersPages/ForgotPasswordPage.vue"),
+  },
+  {
+    path: "/reset-user-password",
+    meta: { layout: "empty-layout" },
+    component: () => import("@/views/ProvidersPages/ResetPasswordPage.vue"),
+  },
 ];
 
 const router = createRouter({

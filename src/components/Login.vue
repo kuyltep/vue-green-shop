@@ -12,7 +12,7 @@
       <span v-if="isPasswordInvalid" class="invalid-text">Input your password</span>
     </div>
 
-    <a href="" class="login-form__forgot-password">Forgot Password?</a>
+    <router-link to="/forgot-user-password" class="login-form__forgot-password">Forgot Password?</router-link>
     <button class="login-form__btn" type="submit">Login</button>
   </form>
   <div class="login-with">

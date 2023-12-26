@@ -30,5 +30,6 @@ ProfileSidebar {
 
 .profile-page-content {
   grid-column: 2/3;
+  padding-bottom: 60px;
 }
 </style>
