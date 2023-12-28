@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    <router-link alt="Logo" class="header__logo" to="/"></router-link>
+    <router-link :style="{ background: this.logoBackground }" alt="Logo" class="header__logo" to="/"></router-link>
     <ul class="header__menu">
       <!-- TODO: Make a router-links for this items -->
       <li class="header__menu-item"><router-link class="header__menu-link" to="/">Home</router-link></li>
@@ -11,9 +11,9 @@
     <div class="header__right-menu">
       <div class="search__block">
         <!-- <input placeholder="Search..." type="text" class="search__input"> -->
-        <button alt="" class="header__search"></button>
+        <button :style="{ background: this.searchBackground }" alt="" class="header__search"></button>
       </div>
-      <router-link alt="" class="header__chunk" to="/chunk"></router-link>
+      <router-link :style="{ background: this.chunkBackground }" alt="" class="header__chunk" to="/chunk"></router-link>
       <button v-if="!this.$store.getters.getJwt" @click.prevent="showLoginMenu" class="header__login-link">Login</button>
       <!-- TODO: Make a router-link for profile page -->
       <router-link v-else to="/profile/details" class="header__profile-link">Profile</router-link>
@@ -22,11 +22,42 @@
 </template>
 
 <script>
+import axios from 'axios';
 import { mapMutations } from 'vuex';
 export default {
+  data() {
+    return {
+      images: {},
+      searchBackground: "",
+      logoBackground: "",
+      chunkBackground: "",
+      logoutBackground: "",
+      profileBackground: "",
+    }
+  },
   methods: {
     ...mapMutations(['showLoginMenu'])
   },
+  created() {
+    axios.get('http://localhost:1337/api/icons?populate=*').then((response) => {
+      return response.data.data;
+    }).then((data) => {
+      data.forEach(item => {
+        const name = item.attributes.name;
+        const image = item.attributes.icon.data.attributes.url;
+        this.images[name] = 'http://localhost:1337' + image;
+      })
+      this.searchBackground = `url(${this.images.search}) no-repeat`;
+      this.logoBackground = `url(${this.images.logo}) no-repeat`;
+      this.chunkBackground = `url(${this.images.chunk}) no-repeat`;
+      this.logoutBackground = `url(${this.images.logout})`;
+      this.profileBackground = `url(${this.images.user})`;
+      //TODO: Delete this console.log()
+      console.log(this.images);
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
 }
 </script>
 
@@ -43,7 +74,6 @@ export default {
 .header__logo {
   grid-column: 1/2;
   vertical-align: middle;
-  background: url('../../assets/img/header/Logo.svg') no-repeat;
   background-size: 150px 34.3px;
 }
 
@@ -84,7 +114,6 @@ export default {
   margin-right: 30px;
   width: 20px;
   height: 20px;
-  background: url("../../assets/img/header/Search.svg") no-repeat;
   border: none;
   outline: none;
 }
@@ -102,7 +131,6 @@ export default {
 
 .header__chunk {
   margin-right: 35px;
-  background: url("../../assets/img/header/Chunk.svg") no-repeat;
   width: 25px;
   height: 25px;
 }

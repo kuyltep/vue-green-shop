@@ -662,12 +662,12 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     firstName: Attribute.String;
     lastName: Attribute.String;
     phoneNumber: Attribute.String;
-    adresses: Attribute.Relation<
+    photo: Attribute.Media;
+    addresses: Attribute.Relation<
       'plugin::users-permissions.user',
-      'oneToMany',
+      'manyToMany',
       'api::adress.adress'
     >;
-    photo: Attribute.Media;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -690,27 +690,28 @@ export interface ApiAdressAdress extends Schema.CollectionType {
   info: {
     singularName: 'adress';
     pluralName: 'adresses';
-    displayName: 'Adress';
+    displayName: 'Address';
+    description: '';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
-    users_permissions_user: Attribute.Relation<
-      'api::adress.adress',
-      'manyToOne',
-      'plugin::users-permissions.user'
-    >;
     firstName: Attribute.String;
     lastName: Attribute.String;
     country: Attribute.String;
     city: Attribute.String;
-    adress: Attribute.String;
+    address: Attribute.String;
     appartment: Attribute.String;
     state: Attribute.String;
     zip: Attribute.String;
     email: Attribute.Email;
     phone: Attribute.BigInteger;
+    users: Attribute.Relation<
+      'api::adress.adress',
+      'manyToMany',
+      'plugin::users-permissions.user'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -769,7 +770,8 @@ export interface ApiIconIcon extends Schema.CollectionType {
   info: {
     singularName: 'icon';
     pluralName: 'icons';
-    displayName: 'icon';
+    displayName: 'header-images';
+    description: '';
   };
   options: {
     draftAndPublish: true;

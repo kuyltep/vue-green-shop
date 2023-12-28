@@ -4,19 +4,14 @@
   "info": {
     "singularName": "adress",
     "pluralName": "adresses",
-    "displayName": "Adress"
+    "displayName": "Address",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
-    "users_permissions_user": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "plugin::users-permissions.user",
-      "inversedBy": "adresses"
-    },
     "firstName": {
       "type": "string"
     },
@@ -29,7 +24,7 @@
     "city": {
       "type": "string"
     },
-    "adress": {
+    "address": {
       "type": "string"
     },
     "appartment": {
@@ -46,6 +41,12 @@
     },
     "phone": {
       "type": "biginteger"
+    },
+    "users": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "addresses"
     }
   }
 }

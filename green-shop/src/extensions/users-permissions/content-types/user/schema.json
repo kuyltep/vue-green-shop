@@ -74,21 +74,22 @@
     "phoneNumber": {
       "type": "string"
     },
-    "adresses": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::adress.adress",
-      "mappedBy": "users_permissions_user"
-    },
     "photo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
+    },
+    "addresses": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::adress.adress",
+      "mappedBy": "users"
     }
   }
 }

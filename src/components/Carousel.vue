@@ -13,10 +13,10 @@
         </div>
         <div class="slide-content__image">
           <div class="big-image-wrapper">
-            <img class="big-image" src="../assets/img/slider/sliderBig.png" alt="">
+            <img class="big-image" :src=slide.bigImage alt="">
           </div>
           <div class="small-image-wrapper">
-            <img src="../assets/img/slider/sliderSmall.png" alt="" class="small-image">
+            <img :src=slide.smallImage alt="" class="small-image">
           </div>
         </div>
       </div>

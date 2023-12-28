@@ -55,6 +55,7 @@ export default {
           password: userPassword,
         })
         .then((response) => {
+          console.log(response);
           const { jwt, user } = response.data;
           window.localStorage.setItem("jwt", jwt);
           window.localStorage.setItem("userData", JSON.stringify(user));

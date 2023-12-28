@@ -77,7 +77,6 @@ export default {
     async personalInformationSubmit() {
       const isFormCorrect = await this.v$.$validate();
       if (!isFormCorrect) {
-        this.v$.$touch();
         return;
       }
       axios.put(
