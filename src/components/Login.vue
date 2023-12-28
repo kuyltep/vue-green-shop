@@ -7,9 +7,11 @@
       <span v-if="isEmailInvalid" class="invalid-text">Input your email</span>
     </div>
     <div class="input-field">
-      <input :class="{ invalid: isPasswordInvalid }" v-model="userPassword" placeholder="123456789" type="password"
-        name="" id="login-pas" class="login-form__password-input">
+      <input ref="userPasswordInput" :class="{ invalid: isPasswordInvalid }" v-model="userPassword"
+        placeholder="123456789" type="password" name="" id="login-pas" class="login-form__password-input">
       <span v-if="isPasswordInvalid" class="invalid-text">Input your password</span>
+      <a @click.prevent="this.$refs.userPasswordInput.type = this.$refs.userPasswordInput.type === 'text' ? 'password' : 'text'"
+        class="show-password"></a>
     </div>
 
     <router-link to="/forgot-user-password" class="login-form__forgot-password">Forgot Password?</router-link>
@@ -48,12 +50,8 @@ export default {
         return;
       }
       await this.$store.dispatch('loginUser', { userEmail: this.userEmail, userPassword: this.userPassword });
-      setTimeout(() => this.clearInputs(), 0);
     },
-    clearInputs() {
-      this.userEmail = '';
-      this.userPassword = '';
-    },
+
   },
   computed: {
     isEmailInvalid() {
@@ -97,7 +95,17 @@ export default {
   display: flex;
   flex-direction: column;
   margin-bottom: 16px;
+  position: relative;
+}
 
+.show-password {
+  position: absolute;
+  background: url("../assets/img/loginAndRegister/Hide.svg") center no-repeat;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  right: 10px;
+  top: 12px;
 }
 
 .invalid-text {

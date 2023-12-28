@@ -51,6 +51,9 @@
 </template>
 
 <script>
+import axios from 'axios';
+import successTost from '@/toasts-plugins/success.tost';
+import errorTost from '@/toasts-plugins/error.tost';
 import { useVuelidate } from '@vuelidate/core';
 import { required, email, minLength, integer } from '@vuelidate/validators';
 export default {
@@ -77,14 +80,29 @@ export default {
         this.v$.$touch();
         return;
       }
-    },
-    removeForm() {
-      this.firstname = '';
-      this.lastname = '';
-      this.email = '';
-      this.phone = '';
-      this.username = '';
-      this.photo = '';
+      axios.put(
+        'http://localhost:1337/api/users/' + this.$store.getters.getUser.id,
+        {
+          username: this.username,
+          firstName: this.firstname,
+          lastName: this.lastname,
+          phoneNumber: this.phone,
+          email: this.email,
+        },
+        {
+          headers: {
+            Authorization: 'Bearer ' + this.$store.getters.getJwt,
+          },
+        }
+      ).then((response => {
+        successTost('Data was updated');
+        this.$store.dispatch('updateData', {
+          userId: this.$store.getters.getUser.id,
+        });
+      })).catch((error) => {
+        errorTost('Error');
+        console.log(error);
+      });
     },
   },
   computed: {

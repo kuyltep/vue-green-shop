@@ -45,9 +45,8 @@ export default {
       axios
         .post('http://localhost:1337/api/auth/forgot-password', {
           email: this.email, // user's email
-          url:
-            'http:/localhost:1337/admin/plugins/users-permissions/auth/reset-password',
-        })
+        },
+        )
         .then(response => {
           console.log('Your user received an email');
           successTost('Check your email');

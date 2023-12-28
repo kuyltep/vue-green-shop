@@ -12,14 +12,19 @@
       <span v-if="isEmailInvalid" class="invalid-text">Input your email</span>
     </div>
     <div class="input-field">
-      <input :class="{ invalid: isPasswordInvalid }" v-model="userPassword" placeholder="Password" type="password"
-        id="register-password" class="register-form__password-input">
+      <input ref="passwordInput" :class="{ invalid: isPasswordInvalid }" v-model="userPassword" placeholder="Password"
+        type="password" id="register-password" class="register-form__password-input">
       <span v-if="isPasswordInvalid" class="invalid-text">Input your password</span>
+      <a @click.prevent="this.$refs.passwordInput.type = this.$refs.passwordInput.type === 'text' ? 'password' : 'text'"
+        class="show-password"></a>
     </div>
     <div class="input-field">
-      <input :class="{ invalid: isConfirmPasswordInvalid }" v-model="userConfirmPassword" placeholder="Confirm password"
-        type="password" id="register-confirm-password" class="register-form__confirm-password-input">
+      <input ref="confirmInput" :class="{ invalid: isConfirmPasswordInvalid }" v-model="userConfirmPassword"
+        placeholder="Confirm password" type="password" id="register-confirm-password"
+        class="register-form__confirm-password-input">
       <span v-if="isConfirmPasswordInvalid" class="invalid-text">Input your correct password</span>
+      <a @click.prevent="this.$refs.confirmInput.type = this.$refs.confirmInput.type === 'text' ? 'password' : 'text'"
+        class="show-password"></a>
     </div>
 
     <button class="register-form__btn">Register</button>
@@ -61,14 +66,8 @@ export default {
         return;
       }
       await this.$store.dispatch('registerUser', { userUsername: this.userUsername, userEmail: this.userEmail, userPassword: this.userPassword });
-      setTimeout(() => this.clearInputs(), 0)
     },
-    clearInputs() {
-      this.userUsername = '';
-      this.userEmail = '';
-      this.userPassword = '';
-      this.userConfirmPassword = '';
-    }
+
   },
   computed: {
     isUsernameInvalid() {
@@ -125,6 +124,17 @@ export default {
 
 .input-field {
   margin-bottom: 10px;
+  position: relative;
+}
+
+.show-password {
+  position: absolute;
+  background: url("../assets/img/loginAndRegister/Hide.svg") center no-repeat;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  right: 10px;
+  top: 12px;
 }
 
 .invalid {

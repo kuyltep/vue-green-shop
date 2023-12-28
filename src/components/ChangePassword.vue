@@ -4,20 +4,26 @@
     <div class="grid-wrapper">
       <div class="current-div input-block">
         <label class="label-for-input" for="current">Current password</label>
-        <input :class="{ error: currentValidation }" v-model="currentPassword" class="personal-input" type="text"
-          name="current" id="current">
+        <input ref="currentPasswordInput" :class="{ error: currentValidation }" v-model="currentPassword"
+          class="personal-input" type="password" name="current" id="current">
+        <a class="show-password"
+          @click.prevent="this.$refs.currentPasswordInput.type = this.$refs.currentPasswordInput.type === 'text' ? 'password' : 'text'"></a>
         <span v-if="currentValidation" class="error-text">Invalid password</span>
       </div>
       <div class="new-div input-block">
         <label class="label-for-input" for="new">New password</label>
-        <input :class="{ error: newValidation }" v-model="newPassword" class="personal-input" type="text" name="new"
-          id="new">
+        <input ref="newPasswordInput" :class="{ error: newValidation }" v-model="newPassword" class="personal-input"
+          type="password" name="new" id="new">
+        <a class="show-password"
+          @click.prevent="this.$refs.newPasswordInput.type = this.$refs.newPasswordInput.type === 'text' ? 'password' : 'text'"></a>
         <span v-if="newValidation" class="error-text">Invalid password</span>
       </div>
       <div class="confirm-div input-block">
         <label class="label-for-input" for="confirm">Confirm new password</label>
-        <input :class="{ error: confirmValidation }" v-model="confirmNewPassword" class="personal-input" type="text"
-          name="confirm" id="confirm">
+        <input ref="confirmPasswordInput" :class="{ error: confirmValidation }" v-model="confirmNewPassword"
+          class="personal-input" type="password" name="confirm" id="confirm">
+        <a class="show-password"
+          @click.prevent="this.$refs.confirmPasswordInput.type = this.$refs.confirmPasswordInput.type === 'text' ? 'password' : 'text'"></a>
         <span v-if="confirmValidation" class="error-text">Invalid password</span>
       </div>
       <button type="submit" class="save-change-btn">Save change</button>
@@ -26,6 +32,9 @@
 </template>
 
 <script>
+import axios from 'axios';
+import successTost from '@/toasts-plugins/success.tost';
+import errorTost from '@/toasts-plugins/error.tost';
 import { useVuelidate } from '@vuelidate/core'
 import { required, minLength } from '@vuelidate/validators'
 export default {
@@ -49,8 +58,27 @@ export default {
         this.v$.$touch();
         return;
       }
+      axios.post(
+        'http://localhost:1337/api/auth/change-password',
+        {
+          currentPassword: this.currentPassword,
+          password: this.newPassword,
+          passwordConfirmation: this.confirmNewPassword,
+        },
+        {
+          headers: {
+            Authorization: 'Bearer ' + this.$store.getters.getJwt,
+          },
+        }
+      ).then((response) => {
+        console.log(response);
+        successTost('Success changed');
+      }).catch((error) => {
+        console.log(error);
+        errorTost("Error password");
+      });
+    },
 
-    }
   },
   computed: {
     //User password
@@ -62,8 +90,7 @@ export default {
     },
     confirmValidation() {
       return this.v$.confirmNewPassword.$dirty && this.v$.confirmNewPassword.required.$invalid || this.v$.confirmNewPassword.$dirty && this.v$.confirmNewPassword.minLength.$invalid || this.v$.newPassword.$dirty && this.v$.confirmNewPassword.$dirty && this.newPassword !== this.confirmNewPassword;
-    }
-
+    },
   },
   validations() {
     return {
@@ -103,6 +130,17 @@ export default {
 .input-block {
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+
+.show-password {
+  position: absolute;
+  background: url("../assets/img/loginAndRegister/Hide.svg") center no-repeat;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  right: 10px;
+  top: 32px;
 }
 
 .label-for-input {

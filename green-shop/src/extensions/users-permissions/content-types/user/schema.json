@@ -74,6 +74,12 @@
     "phoneNumber": {
       "type": "string"
     },
+    "adresses": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::adress.adress",
+      "mappedBy": "users_permissions_user"
+    },
     "photo": {
       "allowedTypes": [
         "images",
@@ -82,25 +88,7 @@
         "audios"
       ],
       "type": "media",
-      "multiple": true
-    },
-    "country": {
-      "type": "string"
-    },
-    "city": {
-      "type": "string"
-    },
-    "address": {
-      "type": "string"
-    },
-    "state": {
-      "type": "string"
-    },
-    "zip": {
-      "type": "string"
-    },
-    "appartment": {
-      "type": "string"
+      "multiple": false
     }
   }
 }
