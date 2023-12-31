@@ -4,7 +4,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import ShippingAddress from "@/components/ShippingAdress.vue";
 import SaveAddress from '@/components/SaveAddress.vue'
 export default {
