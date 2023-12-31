@@ -95,30 +95,18 @@ export default {
         return;
       }
       //TODO: Made request to add new address to Strapi
-      axios.post('http://localhost:1337/api/adresses', {
+      this.$store.dispatch('saveAddress', {
         firstName: this.firstname,
         lastName: this.lastname,
         country: this.country,
         city: this.city,
         address: this.address,
-        appartment: this.appartment,
         state: this.state,
         email: this.email,
         phone: this.phone,
+        appartment: this.appartment,
         zip: this.zip,
-        // users: this.$store.getters.getUser.name,
-      },
-        {
-          headers: {
-            Authorization: `Bearer ${this.$store.getters.getJwt}`,
-          }
-        }).then((response) => {
-          console.log(response);
-          successTost('Success address add');
-        }).catch((error) => {
-          console.log(error);
-          errorTost('Error address add');
-        })
+      })
     }
   },
   computed: {

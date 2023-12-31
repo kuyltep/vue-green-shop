@@ -702,9 +702,7 @@ export interface ApiAdressAdress extends Schema.CollectionType {
     country: Attribute.String;
     city: Attribute.String;
     address: Attribute.String;
-    appartment: Attribute.String;
     state: Attribute.String;
-    zip: Attribute.String;
     email: Attribute.Email;
     phone: Attribute.BigInteger;
     users: Attribute.Relation<
@@ -712,6 +710,8 @@ export interface ApiAdressAdress extends Schema.CollectionType {
       'manyToMany',
       'plugin::users-permissions.user'
     >;
+    appartment: Attribute.Integer;
+    zip: Attribute.Integer;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -765,6 +765,37 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
   };
 }
 
+export interface ApiFooterImageFooterImage extends Schema.CollectionType {
+  collectionName: 'footer_images';
+  info: {
+    singularName: 'footer-image';
+    pluralName: 'footer-images';
+    displayName: 'footer-image';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String;
+    image: Attribute.Media;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::footer-image.footer-image',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::footer-image.footer-image',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiIconIcon extends Schema.CollectionType {
   collectionName: 'icons';
   info: {
@@ -802,7 +833,7 @@ export interface ApiProductProduct extends Schema.CollectionType {
   };
   attributes: {
     name: Attribute.String;
-    description: Attribute.Text;
+    shortDescription: Attribute.Text;
     price: Attribute.Decimal;
     category: Attribute.Relation<
       'api::product.product',
@@ -810,6 +841,13 @@ export interface ApiProductProduct extends Schema.CollectionType {
       'api::category.category'
     >;
     image: Attribute.Media;
+    sizes: Attribute.Relation<
+      'api::product.product',
+      'manyToMany',
+      'api::size.size'
+    >;
+    prices: Attribute.JSON;
+    fullDescription: Attribute.Blocks;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -824,6 +862,33 @@ export interface ApiProductProduct extends Schema.CollectionType {
       'oneToOne',
       'admin::user'
     > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiSizeSize extends Schema.CollectionType {
+  collectionName: 'sizes';
+  info: {
+    singularName: 'size';
+    pluralName: 'sizes';
+    displayName: 'size';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    size: Attribute.String;
+    products: Attribute.Relation<
+      'api::size.size',
+      'manyToMany',
+      'api::product.product'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::size.size', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::size.size', 'oneToOne', 'admin::user'> &
       Attribute.Private;
   };
 }
@@ -861,6 +926,28 @@ export interface ApiSlideSlide extends Schema.CollectionType {
   };
 }
 
+export interface ApiTestTest extends Schema.CollectionType {
+  collectionName: 'tests';
+  info: {
+    singularName: 'test';
+    pluralName: 'tests';
+    displayName: 'test';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::test.test', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::test.test', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -879,9 +966,12 @@ declare module '@strapi/types' {
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'api::adress.adress': ApiAdressAdress;
       'api::category.category': ApiCategoryCategory;
+      'api::footer-image.footer-image': ApiFooterImageFooterImage;
       'api::icon.icon': ApiIconIcon;
       'api::product.product': ApiProductProduct;
+      'api::size.size': ApiSizeSize;
       'api::slide.slide': ApiSlideSlide;
+      'api::test.test': ApiTestTest;
     }
   }
 }

@@ -4,12 +4,13 @@
 </template>
 
 <script>
+import axios from "axios";
 import Header from '@/components/app/Header.vue';
 export default {
   components: {
     Header,
   },
-  mounted() {
+  created() {
     this.$store.commit('updateUser', JSON.parse(window.localStorage.getItem('userData')))
     this.$store.commit('updateJwt', window.localStorage.getItem('jwt'))
   }

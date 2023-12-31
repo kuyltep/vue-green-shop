@@ -2,6 +2,7 @@ import { createStore } from "vuex";
 import loginAndRegister from "@/store/loginAndRegisterWindows";
 import user from "./user";
 import getData from "./getData";
+import addresses from "./addresses";
 
 export default createStore({
   state: {},
@@ -12,5 +13,6 @@ export default createStore({
     loginAndRegister,
     user,
     getData,
+    addresses,
   },
 });

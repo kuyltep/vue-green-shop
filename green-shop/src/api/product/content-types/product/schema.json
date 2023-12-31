@@ -15,7 +15,7 @@
     "name": {
       "type": "string"
     },
-    "description": {
+    "shortDescription": {
       "type": "text"
     },
     "price": {
@@ -28,14 +28,27 @@
       "inversedBy": "products"
     },
     "image": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": true
+      ]
+    },
+    "sizes": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::size.size",
+      "mappedBy": "products"
+    },
+    "prices": {
+      "type": "json"
+    },
+    "fullDescription": {
+      "type": "blocks"
     }
   }
 }

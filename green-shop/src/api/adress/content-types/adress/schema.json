@@ -27,13 +27,7 @@
     "address": {
       "type": "string"
     },
-    "appartment": {
-      "type": "string"
-    },
     "state": {
-      "type": "string"
-    },
-    "zip": {
       "type": "string"
     },
     "email": {
@@ -47,6 +41,12 @@
       "relation": "manyToMany",
       "target": "plugin::users-permissions.user",
       "inversedBy": "addresses"
+    },
+    "appartment": {
+      "type": "integer"
+    },
+    "zip": {
+      "type": "integer"
     }
   }
 }

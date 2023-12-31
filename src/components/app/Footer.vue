@@ -4,7 +4,7 @@
       <div class="first-card">
         <div class="card-img__block">
           <div class="ellipse"></div>
-          <img src="../../assets/img/footer/cards/GarderCare.svg" alt="" class="card__img">
+          <img :src="gardenImageUrl" alt="" class="card__img">
         </div>
         <div class="card-descr">
           <h4 class="card__title title_h4">Garden Care</h4>
@@ -15,7 +15,7 @@
       <div class="second-card">
         <div class="card-img__block">
           <div class="ellipse"></div>
-          <img src="../../assets/img/footer/cards/PlantRenovation.svg" alt="" class="card__img">
+          <img :src="plantImageUrl" alt="" class="card__img">
         </div>
         <div class="card-descr">
           <h4 class="card__title title_h4">Plant Renovation</h4>
@@ -26,7 +26,7 @@
       <div class="third-card">
         <div class="card-img__block">
           <div class="ellipse"></div>
-          <img src="../../assets/img/footer/cards/WateringGarden.svg" alt="" class="card__img">
+          <img :src="wateringImageUrl" alt="" class="card__img">
         </div>
         <div class="card-descr">
           <h4 class="card__title title_h4">Watering Graden</h4>
@@ -49,7 +49,7 @@
       </div>
     </div>
     <div class="second-row">
-      <img src="../../assets//img/header/Logo.svg" alt="" class="footer__logo">
+      <img :src="logoImageUrl" alt="" class="footer__logo">
       <address class="footer__adress footer-links">70 West Buckingham Ave. Farmingdale, NY 11735</address>
       <a class="footer__mail-link footer-links" href="mailto:">contact@greenshop.com</a>
       <a class="footer__tel-link footer-links" href="tel:+8801911717490">+88 01911 717 490</a>
@@ -90,25 +90,25 @@
           <h4 class="title_h4 social-link__title">Social Media</h4>
           <ul class="social-link__list">
             <li class="social-link__item">
-              <a href="#" class="social-link__link facebook"></a>
+              <a :style="{ background: this.facebookImageUrl }" href="#" class="social-link__link facebook"></a>
             </li>
             <li class="social-link__item">
-              <a href="#" class="social-link__link instagram"></a>
+              <a :style="{ background: this.instagramImageUrl }" href="#" class="social-link__link instagram"></a>
             </li>
             <li class="social-link__item">
-              <a href="#" class="social-link__link twitter"></a>
+              <a :style="{ background: this.twitterImageUrl }" href="#" class="social-link__link twitter"></a>
             </li>
             <li class="social-link__item">
-              <a href="#" class="social-link__link linkedin"></a>
+              <a :style="{ background: this.linkedinImageUrl }" href="#" class="social-link__link linkedin"></a>
             </li>
             <li class="social-link__item">
-              <a href="#" class="social-link__link union"></a>
+              <a :style="{ background: this.unionImageUrl }" href="#" class="social-link__link union"></a>
             </li>
           </ul>
         </div>
         <div class="we-accept__block">
           <h4 class="title_h4 we-accept__item">We accept</h4>
-          <img class="we-accept__img" src="../../assets/img/footer/PaySystems.png" alt="">
+          <img class="we-accept__img" :src="payImageUrl" alt="">
         </div>
       </div>
     </div>
@@ -119,6 +119,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import errorToast from '@/toasts-plugins/error.tost';
 import successToast from '@/toasts-plugins/success.tost';
 import { useVuelidate } from '@vuelidate/core';
@@ -130,6 +131,20 @@ export default {
   data() {
     return {
       email: '',
+      images: {},
+      plantImageUrl: "",
+      gardenImageUrl: "",
+      wateringImageUrl: "",
+      logoImageUrl: "",
+      addressImageUrl: "",
+      mailImageUrl: "",
+      phoneImageUrl: "",
+      facebookImageUrl: "",
+      instagramImageUrl: "",
+      twitterImageUrl: "",
+      unionImageUrl: "",
+      linkedinImageUrl: "",
+      payImageUrl: "",
     }
   },
   methods: {
@@ -147,7 +162,39 @@ export default {
   computed: {
     formValidation() {
       return this.v$.email.$dirty && this.v$.email.required.$invalid || this.v$.email.$dirty && this.v$.email.email.$invalid;
-    }
+    },
+  },
+  created() {
+    axios.get('http://localhost:1337/api/footer-images?populate=*').then((response) => {
+      //TODO: Delete this console.log()
+      // console.log(response.data.data);
+      return response.data.data;
+    }).then(data => {
+      data.forEach(item => {
+        const name = item.attributes.name;
+        const image = "http://localhost:1337" + item.attributes.image.data[0].attributes.url;
+        this.images[name] = image;
+      })
+      this.gardenImageUrl = this.images.garden;
+      this.plantImageUrl = this.images.plant;
+      this.wateringImageUrl = this.images.watering;
+      this.logoImageUrl = this.images.logo;
+      this.addressImageUrl = this.images.address;
+      this.mailImageUrl = this.images.mail;
+      this.phoneImageUrl = this.images.phone;
+      this.payImageUrl = this.images.pay;
+      this.instagramImageUrl = `url(${this.images.instagram}) center no-repeat`;
+      this.twitterImageUrl = `url(${this.images.twitter}) center no-repeat`;
+      this.linkedinImageUrl = `url(${this.images.linkedin}) center no-repeat`;
+      this.unionImageUrl = `url(${this.images.union}) center no-repeat`;
+      this.facebookImageUrl = `url(${this.images.facebook}) center no-repeat`;
+      //TODO: Delete this console.log()
+      console.log(this.images)
+    }).catch((error) => {
+      console.log(error);
+    })
+
+    console.log(this.instagramImageUrl);
   },
   validations() {
     return {
@@ -408,27 +455,27 @@ export default {
 
 .instagram {
   background-size: 16px 16x;
-  background: url("../../assets/img/footer/social-icons/Instagram.svg") center no-repeat;
+  /* background: url("../../assets/img/footer/social-icons/Instagram.svg") center no-repeat; */
 }
 
 .facebook {
   background-size: 8px 16px;
-  background: url("../../assets/img/footer/social-icons/Facebook.svg") center no-repeat;
+  /* background: url("../../assets/img/footer/social-icons/Facebook.svg") center no-repeat; */
 }
 
 .twitter {
   background-size: 16px 13px;
-  background: url("../../assets/img/footer/social-icons/Twitter.svg") center no-repeat;
+  /* background: url("../../assets/img/footer/social-icons/Twitter.svg") center no-repeat; */
 }
 
 .linkedin {
   background-size: 16px 16px;
-  background: url("../../assets/img/footer/social-icons/Linkedin.svg") center no-repeat;
+  /* background: url("../../assets/img/footer/social-icons/Linkedin.svg") center no-repeat; */
 }
 
 .union {
   background-size: 16px 16x;
-  background: url("../../assets/img/footer/social-icons/Union.svg") center no-repeat;
+  /* background: url("../../assets/img/footer/social-icons/Union.svg") center no-repeat; */
 }
 
 .social-link__title {
