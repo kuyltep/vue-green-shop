@@ -66,10 +66,12 @@ export default {
         .then((response) => {
           console.log(response);
           successTost("Success address add");
-          const address = {
-            ...response.data.data.attributes,
-            id: response.data.data.id,
-          };
+          const address = [
+            {
+              ...response.data.data.attributes,
+              id: response.data.data.id,
+            },
+          ];
           commit("setAddresses", address);
         })
         .catch((error) => {

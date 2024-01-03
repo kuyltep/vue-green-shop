@@ -65,9 +65,7 @@
 </template>
 
 <script>
-import axios from 'axios';
-import successTost from '@/toasts-plugins/success.tost';
-import errorTost from '@/toasts-plugins/error.tost';
+
 import { useVuelidate } from '@vuelidate/core';
 import { required, email, minLength, integer } from '@vuelidate/validators';
 export default {
