@@ -3,7 +3,7 @@ import loginAndRegister from "@/store/loginAndRegisterWindows";
 import user from "./user";
 import getData from "./getData";
 import addresses from "./addresses";
-
+import products from "./products";
 export default createStore({
   state: {},
   getters: {},
@@ -14,5 +14,6 @@ export default createStore({
     user,
     getData,
     addresses,
+    products,
   },
 });

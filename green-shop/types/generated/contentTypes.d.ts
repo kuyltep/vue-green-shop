@@ -809,7 +809,7 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
     name: Attribute.String;
     products: Attribute.Relation<
       'api::category.category',
-      'oneToMany',
+      'manyToMany',
       'api::product.product'
     >;
     createdAt: Attribute.DateTime;
@@ -900,9 +900,9 @@ export interface ApiProductProduct extends Schema.CollectionType {
     name: Attribute.String;
     shortDescription: Attribute.Text;
     price: Attribute.Decimal;
-    category: Attribute.Relation<
+    categories: Attribute.Relation<
       'api::product.product',
-      'manyToOne',
+      'manyToMany',
       'api::category.category'
     >;
     image: Attribute.Media;
@@ -913,6 +913,9 @@ export interface ApiProductProduct extends Schema.CollectionType {
     >;
     prices: Attribute.JSON;
     fullDescription: Attribute.Blocks;
+    tags: Attribute.String;
+    new: Attribute.Boolean;
+    sale: Attribute.Integer;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

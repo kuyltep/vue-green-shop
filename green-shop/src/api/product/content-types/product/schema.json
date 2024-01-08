@@ -21,9 +21,9 @@
     "price": {
       "type": "decimal"
     },
-    "category": {
+    "categories": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "manyToMany",
       "target": "api::category.category",
       "inversedBy": "products"
     },
@@ -49,6 +49,15 @@
     },
     "fullDescription": {
       "type": "blocks"
+    },
+    "tags": {
+      "type": "string"
+    },
+    "new": {
+      "type": "boolean"
+    },
+    "sale": {
+      "type": "integer"
     }
   }
 }
