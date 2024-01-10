@@ -10,14 +10,15 @@
       <div class="select-div">
         <label for="sort" class="select-label">Sort by: </label>
         <select @change="selectChangeSort($event)" class="select-filter" name="sort" id="">
-          <option value="default">Default sorting</option>
+          <option ref="default" value="default">Default sorting</option>
           <option value="name">Name</option>
-          <option value="price">Price</option>
+          <option value="priceUp">Price &uarr;</option>
+          <option value="priceDown">Price &darr;</option>
         </select>
       </div>
     </div>
     <transition-group tag="div" name="cards" class="cards">
-      <Card v-for="item in items" :key="item.id" :item="item"></Card>
+      <Card v-for="item in items" :key="item.id" :item="item" :icons="cardIcons"></Card>
     </transition-group>
   </div>
 </template>
@@ -33,10 +34,12 @@ export default {
     return {
       items: this.itemsProps,
       activeElement: this.$refs['active'],
+      defaultItems: this.items,
+      cardIcons: [],
     }
   },
   methods: {
-
+    //TODO!! Made correctly filter default on new and sale pages
     filterByHeader(title, event) {
       this.$refs.active.classList.remove('active')
       if (this.activeElement) {
@@ -44,22 +47,34 @@ export default {
       }
       this.activeElement = event.target;
       this.activeElement.classList.add('active');
-      this.items = title === 'all-plants' ? this.$store.getters.getProducts : title === 'new-arrivals' ? this.$store.getters.getNewProducts : title === 'sale' ? this.$store.getters.getSaleProducts : null;
+      this.defaultItems = this.items = title === 'all-plants' ? this.$store.getters.getProducts : title === 'new-arrivals' ? this.getNewProducts() : title === 'sale' ? this.getSaleProducts() : [];
     },
     selectChangeSort(event) {
-      this.items = event.target.value === 'default' ? this.$store.getters.getProducts : event.target.value === 'name' ? this.getProductsSortedByName() : event.target.value === 'price' ? this.getProductsSortedByPrice() : [];
+      this.items = event.target.value === 'default' ? this.defaultItems : event.target.value === 'name' ? this.getProductsSortedByName() : event.target.value === 'priceUp' ? this.getProductsSortedByPriceUp() : event.target.value === 'priceDown' ? this.getProductsSortedByPriceDown() : [];
     },
     getProductsSortedByName() {
       return [...this.items].sort((a, b) => a.name.localeCompare(b.name));
     },
-    getProductsSortedByPrice(state) {
+    getProductsSortedByPriceUp(state) {
+      return [...this.items].sort((a, b) => a.price - b.price);
+    },
+    getProductsSortedByPriceDown(state) {
       return [...this.items].sort((a, b) => b.price - a.price);
     },
+    getNewProducts() {
+      return [...this.$store.getters.getProducts].filter((product) => product.new);
+    },
+    getSaleProducts() {
+      return [...this.$store.getters.getProducts].filter((product) => product.sale);
+    },
   },
-  mounted() {
+  async mounted() {
     setTimeout(() => {
       this.items = this.itemsProps;
+      this.defaultItems = this.items;
     }, 400);
+    await this.$store.dispatch('getCardIcons');
+    this.cardIcons = this.$store.getters.getCardIcons;
   }
 }
 </script>

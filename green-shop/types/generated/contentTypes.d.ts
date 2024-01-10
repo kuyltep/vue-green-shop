@@ -795,6 +795,37 @@ export interface ApiBlogPostBlogPost extends Schema.CollectionType {
   };
 }
 
+export interface ApiCardIconCardIcon extends Schema.CollectionType {
+  collectionName: 'card_icons';
+  info: {
+    singularName: 'card-icon';
+    pluralName: 'card-icons';
+    displayName: 'card-icon';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String;
+    image: Attribute.Media;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::card-icon.card-icon',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::card-icon.card-icon',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiCategoryCategory extends Schema.CollectionType {
   collectionName: 'categories';
   info: {
@@ -1035,6 +1066,7 @@ declare module '@strapi/types' {
       'api::adress.adress': ApiAdressAdress;
       'api::banner.banner': ApiBannerBanner;
       'api::blog-post.blog-post': ApiBlogPostBlogPost;
+      'api::card-icon.card-icon': ApiCardIconCardIcon;
       'api::category.category': ApiCategoryCategory;
       'api::footer-image.footer-image': ApiFooterImageFooterImage;
       'api::icon.icon': ApiIconIcon;

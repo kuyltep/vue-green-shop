@@ -3,6 +3,7 @@ export default {
   state: {
     products: [],
     filteredProducts: [],
+    cardIcons: [],
   },
   getters: {
     getProducts(state) {
@@ -11,12 +12,8 @@ export default {
     getFilteredProducts(state) {
       return state.filteredProducts;
     },
-
-    getNewProducts(state) {
-      return [...state.products].filter((product) => product.new);
-    },
-    getSaleProducts(state) {
-      return [...state.products].filter((product) => product.sale);
+    getCardIcons(state) {
+      return state.cardIcons;
     },
   },
   mutations: {
@@ -28,6 +25,9 @@ export default {
     },
     clearProducts(state) {
       state.products = [];
+    },
+    setCardIcons(state, icons) {
+      state.cardIcons = icons;
     },
   },
   actions: {
@@ -50,6 +50,26 @@ export default {
       });
       commit("setProducts", products);
       commit("setFilteredProducts", products);
+    },
+    async getCardIcons({ commit }) {
+      await axios
+        .get("http://localhost:1337/api/card-icons?populate=*")
+        .then((response) => {
+          const icons = response.data.data.map((item) => {
+            return {
+              id: item.id,
+              title: item.attributes.title,
+              image:
+                "http://localhost:1337" +
+                item.attributes.image.data[0].attributes.url,
+            };
+          });
+          commit("setCardIcons", icons);
+          console.log(icons);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
 };
