@@ -4,6 +4,7 @@ export default {
     products: [],
     filteredProducts: [],
     cardIcons: [],
+    pagesCounter: 0,
   },
   getters: {
     getProducts(state) {
@@ -14,6 +15,9 @@ export default {
     },
     getCardIcons(state) {
       return state.cardIcons;
+    },
+    getPagesCounter(state) {
+      return state.pagesCounter;
     },
   },
   mutations: {
@@ -29,12 +33,17 @@ export default {
     setCardIcons(state, icons) {
       state.cardIcons = icons;
     },
+    setPagesCounter(state, counter) {
+      state.pagesCounter = counter;
+    },
   },
   actions: {
-    async fetchProducts({ commit }) {
+    async fetchProducts({ commit }, data) {
       commit("clearProducts");
       const response = await axios.get(
-        "http://localhost:1337/api/products?populate=*"
+        `http://localhost:1337/api/products?pagination[pageSize]=${
+          data?.pageSize
+        }${data?.page ? "&pagination[page]=" + data?.page : ""}&populate=*`
       );
       const products = response.data.data.map((product) => {
         return {
@@ -50,6 +59,7 @@ export default {
       });
       commit("setProducts", products);
       commit("setFilteredProducts", products);
+      commit("setPagesCounter", response.data.meta.pagination.pageCount);
     },
     async getCardIcons({ commit }) {
       await axios

@@ -48,14 +48,14 @@ export default {
           commit("setError", error);
         });
     },
-    loginUser({ commit }, { userEmail, userPassword }) {
+    loginUser({ commit, getters }, { userEmail, userPassword }) {
       axios
         .post("http://localhost:1337/api/auth/local", {
           identifier: userEmail,
           password: userPassword,
         })
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           const { jwt, user } = response.data;
           window.localStorage.setItem("jwt", jwt);
           window.localStorage.setItem("userData", JSON.stringify(user));

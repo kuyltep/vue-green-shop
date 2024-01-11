@@ -4,7 +4,7 @@
       <h4 class="sidebar-title">Categories</h4>
       <div class="btns-section">
         <div class="btn-item " v-for="category in categories" :key="category.name">
-          <button @click="filterCardsBy(category.name, $event)" class="sidebar-btn">{{ category.name
+          <button @click="filterCardsByCategories(category.name, $event)" class="sidebar-btn">{{ category.name
           }}</button>
           <p class="counter">({{ category.counter }})</p>
         </div>
@@ -14,12 +14,12 @@
       <h4 class="sidebar-title">Price Range</h4>
       <input v-model="price" step="2" min="0" :max="max" class="price-range " type="range" name="" id="">
       <span class="sidebar-descr">Price:</span><span class="price-numbers">{{ "$" + price }} - {{ "$" + max }}</span>
-      <button class="filter-btn">Filter</button>
+      <button @click.prevent="filtreCardsByPrice(price)" class="filter-btn">Filter</button>
     </div>
     <div class="size">
       <h4 class="sidebar-title">Size</h4>
       <div class="btn-item base" :ref="size.size" v-for="size in sizes" :key="size.size">
-        <button @click="filterCardsBy(size.size, $event)" class="sidebar-btn">{{ size.size }}</button>
+        <button @click="filterCardsBySizes(size.size, $event)" class="sidebar-btn">{{ size.size }}</button>
         <p class="counter">({{ size.counter }})</p>
       </div>
     </div>
@@ -34,6 +34,7 @@
 <script>
 import axios from 'axios';
 export default {
+  props: ['itemsProps', 'clearActiveElement'],
   data() {
     return {
       activeElement: null,
@@ -83,34 +84,31 @@ export default {
     }
   },
   methods: {
-    filterCardsBy(name, event) {
+    filterCardsByCategories(name, event) {
       if (this.activeElement) {
         this.activeElement.classList.remove('active')
       }
       this.activeElement = event.target;
       this.activeElement.classList.add('active');
       const categoryName = name.replace(' ', '-').toLowerCase();
-      const filteredProducts = [...this.$store.getters.getProducts].filter(item => item.categories.includes(categoryName));
-      this.$store.commit('setFilteredProducts', filteredProducts);
+      const filteredProducts = [...this.itemsProps].filter(item => item.categories.includes(categoryName));
+      this.$emit('filterProductsBy', filteredProducts);
     },
-    filterByCategories(title, event) {
-      this.$refs.active.classList.remove('active')
+    filterCardsBySizes(title, event) {
       if (this.activeElement) {
         this.activeElement.classList.remove('active')
       }
       this.activeElement = event.target;
       this.activeElement.classList.add('active');
+      const filteredProducts = [...this.itemsProps].filter(item => item.sizes.includes(title.toLowerCase()));
+      this.$emit('filterProductsBy', filteredProducts);
     },
-    filterBySizes(title, event) {
-      this.$refs.active.classList.remove('active')
-      if (this.activeElement) {
-        this.activeElement.classList.remove('active')
-      }
-      this.activeElement = event.target;
-      this.activeElement.classList.add('active');
-    },
+    filtreCardsByPrice() {
+      const filteredProducts = [...this.itemsProps].filter(item => item.price >= this.price);
+      this.$emit('filterProductsBy', filteredProducts);
+      this.price = 0;
+    }
   },
-
   mounted() {
     axios.get('http://localhost:1337/api/banners/3?populate=*').then(response => {
       this.bannerBackgroundImage = `url(http://localhost:1337${response.data.data.attributes.image.data[0].attributes.url}) center no-repeat`;

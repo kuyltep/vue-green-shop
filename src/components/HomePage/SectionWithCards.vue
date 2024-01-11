@@ -20,14 +20,17 @@
     <transition-group tag="div" name="cards" class="cards">
       <Card v-for="item in items" :key="item.id" :item="item" :icons="cardIcons"></Card>
     </transition-group>
+    <Pagination @changePage="changePaginationPage"></Pagination>
   </div>
 </template>
 
 <script>
+import Pagination from "@/components/app/Pagination.vue";
 import Card from './Card.vue'
 export default {
   components: {
     Card,
+    Pagination,
   },
   props: ['itemsProps'],
   data() {
@@ -36,18 +39,23 @@ export default {
       activeElement: this.$refs['active'],
       defaultItems: this.items,
       cardIcons: [],
+      pageSize: 3,
+      pageNumber: 1,
+      pagesCounter: null,
     }
   },
   methods: {
     //TODO!! Made correctly filter default on new and sale pages
     filterByHeader(title, event) {
       this.$refs.active.classList.remove('active')
+      this.$refs.default.selected = true;
       if (this.activeElement) {
         this.activeElement.classList.remove('active')
       }
       this.activeElement = event.target;
       this.activeElement.classList.add('active');
       this.defaultItems = this.items = title === 'all-plants' ? this.$store.getters.getProducts : title === 'new-arrivals' ? this.getNewProducts() : title === 'sale' ? this.getSaleProducts() : [];
+      this.$emit('filterByHeader');
     },
     selectChangeSort(event) {
       this.items = event.target.value === 'default' ? this.defaultItems : event.target.value === 'name' ? this.getProductsSortedByName() : event.target.value === 'priceUp' ? this.getProductsSortedByPriceUp() : event.target.value === 'priceDown' ? this.getProductsSortedByPriceDown() : [];
@@ -67,12 +75,20 @@ export default {
     getSaleProducts() {
       return [...this.$store.getters.getProducts].filter((product) => product.sale);
     },
+    changePaginationPage(value) {
+      this.$emit('changePaginationPage', value);
+    }
+  },
+  watch: {
+    itemsProps() {
+      this.items = this.itemsProps;
+    }
   },
   async mounted() {
     setTimeout(() => {
       this.items = this.itemsProps;
       this.defaultItems = this.items;
-    }, 400);
+    }, 1000);
     await this.$store.dispatch('getCardIcons');
     this.cardIcons = this.$store.getters.getCardIcons;
   }
@@ -127,6 +143,7 @@ export default {
   grid-template-columns: repeat(3, 1fr);
   grid-row-gap: 70px;
   grid-column-gap: 35px;
+  margin-bottom: 90px;
 }
 
 .active {

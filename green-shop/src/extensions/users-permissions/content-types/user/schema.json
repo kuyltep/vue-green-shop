@@ -90,6 +90,16 @@
       "relation": "manyToMany",
       "target": "api::adress.adress",
       "mappedBy": "users"
+    },
+    "wishes": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product"
+    },
+    "products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product"
     }
   }
 }

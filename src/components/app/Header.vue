@@ -14,9 +14,12 @@
         <button :style="{ background: this.searchBackground }" alt="" class="header__search"></button>
       </div>
       <router-link :style="{ background: this.chunkBackground }" alt="" class="header__chunk" to="/chunk"></router-link>
-      <button v-if="!this.$store.getters.getJwt" @click.prevent="showLoginMenu" class="header__login-link">Login</button>
-      <!-- TODO: Make a router-link for profile page -->
-      <router-link v-else to="/profile/details" class="header__profile-link">Profile</router-link>
+      <transition name="login-menu">
+        <button v-if="!this.$store.getters.getJwt" @click.prevent="showLoginMenu"
+          class="header__login-link">Login</button>
+        <!-- TODO: Make a router-link for profile page -->
+        <router-link v-else to="/profile/details" class="header__profile-link">Profile</router-link>
+      </transition>
     </div>
   </header>
 </template>
@@ -62,6 +65,16 @@ export default {
 </script>
 
 <style scoped>
+.login-menu-enter-active,
+.login-menu-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.login-menu-enter-from,
+.login-menu-leave-to {
+  opacity: 0;
+}
+
 .header {
   padding: 0 10px;
   display: grid;

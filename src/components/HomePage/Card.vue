@@ -1,7 +1,11 @@
 <template>
   <div @mouseenter="showIcons = true" @mouseleave="showIcons = false" class="card">
-    <div v-if="item.sale" class="sale-flag">{{ item.sale }}% OFF</div>
+    <transition name="image-scale">
+      <card-image-scale :image="'http://localhost:1337' + item.image.data[0].attributes.url" v-if="isOpenImageScale"
+        @closeImageScale="toogleImageScale"></card-image-scale>
+    </transition>
     <div class="card-image-wrapper">
+      <div v-if="item.sale" class="sale-flag">{{ item.sale }}% OFF</div>
       <img :src="'http://localhost:1337' + item.image.data[0].attributes.url" alt="" class="card-image">
       <transition name="icons">
         <div v-show="showIcons" class="card-icons">
@@ -14,7 +18,7 @@
               :style="{ background: `url(${icons[1].image}) center no-repeat`, backgroundSize: '20px 20px' }"></button>
           </div>
           <div class="card-icon-wrapper">
-            <button @click.prevent="" class="card-icon search"
+            <button @click.prevent="toogleImageScale" class="card-icon search"
               :style="{ background: `url(${icons[2].image}) center no-repeat`, backgroundSize: '20px 20px' }"></button>
           </div>
         </div>
@@ -31,7 +35,11 @@
 </template>
 
 <script>
+import CardImageScale from './CardImageScale.vue';
 export default {
+  components: {
+    CardImageScale,
+  },
   props: {
     item: {
       type: Object,
@@ -43,11 +51,15 @@ export default {
   data() {
     return {
       showIcons: false,
+      isOpenImageScale: false,
     }
   },
   methods: {
     calcSale(price, sale) {
       return Math.floor(price / 100 * (100 - sale));
+    },
+    toogleImageScale() {
+      this.isOpenImageScale = !this.isOpenImageScale;
     }
   },
 
@@ -55,8 +67,14 @@ export default {
 </script>
 
 <style scoped>
-.card {
-  position: relative;
+.image-scale-enter-active,
+.image-scale-leave-active {
+  transition: opacity 0.3s ease-in-out;
+}
+
+.image-scale-enter-from,
+.image-scale-leave-to {
+  opacity: 0;
 }
 
 .icons-enter-active,

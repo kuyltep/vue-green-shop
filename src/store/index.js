@@ -4,6 +4,7 @@ import user from "./user";
 import getData from "./getData";
 import addresses from "./addresses";
 import products from "./products";
+import wishlist from "./wishlist";
 export default createStore({
   state: {},
   getters: {},
@@ -15,5 +16,6 @@ export default createStore({
     getData,
     addresses,
     products,
+    wishlist,
   },
 });

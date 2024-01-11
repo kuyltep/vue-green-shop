@@ -82,7 +82,7 @@ export default {
     getAddresses({ commit, getters }) {
       axios
         .get(
-          `http://localhost:1337/api/users/${getters.getUser.id}?populate[0]=addresses`,
+          `http://localhost:1337/api/users/${getters.getUser.id}?populate=*`,
           {
             headers: {
               Authorization: "Bearer " + getters.getJwt,
