@@ -8,7 +8,7 @@
       <div v-if="item.sale" class="sale-flag">{{ item.sale }}% OFF</div>
       <img :src="'http://localhost:1337' + item.image.data[0].attributes.url" alt="" class="card-image">
       <transition name="icons">
-        <div v-show="showIcons" class="card-icons">
+        <div v-if="icons" v-show="showIcons" class="card-icons">
           <div class="card-icon-wrapper">
             <button @click.prevent="" class="card-icon chunk"
               :style="{ background: `url(${icons[0].image}) center no-repeat`, backgroundSize: '20px 20px' }"></button>
@@ -131,6 +131,12 @@ export default {
   top: 15px;
   left: 0;
   z-index: 5;
+}
+
+.card-image {
+  width: 250px;
+  height: 250px;
+  object-fit: contain;
 }
 
 .price-sale-block {

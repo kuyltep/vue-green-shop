@@ -1,15 +1,16 @@
-<template>
-  <Carousel></Carousel>
-  <div class="filter-and-cards">
+<>
+<Carousel></Carousel>
+<div class="filter-and-cards">
     <ShopSidebar :itemsProps="this.$store.getters.getProducts" @filterProductsBy="filterProducts"></ShopSidebar>
     <SectionWithCards @changePaginationPage="changePaginationPage" :filterByHeader="clearActiveElemet"
       :itemsProps="items"></SectionWithCards>
   </div>
-  <BannerWithTwoCards></BannerWithTwoCards>
-  <BlogPostsSection></BlogPostsSection>
-</template>
+<BannerWithTwoCards></BannerWithTwoCards>
+<BlogPostsSection></BlogPostsSection>
+</>
 
 <script>
+import CarouselWithItems from '@/components/CarouselWithItems.vue';
 import BlogPostsSection from '@/components/BlogPostsSection.vue';
 import BannerWithTwoCards from '@/components/BannerWithTwoCards.vue';
 import Carousel from '@/components/Carousel.vue';
@@ -23,6 +24,7 @@ export default {
     BlogPostsSection,
     ShopSidebar,
     SectionWithCards,
+    CarouselWithItems,
     Paginate,
   },
   data() {

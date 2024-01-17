@@ -1,6 +1,7 @@
 import axios from "axios";
 export default {
   state: {
+    allProducts: [],
     products: [],
     filteredProducts: [],
     cardIcons: [],
@@ -9,6 +10,9 @@ export default {
   getters: {
     getProducts(state) {
       return state.products;
+    },
+    getAllProducts(state) {
+      return state.allProducts;
     },
     getFilteredProducts(state) {
       return state.filteredProducts;
@@ -23,6 +27,9 @@ export default {
   mutations: {
     setProducts(state, products) {
       state.products = products;
+    },
+    setAllProducts(state, allProducts) {
+      state.allProducts = allProducts;
     },
     setFilteredProducts(state, products) {
       state.filteredProducts = products;
@@ -60,6 +67,24 @@ export default {
       commit("setProducts", products);
       commit("setFilteredProducts", products);
       commit("setPagesCounter", response.data.meta.pagination.pageCount);
+    },
+    async fetchAllProducts({ commit }) {
+      const response = await axios.get(
+        `http://localhost:1337/api/products?populate=*`
+      );
+      const products = response.data.data.map((product) => {
+        return {
+          id: product.id,
+          ...product.attributes,
+          categories: product.attributes.categories.data.map(
+            (item) => item.attributes.name
+          ),
+          sizes: product.attributes.sizes.data.map(
+            (item) => item.attributes.size
+          ),
+        };
+      });
+      commit("setAllProducts", products);
     },
     async getCardIcons({ commit }) {
       await axios
