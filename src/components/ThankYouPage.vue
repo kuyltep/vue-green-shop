@@ -35,8 +35,9 @@
                 <p class="body-header__title title_subtotal">Subtotal</p>
               </div>
             </div>
-            <div class="body-products">
+            <div class="body-products" v-for="item in this.$store.getters.getProducts" :key="item.id">
               <!-- TODO:!! Made body products section -->
+              <SmallProductCard :productData="item"></SmallProductCard>
             </div>
             <div class="body-total">
               <div class="shiping-section">
@@ -61,11 +62,15 @@
 </template>
 
 <script>
+import SmallProductCard from './SmallProductCard.vue';
 export default {
   data() {
     return {
 
     }
+  },
+  components: {
+    SmallProductCard,
   },
   methods: {
     closeThankYouPage() {
@@ -152,7 +157,7 @@ export default {
 
 .body-header__titles {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-columns: 3fr 1fr 1fr;
 }
 
 .body-header__title {

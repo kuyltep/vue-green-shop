@@ -7,7 +7,6 @@
   </div>
   <BannerWithTwoCards></BannerWithTwoCards>
   <BlogPostsSection></BlogPostsSection>
-  <thank-you-page></thank-you-page>
 </template>
 
 <script>
@@ -18,7 +17,6 @@ import Carousel from '@/components/Carousel.vue';
 import ShopSidebar from '@/components/ShopSidebar.vue';
 import SectionWithCards from '@/components/HomePage/SectionWithCards.vue';
 import Paginate from "vuejs-paginate-next";
-import ThankYouPage from '@/components/ThankYouPage.vue';
 export default {
   components: {
     Carousel,
@@ -27,7 +25,6 @@ export default {
     ShopSidebar,
     SectionWithCards,
     CarouselWithItems,
-    ThankYouPage,
     Paginate,
   },
   data() {
