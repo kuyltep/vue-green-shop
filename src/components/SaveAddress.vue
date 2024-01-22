@@ -87,9 +87,27 @@ export default {
     }
   },
   methods: {
+    // async addAdressSubmit() {
+    //   const isFormCorrect = await this.v$.$validate();
+    //   if (!isFormCorrect) {
+    //     return;
+    //   }
+    //   //TODO: Made request to add new address to Strapi
+    //   this.$store.dispatch('saveAddress', {
+    //     firstName: this.firstname,
+    //     lastName: this.lastname,
+    //     country: this.country,
+    //     city: this.city,
+    //     address: this.address,
+    //     state: this.state,
+    //     email: this.email,
+    //     phone: this.phone,
+    //     appartment: this.appartment,
+    //     zip: this.zip,
+    //   })
+    // }
     async addAdressSubmit() {
-      const isFormCorrect = await this.v$.$validate();
-      if (!isFormCorrect) {
+      if (!this.isFormCorrect()) {
         return;
       }
       //TODO: Made request to add new address to Strapi
@@ -105,50 +123,89 @@ export default {
         appartment: this.appartment,
         zip: this.zip,
       })
+    },
+    isFormCorrect() {
+      return !(this.firstnameValidate && this.lastnameValidate && this.countryValidate && this.cityValidate && this.addressValidate && this.stateValidate && this.zipValidate && this.emailValidate && this.phoneValidate);
     }
   },
   computed: {
     firstnameValidate() {
-      return this.v$.firstname.$dirty && this.v$.firstname.required.$invalid || this.v$.firstname.$dirty && this.v$.firstname.minLength.$invalid;
+      const firstnameRegExp = /^[а-яА-ЯёЁa-zA-Z]{3,}$/;
+      return !firstnameRegExp.test(this.firstname) && this.firstname.length;
     },
     lastnameValidate() {
-      return this.v$.lastname.$dirty && this.v$.lastname.required.$invalid || this.v$.lastname.$dirty && this.v$.lastname.minLength.$invalid;
+      const lastnameRegExp = /^[а-яА-ЯёЁa-zA-Z]{3,}$/;
+      return !lastnameRegExp.test(this.lastname) && this.lastname.length;
     },
     countryValidate() {
-      return this.v$.country.$dirty && this.v$.country.required.$invalid || this.v$.country.$dirty && this.v$.country.minLength.$invalid;
+      const countryRegExp = /^[а-яА-ЯёЁa-zA-Z]{3,}$/;
+      return !countryRegExp.test(this.country) && this.country.length;
     },
     cityValidate() {
-      return this.v$.city.$dirty && this.v$.city.required.$invalid || this.v$.city.$dirty && this.v$.city.minLength.$invalid;
+      const cityRegExp = /^[а-яА-ЯёЁa-zA-Z]{3,}$/;
+      return !cityRegExp.test(this.city) && this.city.length;
     },
     addressValidate() {
-      return this.v$.address.$dirty && this.v$.address.required.$invalid || this.v$.address.$dirty && this.v$.address.minLength.$invalid;
+      const addressRegExp = /^[а-яА-ЯёЁa-zA-Z]{3,}$/;
+      return !addressRegExp.test(this.address) && this.address.length;
     },
     stateValidate() {
-      return this.v$.state.$dirty && this.v$.state.required.$invalid || this.v$.state.$dirty && this.v$.state.minLength.$invalid;
+      const stateRegExp = /^[а-яА-ЯёЁa-zA-Z]{3,}$/;
+      return !stateRegExp.test(this.state) && this.state.length;
     },
     zipValidate() {
-      return this.v$.zip.$dirty && this.v$.zip.required.$invalid || this.v$.zip.$dirty && this.zip.length !== 6 || this.v$.zip.$dirty && this.v$.zip.integer.$invalid;
+      const zipRegExp = /^\d{6}$/;
+      return !zipRegExp.test(this.zip) && this.zip.length;
     },
     emailValidate() {
-      return this.v$.email.$dirty && this.v$.email.required.$invalid || this.v$.email.$dirty && this.v$.email.email.$invalid;
+      const emailRegExp = /\w+@\w+\.[a-z]+$/;
+      return !emailRegExp.test(this.email) && this.email.length;
     },
     phoneValidate() {
-      return this.v$.phone.$dirty && this.v$.phone.required.$invalid || this.v$.phone.$dirty && this.v$.phone.integer.$invalid;
+      const phoneRegExp = /^\+\d{5,}$/;
+      return !phoneRegExp.test(this.phone) && this.phone.length;
     }
+    // firstnameValidate() {
+    //   return this.v$.firstname.$dirty && this.v$.firstname.required.$invalid || this.v$.firstname.$dirty && this.v$.firstname.minLength.$invalid;
+    // },
+    // lastnameValidate() {
+    //   return this.v$.lastname.$dirty && this.v$.lastname.required.$invalid || this.v$.lastname.$dirty && this.v$.lastname.minLength.$invalid;
+    // },
+    // countryValidate() {
+    //   return this.v$.country.$dirty && this.v$.country.required.$invalid || this.v$.country.$dirty && this.v$.country.minLength.$invalid;
+    // },
+    // cityValidate() {
+    //   return this.v$.city.$dirty && this.v$.city.required.$invalid || this.v$.city.$dirty && this.v$.city.minLength.$invalid;
+    // },
+    // addressValidate() {
+    //   return this.v$.address.$dirty && this.v$.address.required.$invalid || this.v$.address.$dirty && this.v$.address.minLength.$invalid;
+    // },
+    // stateValidate() {
+    //   return this.v$.state.$dirty && this.v$.state.required.$invalid || this.v$.state.$dirty && this.v$.state.minLength.$invalid;
+    // },
+    // zipValidate() {
+    //   return this.v$.zip.$dirty && this.v$.zip.required.$invalid || this.v$.zip.$dirty && this.zip.length !== 6 || this.v$.zip.$dirty && this.v$.zip.integer.$invalid;
+    // },
+    // emailValidate() {
+    //   return this.v$.email.$dirty && this.v$.email.required.$invalid || this.v$.email.$dirty && this.v$.email.email.$invalid;
+    // },
+    // phoneValidate() {
+    //   return this.v$.phone.$dirty && this.v$.phone.required.$invalid || this.v$.phone.$dirty && this.v$.phone.integer.$invalid;
+    // }
   },
-  validations() {
-    return {
-      firstname: { required, minLength: minLength(3) },
-      lastname: { required, minLength: minLength(3) },
-      country: { required, minLength: minLength(3) },
-      city: { required, minLength: minLength(3) },
-      address: { required, minLength: minLength(5) },
-      state: { required, minLength: minLength(4) },
-      zip: { required, integer },
-      email: { required, email },
-      phone: { required, integer },
-    }
-  }
+  // validations() {
+  //   return {
+  //     firstname: { required, minLength: minLength(3) },
+  //     lastname: { required, minLength: minLength(3) },
+  //     country: { required, minLength: minLength(3) },
+  //     city: { required, minLength: minLength(3) },
+  //     address: { required, minLength: minLength(5) },
+  //     state: { required, minLength: minLength(4) },
+  //     zip: { required, integer },
+  //     email: { required, email },
+  //     phone: { required, integer },
+  //   }
+  // }
 }
 </script>
 

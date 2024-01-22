@@ -58,40 +58,63 @@ export default {
     }
   },
   methods: {
+    // async submitHandler() {
+    //   const isFormCorrect = await this.v$.$validate();
+    //   if (!isFormCorrect) {
+    //     this.v$.$touch();
+    //     errorToast("Error register");
+    //     return;
+    //   }
+    //   await this.$store.dispatch('registerUser', { userUsername: this.userUsername, userEmail: this.userEmail, userPassword: this.userPassword });
+    // },
     async submitHandler() {
-      const isFormCorrect = await this.v$.$validate();
-      if (!isFormCorrect) {
-        this.v$.$touch();
+      if (!this.isFormCorrect()) {
         errorToast("Error register");
         return;
       }
       await this.$store.dispatch('registerUser', { userUsername: this.userUsername, userEmail: this.userEmail, userPassword: this.userPassword });
     },
-
+    isFormCorrect() {
+      return !(this.isUsernameInvalid && this.isEmailInvalid && this.isPasswordInvalid && this.isConfirmPasswordInvalid);
+    }
   },
   computed: {
     isUsernameInvalid() {
-      return this.v$.userUsername.$dirty && this.v$.userUsername.required.$invalid || this.v$.userUsername.$dirty && this.v$.userUsername.minLength.$invalid;
+      const usernameRegExp = /\w{3,}/;
+      return !usernameRegExp.test(this.userUsername) && this.userUsername.length;
     },
     isEmailInvalid() {
-      return this.v$.userEmail.$dirty && this.v$.userEmail.required.$invalid || this.v$.userEmail.$dirty && this.v$.userEmail.email.$invalid;
+      const emailRegExp = /\w+@\w+\.[a-z]/;
+      return !emailRegExp.test(this.userEmail) && this.userEmail.length;
     },
     isPasswordInvalid() {
-      return this.v$.userPassword.$dirty && this.v$.userPassword.required.$invalid || this.v$.userPassword.$dirty && this.v$.userPassword.minLength.$invalid;
+      const passwordRegExp = /\w{6,}/;
+      return !passwordRegExp.test(this.userPassword) && this.userPassword.length;
     },
     isConfirmPasswordInvalid() {
-      return this.v$.userConfirmPassword.$dirty && this.v$.userConfirmPassword.required.$invalid || this.v$.userConfirmPassword.$dirty && this.v$.userConfirmPassword.minLength.$invalid || this.v$.userConfirmPassword.$dirty && this.userPassword !== this.userConfirmPassword;
-
+      return this.userConfirmPassword !== this.userPassword && this.userConfirmPassword.length;
     }
+    // isUsernameInvalid() {
+    //   return this.v$.userUsername.$dirty && this.v$.userUsername.required.$invalid || this.v$.userUsername.$dirty && this.v$.userUsername.minLength.$invalid;
+    // },
+    // isEmailInvalid() {
+    //   return this.v$.userEmail.$dirty && this.v$.userEmail.required.$invalid || this.v$.userEmail.$dirty && this.v$.userEmail.email.$invalid;
+    // },
+    // isPasswordInvalid() {
+    //   return this.v$.userPassword.$dirty && this.v$.userPassword.required.$invalid || this.v$.userPassword.$dirty && this.v$.userPassword.minLength.$invalid;
+    // },
+    // isConfirmPasswordInvalid() {
+    //   return this.v$.userConfirmPassword.$dirty && this.v$.userConfirmPassword.required.$invalid || this.v$.userConfirmPassword.$dirty && this.v$.userConfirmPassword.minLength.$invalid || this.v$.userConfirmPassword.$dirty && this.userPassword !== this.userConfirmPassword;
+    // }
   },
-  validations() {
-    return {
-      userUsername: { required, minLength: minLength(3) },
-      userEmail: { required, email },
-      userPassword: { required, minLength: minLength(6) },
-      userConfirmPassword: { required, minLength: minLength(6) },
-    }
-  }
+  // validations() {
+  //   return {
+  //     userUsername: { required, minLength: minLength(3) },
+  //     userEmail: { required, email },
+  //     userPassword: { required, minLength: minLength(6) },
+  //     userConfirmPassword: { required, minLength: minLength(6) },
+  //   }
+  // }
 }
 </script>
 

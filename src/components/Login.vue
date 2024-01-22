@@ -42,31 +42,48 @@ export default {
     }
   },
   methods: {
+    // async submitForm() {
+    //   const isFormCorrect = await this.v$.$validate();
+    //   if (!isFormCorrect) {
+    //     this.v$.$touch();
+    //     errorToast("Error login")
+    //     return;
+    //   }
+    //   await this.$store.dispatch('loginUser', { userEmail: this.userEmail, userPassword: this.userPassword });
+    // },
     async submitForm() {
-      const isFormCorrect = await this.v$.$validate();
-      if (!isFormCorrect) {
-        this.v$.$touch();
+      if (!this.isFormCorrect()) {
         errorToast("Error login")
         return;
       }
       await this.$store.dispatch('loginUser', { userEmail: this.userEmail, userPassword: this.userPassword });
     },
-
+    isFormCorrect() {
+      return !(this.isEmailInvalid && this.isPasswordInvalid);
+    }
   },
   computed: {
     isEmailInvalid() {
-      return this.v$.userEmail.$dirty && this.v$.userEmail.required.$invalid || this.v$.userEmail.$dirty && this.v$.userEmail.email.$invalid;
+      const emailRegExp = /\w+@\w+\.[a-z]+/;
+      return !emailRegExp.test(this.userEmail) && this.userEmail.length;
     },
     isPasswordInvalid() {
-      return this.v$.userPassword.$dirty && this.v$.userPassword.required.$invalid || this.v$.userPassword.$dirty && this.v$.userPassword.minLength.$invalid;
+      const passwordRegExp = /\w{6,}/;
+      return !passwordRegExp.test(this.userPassword) && this.userPassword.length;
     }
+    // isEmailInvalid() {
+    //   return this.v$.userEmail.$dirty && this.v$.userEmail.required.$invalid || this.v$.userEmail.$dirty && this.v$.userEmail.email.$invalid;
+    // },
+    // isPasswordInvalid() {
+    //   return this.v$.userPassword.$dirty && this.v$.userPassword.required.$invalid || this.v$.userPassword.$dirty && this.v$.userPassword.minLength.$invalid;
+    // }
   },
-  validations() {
-    return {
-      userEmail: { required, email },
-      userPassword: { required, minLength: minLength(6) },
-    }
-  }
+  // validations() {
+  //   return {
+  //     userEmail: { required, email },
+  //     userPassword: { required, minLength: minLength(6) },
+  //   }
+  // }
 }
 </script>
 

@@ -74,9 +74,37 @@ export default {
     }
   },
   methods: {
+    // async personalInformationSubmit() {
+    //   const isFormCorrect = await this.v$.$validate();
+    //   if (!isFormCorrect) {
+    //     return;
+    //   }
+    //   axios.put(
+    //     'http://localhost:1337/api/users/' + this.$store.getters.getUser.id,
+    //     {
+    //       username: this.username,
+    //       firstName: this.firstname,
+    //       lastName: this.lastname,
+    //       phoneNumber: this.phone,
+    //       email: this.email,
+    //     },
+    //     {
+    //       headers: {
+    //         Authorization: 'Bearer ' + this.$store.getters.getJwt,
+    //       },
+    //     }
+    //   ).then((response => {
+    //     successTost('Data was updated');
+    //     this.$store.dispatch('updateData', {
+    //       userId: this.$store.getters.getUser.id,
+    //     });
+    //   })).catch((error) => {
+    //     errorTost('Error');
+    //     console.log(error);
+    //   });
+    // },
     async personalInformationSubmit() {
-      const isFormCorrect = await this.v$.$validate();
-      if (!isFormCorrect) {
+      if (!this.isFormCorrect()) {
         return;
       }
       axios.put(
@@ -103,36 +131,59 @@ export default {
         console.log(error);
       });
     },
+    isFormCorrect() {
+      return !(this.firstnameValidate && this.lastnameValidate && this.emailValidate && this.phoneValidate && this.usernameValidate);
+    }
   },
   computed: {
-    //Personal Information
     firstnameValidate() {
-      return this.v$.firstname.$dirty && this.v$.firstname.required.$invalid || this.v$.firstname.$dirty && this.v$.firstname.minLength.$invalid;
+      const firstnameRegExp = /^[а-яА-ЯёЁa-zA-Z]{3,}$/;
+      return !firstnameRegExp.test(this.firstname) && this.firstname.length;
     },
     lastnameValidate() {
-      return this.v$.lastname.$dirty && this.v$.lastname.required.$invalid || this.v$.lastname.$dirty && this.v$.lastname.minLength.$invalid;
+      const lastnameRegExp = /^[а-яА-ЯёЁa-zA-Z]{3,}$/;
+      return !lastnameRegExp.test(this.lastname) && this.lastname.length;
     },
     emailValidate() {
-      return this.v$.email.$dirty && this.v$.email.required.$invalid || this.v$.email.$dirty && this.v$.email.email.$invalid;
+      const emailRegExp = /^\w+@\w+\.[a-z]+$/;
+      return !emailRegExp.test(this.email) && this.email.length;
     },
     phoneValidate() {
-      return this.v$.phone.$dirty && this.v$.phone.required.$invalid || this.v$.phone.$dirty && this.v$.phone.integer.$invalid;
+      const phoneRegExp = /^\+\d{5,}$/;
+      return !phoneRegExp.test(this.phone) && this.phone.length;
     },
     usernameValidate() {
-      return this.v$.username.$dirty && this.v$.username.required.$invalid || this.v$.username.$dirty && this.v$.username.minLength.$invalid;
+      const usernameRegExp = /\w{3,}/;
+      return !usernameRegExp.test(this.username) && this.username.length;
     },
+    //Personal Information
+    // firstnameValidate() {
+    //   return this.v$.firstname.$dirty && this.v$.firstname.required.$invalid || this.v$.firstname.$dirty && this.v$.firstname.minLength.$invalid;
+    // },
+    // lastnameValidate() {
+    //   return this.v$.lastname.$dirty && this.v$.lastname.required.$invalid || this.v$.lastname.$dirty && this.v$.lastname.minLength.$invalid;
+    // },
+    // emailValidate() {
+    //   return this.v$.email.$dirty && this.v$.email.required.$invalid || this.v$.email.$dirty && this.v$.email.email.$invalid;
+    // },
+    // phoneValidate() {
+    //   return this.v$.phone.$dirty && this.v$.phone.required.$invalid || this.v$.phone.$dirty && this.v$.phone.integer.$invalid;
+    // },
+    // usernameValidate() {
+    //   return this.v$.username.$dirty && this.v$.username.required.$invalid || this.v$.username.$dirty && this.v$.username.minLength.$invalid;
+    // },
 
   },
-  validations() {
-    return {
-      //Personal Information
-      firstname: { required, minLength: minLength(3) },
-      lastname: { required, minLength: minLength(3) },
-      email: { required, email },
-      phone: { required, integer },
-      username: { required, minLength: minLength(3) },
-    }
-  }
+  // validations() {
+  //   return {
+  //     //Personal Information
+  //     firstname: { required, minLength: minLength(3) },
+  //     lastname: { required, minLength: minLength(3) },
+  //     email: { required, email },
+  //     phone: { required, integer },
+  //     username: { required, minLength: minLength(3) },
+  //   }
+  // }
 }
 </script>
 
