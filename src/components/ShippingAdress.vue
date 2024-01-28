@@ -1,9 +1,11 @@
 <template>
   <div class="shipping-adress">
     <h4 class="title_h4">Shipping Address</h4>
+    <h5 v-if="!isProfilePage" class="title_h5">Click to address to choose it</h5>
     <transition-group tag="div" name="address" v-if="this.$store.getters.getAddresses.length" class="addresses-block">
-      <div class="address" v-for="address in this.$store.getters.getAddresses" :key="address.id">
-        <button @click.prevent="deleteAddress(address.id)" class="close"></button>
+      <div @click="addAddress(address.id)" class="address" data-id="{{address.id}}"
+        v-for="address in this.$store.getters.getAddresses" :key="address.id">
+        <button v-if="isProfilePage" @click.prevent="deleteAddress(address.id)" class="close"></button>
         <div class="name-block">
           <p class="title-text">Name</p>
           <p class="text">{{ address.firstName }}</p>
@@ -37,9 +39,22 @@ export default {
       // addresses: [],
     }
   },
+  props: {
+    isProfilePage: {
+      type: Boolean,
+    }
+  },
   methods: {
     deleteAddress(id) {
       this.$store.dispatch('deleteAddress', { id: id })
+    },
+    addAddress(id) {
+      if (this.isProfilePage) {
+        return;
+      }
+      const currentAddress = this.$store.getters.getAddresses.find(item => item.id === id);
+      this.$emit('addAddress', currentAddress);
+      console.log(currentAddress);
     }
   },
 
@@ -64,6 +79,13 @@ export default {
 .title_h4 {
   color: #3D3D3D;
   font-size: 17px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.title_h5 {
+  color: #46A358;
+  font-size: 14px;
   font-weight: 500;
   margin-bottom: 10px;
 }

@@ -20,7 +20,11 @@ export default {
     layout() {
       return this.$route.meta.layout;
     }
-  }
+  },
+  mounted() {
+    this.$store.commit('updateUser', JSON.parse(window.localStorage.getItem('userData')))
+    this.$store.commit('updateJwt', window.localStorage.getItem('jwt'))
+  },
 }
 </script>
 <style>
@@ -92,4 +96,20 @@ body {
   display: grid;
   grid-template-rows: auto minmax(500px, 1fr) auto;
 }
-</style>
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #46A358;
+}</style>

@@ -1,0 +1,18 @@
+{
+  "kind": "collectionType",
+  "collectionName": "coupones",
+  "info": {
+    "singularName": "coupone",
+    "pluralName": "coupones",
+    "displayName": "coupone"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "coupones": {
+      "type": "json"
+    }
+  }
+}

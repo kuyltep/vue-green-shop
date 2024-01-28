@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import SmallProductCard from './SmallProductCard.vue';
+import SmallProductCard from '../components/SmallProductCard.vue';
 export default {
   data() {
     return {

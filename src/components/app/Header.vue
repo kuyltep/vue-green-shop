@@ -13,7 +13,8 @@
         <!-- <input placeholder="Search..." type="text" class="search__input"> -->
         <button :style="{ background: this.searchBackground }" alt="" class="header__search"></button>
       </div>
-      <router-link :style="{ background: this.chunkBackground }" alt="" class="header__chunk" to="/chunk"></router-link>
+      <router-link :style="{ background: this.chunkBackground }" alt="" class="header__chunk"
+        to="/shop/checkout"></router-link>
       <transition name="login-menu">
         <button v-if="!this.$store.getters.getJwt" @click.prevent="showLoginMenu"
           class="header__login-link">Login</button>

@@ -1,17 +1,17 @@
 <template>
   <div class="save-address">
     <h4 class="title_h4">Billing Address</h4>
-    <p class="descr-text">The following addresses will be used on the checkout page by default.</p>
+    <p v-if="isProfilePage" class="descr-text">The following addresses will be used on the checkout page by default.</p>
     <form @submit.prevent="addAdressSubmit" class="add-address__form">
       <div class="firstname-div input-block">
         <label class="label-for-input" for="firstname">First Name <span class="required-symbol">*</span> </label>
-        <input :class="{ error: firstnameValidate }" v-model="firstname" class="personal-input" type="text"
+        <input :class="{ error: firstnameValidate }" v-model="firstName" class="personal-input" type="text"
           name="firstname" id="firstname">
         <span class="error-text" v-if="firstnameValidate">Invalid first name</span>
       </div>
       <div class="lastname-div input-block">
         <label class="label-for-input" for="lastname">Last Name <span class="required-symbol">*</span> </label>
-        <input :class="{ error: lastnameValidate }" v-model="lastname" class="personal-input" type="text" name="lastname"
+        <input :class="{ error: lastnameValidate }" v-model="lastName" class="personal-input" type="text" name="lastname"
           id="lastname">
         <span class="error-text" v-if="lastnameValidate">Invalid lastname</span>
       </div>
@@ -59,7 +59,11 @@
           id="phone">
         <span class="error-text" v-if="phoneValidate">Invalid phone</span>
       </div>
-      <button type="submit" class="submit-btn">Save Address</button>
+      <div v-if="!isProfilePage" class="order-description">
+        <label for="descr" class="descr-title">Order description (optionaly)</label>
+        <textarea class="order-textarea" name="descr" id="" cols="30" rows="10"></textarea>
+      </div>
+      <button v-if="isProfilePage" type="submit" class="submit-btn">Save Address</button>
     </form>
   </div>
 </template>
@@ -72,10 +76,18 @@ export default {
   setup() {
     return { v$: useVuelidate() }
   },
+  props: {
+    isProfilePage: {
+      type: Boolean,
+    },
+    deliveryAddress: {
+      type: Object,
+    }
+  },
   data() {
     return {
-      firstname: "",
-      lastname: "",
+      firstName: "",
+      lastName: "",
       country: "",
       city: "",
       address: "",
@@ -112,8 +124,8 @@ export default {
       }
       //TODO: Made request to add new address to Strapi
       this.$store.dispatch('saveAddress', {
-        firstName: this.firstname,
-        lastName: this.lastname,
+        firstName: this.firstName,
+        lastName: this.lastMame,
         country: this.country,
         city: this.city,
         address: this.address,
@@ -131,11 +143,11 @@ export default {
   computed: {
     firstnameValidate() {
       const firstnameRegExp = /^[а-яА-ЯёЁa-zA-Z]{3,}$/;
-      return !firstnameRegExp.test(this.firstname) && this.firstname.length;
+      return !firstnameRegExp.test(this.firstname) && this.firstName.length;
     },
     lastnameValidate() {
       const lastnameRegExp = /^[а-яА-ЯёЁa-zA-Z]{3,}$/;
-      return !lastnameRegExp.test(this.lastname) && this.lastname.length;
+      return !lastnameRegExp.test(this.lastname) && this.lastName.length;
     },
     countryValidate() {
       const countryRegExp = /^[а-яА-ЯёЁa-zA-Z]{3,}$/;
@@ -158,11 +170,11 @@ export default {
       return !zipRegExp.test(this.zip) && this.zip.length;
     },
     emailValidate() {
-      const emailRegExp = /\w+@\w+\.[a-z]+$/;
+      const emailRegExp = /\w+@\w+\.[a-zA-Z]+$/;
       return !emailRegExp.test(this.email) && this.email.length;
     },
     phoneValidate() {
-      const phoneRegExp = /^\+\d{5,}$/;
+      const phoneRegExp = /^\d{5,}$/;
       return !phoneRegExp.test(this.phone) && this.phone.length;
     }
     // firstnameValidate() {
@@ -206,10 +218,43 @@ export default {
   //     phone: { required, integer },
   //   }
   // }
+  watch: {
+    deliveryAddress() {
+      this.firstName = this.deliveryAddress.firstName || '';
+      this.lastName = this.deliveryAddress.lastName || '';
+      this.country = this.deliveryAddress.country || '';
+      this.city = this.deliveryAddress.city || '';
+      this.address = this.deliveryAddress.address || '';
+      this.state = this.deliveryAddress.state || '';
+      this.email = this.deliveryAddress.email || '';
+      this.phone = this.deliveryAddress.phone || '';
+      this.appartment = this.deliveryAddress.appartment || '';
+      this.zip = this.deliveryAddress.zip || '';
+    }
+  }
 }
 </script>
 
 <style scoped>
+.order-textarea {
+  width: 100%;
+  border-radius: 3px;
+  border: 1px solid #EAEAEA;
+  padding: 5px-;
+  resize: none;
+  margin-top: 10px;
+}
+
+.order-textarea:focus {
+  outline: 1px solid #46A358;
+}
+
+.descr-title {
+  color: #3D3D3D;
+  font-size: 15px;
+  font-weight: 400;
+}
+
 .save-address {
   margin-bottom: 65px;
 }

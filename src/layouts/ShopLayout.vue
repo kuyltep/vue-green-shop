@@ -25,10 +25,7 @@ export default {
   computed: {
     ...mapGetters(['getLoginMenuOpen']),
   },
-  mounted() {
-    this.$store.commit('updateUser', JSON.parse(window.localStorage.getItem('userData')))
-    this.$store.commit('updateJwt', window.localStorage.getItem('jwt'))
-  },
+
 
 }
 </script>

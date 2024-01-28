@@ -5,6 +5,7 @@ import getData from "./getData";
 import addresses from "./addresses";
 import products from "./products";
 import wishlist from "./wishlist";
+import coupones from "./coupones";
 export default createStore({
   state: {},
   getters: {},
@@ -17,5 +18,6 @@ export default createStore({
     addresses,
     products,
     wishlist,
+    coupones,
   },
 });

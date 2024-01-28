@@ -62,6 +62,18 @@ const routes = [
     name: "shop",
     meta: { layout: "shop-layout" },
     component: () => import("@/views/ShopPage.vue"),
+    children: [
+      {
+        path: "shopping-cart",
+        name: "shopping-cart",
+        component: () => import("@/views/ShoppingCartPage.vue"),
+      },
+      {
+        path: "checkout",
+        name: "checkout",
+        component: () => import("@/views/CheckoutPage.vue"),
+      },
+    ],
   },
   {
     path: "/plant-care",

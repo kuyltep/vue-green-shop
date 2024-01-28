@@ -678,6 +678,11 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToMany',
       'api::product.product'
     >;
+    deliveries: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'manyToMany',
+      'api::delivery.delivery'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -864,6 +869,84 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::category.category',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiCouponeCoupone extends Schema.CollectionType {
+  collectionName: 'coupones';
+  info: {
+    singularName: 'coupone';
+    pluralName: 'coupones';
+    displayName: 'coupone';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    coupones: Attribute.JSON;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::coupone.coupone',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::coupone.coupone',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiDeliveryDelivery extends Schema.CollectionType {
+  collectionName: 'deliveries';
+  info: {
+    singularName: 'delivery';
+    pluralName: 'deliveries';
+    displayName: 'delivery';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    address: Attribute.Relation<
+      'api::delivery.delivery',
+      'oneToOne',
+      'api::adress.adress'
+    >;
+    payMethod: Attribute.String;
+    shipping: Attribute.String;
+    total: Attribute.String;
+    products: Attribute.Relation<
+      'api::delivery.delivery',
+      'oneToMany',
+      'api::product.product'
+    >;
+    users: Attribute.Relation<
+      'api::delivery.delivery',
+      'manyToMany',
+      'plugin::users-permissions.user'
+    >;
+    description: Attribute.Text;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::delivery.delivery',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::delivery.delivery',
       'oneToOne',
       'admin::user'
     > &
@@ -1078,6 +1161,8 @@ declare module '@strapi/types' {
       'api::blog-post.blog-post': ApiBlogPostBlogPost;
       'api::card-icon.card-icon': ApiCardIconCardIcon;
       'api::category.category': ApiCategoryCategory;
+      'api::coupone.coupone': ApiCouponeCoupone;
+      'api::delivery.delivery': ApiDeliveryDelivery;
       'api::footer-image.footer-image': ApiFooterImageFooterImage;
       'api::icon.icon': ApiIconIcon;
       'api::product.product': ApiProductProduct;

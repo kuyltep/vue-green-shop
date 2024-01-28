@@ -1,6 +1,6 @@
 <template>
   <SaveAddress></SaveAddress>
-  <ShippingAddress></ShippingAddress>
+  <ShippingAddress :isProfilePage="true"></ShippingAddress>
 </template>
 
 <script>
