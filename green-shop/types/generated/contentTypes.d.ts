@@ -668,11 +668,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'manyToMany',
       'api::adress.adress'
     >;
-    wishes: Attribute.Relation<
-      'plugin::users-permissions.user',
-      'oneToMany',
-      'api::product.product'
-    >;
     products: Attribute.Relation<
       'plugin::users-permissions.user',
       'oneToMany',
@@ -682,6 +677,21 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'plugin::users-permissions.user',
       'manyToMany',
       'api::delivery.delivery'
+    >;
+    shopping: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'manyToMany',
+      'api::product.product'
+    >;
+    wishes: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'manyToMany',
+      'api::product.product'
+    >;
+    wishlists: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'manyToMany',
+      'api::wishlist.wishlist'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -1040,6 +1050,21 @@ export interface ApiProductProduct extends Schema.CollectionType {
     tags: Attribute.String;
     new: Attribute.Boolean;
     sale: Attribute.Integer;
+    usersWishes: Attribute.Relation<
+      'api::product.product',
+      'manyToMany',
+      'plugin::users-permissions.user'
+    >;
+    usersShopping: Attribute.Relation<
+      'api::product.product',
+      'manyToMany',
+      'plugin::users-permissions.user'
+    >;
+    wishlists: Attribute.Relation<
+      'api::product.product',
+      'manyToMany',
+      'api::wishlist.wishlist'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1140,6 +1165,45 @@ export interface ApiTestTest extends Schema.CollectionType {
   };
 }
 
+export interface ApiWishlistWishlist extends Schema.CollectionType {
+  collectionName: 'wishlists';
+  info: {
+    singularName: 'wishlist';
+    pluralName: 'wishlists';
+    displayName: 'wishlist';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    users: Attribute.Relation<
+      'api::wishlist.wishlist',
+      'manyToMany',
+      'plugin::users-permissions.user'
+    >;
+    products: Attribute.Relation<
+      'api::wishlist.wishlist',
+      'manyToMany',
+      'api::product.product'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::wishlist.wishlist',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::wishlist.wishlist',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -1169,6 +1233,7 @@ declare module '@strapi/types' {
       'api::size.size': ApiSizeSize;
       'api::slide.slide': ApiSlideSlide;
       'api::test.test': ApiTestTest;
+      'api::wishlist.wishlist': ApiWishlistWishlist;
     }
   }
 }

@@ -58,6 +58,24 @@
     },
     "sale": {
       "type": "integer"
+    },
+    "usersWishes": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "wishes"
+    },
+    "usersShopping": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "shopping"
+    },
+    "wishlists": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::wishlist.wishlist",
+      "mappedBy": "products"
     }
   }
 }

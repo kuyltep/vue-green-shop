@@ -1,12 +1,19 @@
 <template>
-  <div>Profile wishlist</div>
+  <ProfileWishlistSection></ProfileWishlistSection>
 </template>
 
 <script>
+import ProfileWishlistSection from '@/components/ProfileWishlistSection.vue';
 export default {
-  mounted() {
-    this.$store.dispatch('getUserWishlist');
-  }
+  components: {
+    ProfileWishlistSection
+  },
+  data() {
+    return {
+
+    }
+  },
+
 }
 </script>
 

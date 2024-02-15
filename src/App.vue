@@ -21,9 +21,14 @@ export default {
       return this.$route.meta.layout;
     }
   },
-  mounted() {
+  async mounted() {
     this.$store.commit('updateUser', JSON.parse(window.localStorage.getItem('userData')))
     this.$store.commit('updateJwt', window.localStorage.getItem('jwt'))
+    await this.$store.dispatch("getUserWishlist", this.$store.getters.getUser.id);
+    await this.$store.dispatch('getCardIcons');
+    await this.$store.dispatch('fetchAllProducts');
+    await this.$store.dispatch("loadWishlistInProfilePage")
+
   },
 }
 </script>
@@ -112,4 +117,5 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #46A358;
-}</style>
+}
+</style>

@@ -91,11 +91,6 @@
       "target": "api::adress.adress",
       "mappedBy": "users"
     },
-    "wishes": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::product.product"
-    },
     "products": {
       "type": "relation",
       "relation": "oneToMany",
@@ -105,6 +100,24 @@
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::delivery.delivery",
+      "mappedBy": "users"
+    },
+    "shopping": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::product.product",
+      "inversedBy": "usersShopping"
+    },
+    "wishes": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::product.product",
+      "mappedBy": "usersWishes"
+    },
+    "wishlists": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::wishlist.wishlist",
       "mappedBy": "users"
     }
   }

@@ -38,7 +38,7 @@ export default {
     ) {
       axios
         .post(
-          "http://localhost:1337/api/adresses",
+          "http://localhost:1337/api/addresses",
           {
             data: {
               firstName,

@@ -10,11 +10,11 @@
       <transition name="icons">
         <div v-if="icons" v-show="showIcons" class="card-icons">
           <div class="card-icon-wrapper">
-            <button @click.prevent="" class="card-icon chunk"
+            <button @click.prevent="addChunkTovar(item.id)" class="card-icon chunk"
               :style="{ background: `url(${icons[0].image}) center no-repeat`, backgroundSize: '20px 20px' }"></button>
           </div>
-          <div class="card-icon-wrapper">
-            <button @click.prevent="" class="card-icon hearth"
+          <div :style="{ 'background-color': wishIconColor }" class="card-icon-wrapper">
+            <button @click.prevent="addWishTovar(item.id)" class="card-icon hearth"
               :style="{ background: `url(${icons[1].image}) center no-repeat`, backgroundSize: '20px 20px' }"></button>
           </div>
           <div class="card-icon-wrapper">
@@ -52,6 +52,7 @@ export default {
     return {
       showIcons: false,
       isOpenImageScale: false,
+      wishIconColor: "fff",
     }
   },
   methods: {
@@ -60,9 +61,40 @@ export default {
     },
     toogleImageScale() {
       this.isOpenImageScale = !this.isOpenImageScale;
+    },
+    addChunkTovar(id) {
+    },
+    async addWishTovar(id) {
+      const wishId = this.$store.getters.getterUserWishlistIndexes[this.$store.getters.getterUserWishlist.findIndex(product => product.id == id)]
+      const isItemInWishlist = this.$store.getters.getterUserWishlist.some((product) => {
+        return product.id == id;
+      });
+      if (isItemInWishlist) {
+        await this.$store.dispatch("deleteItemFromUserWishlist", { id: wishId })
+        this.wishIconColor = "#fff";
+      } else {
+        await this.$store.dispatch("addItemInUserWishlist", { id: id });
+        this.wishIconColor = "#46A358";
+      }
+      await this.$store.dispatch("getUserWishlist", this.$store.getters.getUser.id);
+
     }
   },
-
+  computed: {
+    wishIconColorComputed() {
+      this.wishIconColor = this.$store.getters.getterUserWishlist.some((product) => {
+        return product.id == this.item.id;
+      }) ? "#46A358" : "#fff";
+    },
+    checkWishItemInWishlist(id) {
+      return this.$store.getters.getterUserWishlist.some((product) => {
+        return product.id == id;
+      })
+    }
+  },
+  mounted() {
+    this.wishIconColorComputed;
+  }
 }
 </script>
 
@@ -88,6 +120,7 @@ export default {
 }
 
 .card-icon-wrapper {
+  transition: background-color 0.3s ease-in-out;
   background: #FFF;
   margin-right: 15px;
   width: 35px;

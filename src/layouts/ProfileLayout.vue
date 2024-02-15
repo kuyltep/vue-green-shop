@@ -10,10 +10,12 @@ export default {
   components: {
     Header,
   },
-  created() {
+  async created() {
     this.$store.commit('updateUser', JSON.parse(window.localStorage.getItem('userData')))
     this.$store.commit('updateJwt', window.localStorage.getItem('jwt'))
-  }
+    await this.$store.dispatch("loadWishlistInProfilePage");
+  },
+
 }
 </script>
 
