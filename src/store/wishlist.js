@@ -28,7 +28,7 @@ export default {
     },
   },
   actions: {
-    getUserWishlist({ commit, getters }, userId) {
+    getUserWishlist({ commit, getters, dispatch }, userId) {
       axios
         .get(`http://localhost:1337/api/wishlists?populate=*`, {
           headers: {
@@ -53,6 +53,9 @@ export default {
           const wishlistIndexes = data.map((item) => item.id);
           commit("setUserWishlistIndexes", wishlistIndexes);
           commit("setUserWishlist", currentUserProductsInWishlist);
+          setTimeout(() => {
+            dispatch("loadWishlistInProfilePage");
+          }, 1000);
           console.log(currentUserProductsInWishlist);
           console.log(wishlistIndexes);
         })
@@ -60,7 +63,7 @@ export default {
           console.log(error);
         });
     },
-    addItemInUserWishlist({ commit, getters }, { id }) {
+    addItemInUserWishlist({ commit, getters, dispatch }, { id }) {
       axios
         .post(
           "http://localhost:1337/api/wishlists?populate=*",
@@ -77,14 +80,18 @@ export default {
           {
             headers: {
               Authorization: `Bearer ${getters.getJwt}`,
-              "Content-Type": "application/json",
             },
           }
         )
-        .then((response) => console.log(response))
+        .then((response) => {
+          dispatch("getUserWishlist", getters.getUser.id);
+          setTimeout(() => {
+            dispatch("loadWishlistInProfilePage");
+          }, 1000);
+        })
         .catch((error) => console.log(error));
     },
-    deleteItemFromUserWishlist({ commit, getters }, { id }) {
+    deleteItemFromUserWishlist({ commit, getters, dispatch }, { id }) {
       axios
         .delete(
           "http://localhost:1337/api/wishlists/" + id,
@@ -92,14 +99,19 @@ export default {
           {
             headers: {
               Authorization: `Bearer ${getters.getJwt}`,
-              "Content-Type": "application/json",
             },
           }
         )
-        .then((response) => console.log(response))
+        .then((response) => {
+          dispatch("getUserWishlist", getters.getUser.id);
+          setTimeout(() => {
+            dispatch("loadWishlistInProfilePage");
+          }, 1000);
+        })
         .catch((error) => console.log(error));
     },
     loadWishlistInProfilePage({ commit, getters }) {
+      console.log("loadWishlist");
       const items = [];
       getters.getAllProducts.forEach((allProductsItem) => {
         getters.getterUserWishlist.forEach((userWishlistItem) => {

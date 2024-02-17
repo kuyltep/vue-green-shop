@@ -1,9 +1,8 @@
 <template>
-  <div class="wish-cards">
-    <transition-group tag="div" name="cards" class="wish-cards">
-      <Card v-for="item in items" :key="item.id" :item="item" :icons="this.$store.getters.getCardIcons"></Card>
-    </transition-group>
-  </div>
+  <transition-group tag="div" name="cards" class="cards">
+    <Card :item="item" v-for="item in this.$store.getters.getterUserWishlistProfileProducts" :key="item.id"
+      :icons="this.$store.getters.getCardIcons"></Card>
+  </transition-group>
 </template>
 
 <script>
@@ -13,24 +12,32 @@ export default {
   components: { Card },
   data() {
     return {
-      items: []
     }
   },
   methods: {
 
   },
-  async mounted() {
-    this.items = this.$store.getters.getterUserWishlistProfileProducts;
-  }
+
 
 }
 </script>
 
 <style scoped>
-.wish-cards {
+.cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-row-gap: 30px;
   grid-column-gap: 15px;
+}
+
+.cards-enter-active,
+.cards-leave-active {
+  transition: all .8s ease-in-out;
+}
+
+.cards-enter-from,
+.cards-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
 }
 </style>
