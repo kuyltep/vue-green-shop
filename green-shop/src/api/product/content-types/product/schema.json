@@ -76,6 +76,12 @@
       "relation": "manyToMany",
       "target": "api::wishlist.wishlist",
       "mappedBy": "products"
+    },
+    "shopping_carts": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::shopping-cart.shopping-cart",
+      "mappedBy": "products"
     }
   }
 }

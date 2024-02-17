@@ -22,13 +22,16 @@ export default {
     }
   },
   async mounted() {
+
     this.$store.commit('updateUser', JSON.parse(window.localStorage.getItem('userData')))
     this.$store.commit('updateJwt', window.localStorage.getItem('jwt'))
-    await this.$store.dispatch("getUserWishlist", this.$store.getters.getUser.id);
-    await this.$store.dispatch('getCardIcons');
-    await this.$store.dispatch('fetchAllProducts');
-    await this.$store.dispatch("loadWishlistInProfilePage")
-
+    if (this.$store.getters.getUser?.id) {
+      await this.$store.dispatch('getCardIcons');
+      await this.$store.dispatch('fetchAllProducts');
+      await this.$store.dispatch("getUserWishlist", this.$store.getters.getUser.id);
+      await this.$store.dispatch("loadWishlistInProfilePage")
+      await this.$store.dispatch("getUserShoppingCart", this.$store.getters.getUser.id)
+    }
   },
 }
 </script>

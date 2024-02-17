@@ -9,7 +9,7 @@
       <img :src="'http://localhost:1337' + item.image.data[0].attributes.url" alt="" class="card-image">
       <transition name="icons">
         <div v-if="icons" v-show="showIcons" class="card-icons">
-          <div class="card-icon-wrapper">
+          <div :style="{ 'background-color': shoppingCartIconColor }" class="card-icon-wrapper">
             <button @click.prevent="addChunkTovar(item.id)" class="card-icon chunk"
               :style="{ background: `url(${icons[0].image}) center no-repeat`, backgroundSize: '20px 20px' }"></button>
           </div>
@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import errorTost from '@/toasts-plugins/error.tost';
 import CardImageScale from './CardImageScale.vue';
 export default {
   components: {
@@ -52,7 +53,8 @@ export default {
     return {
       showIcons: false,
       isOpenImageScale: false,
-      wishIconColor: "fff",
+      wishIconColor: "#fff",
+      shoppingCartIconColor: "#fff"
     }
   },
   methods: {
@@ -62,21 +64,42 @@ export default {
     toogleImageScale() {
       this.isOpenImageScale = !this.isOpenImageScale;
     },
-    addChunkTovar(id) {
+    async addChunkTovar(id) {
+      if (this.$store.getters.getUser?.id) {
+        const shoppingCartProductId = this.$store.getters.getterUserShoppingCartIndexes[this.$store.getters.getterUserShoppingCart.findIndex(product => product.id == id)]
+        const isItemInShippingCart = this.$store.getters.getterUserShoppingCart.some((product) => {
+          return product.id == id;
+        });
+        if (isItemInShippingCart) {
+          await this.$store.dispatch("deleteItemFromUserShoppingCart", { id: shoppingCartProductId })
+          this.shoppingCartIconColor = "#fff";
+        } else {
+          await this.$store.dispatch("addItemInUserShoppingCart", { id: id });
+          this.shoppingCartIconColor = "#46A358";
+        }
+        await this.$store.dispatch("getUserShoppingCart", this.$store.getters.getUser.id);
+      } else {
+        errorTost("You must be authorize")
+      }
     },
     async addWishTovar(id) {
-      const wishId = this.$store.getters.getterUserWishlistIndexes[this.$store.getters.getterUserWishlist.findIndex(product => product.id == id)]
-      const isItemInWishlist = this.$store.getters.getterUserWishlist.some((product) => {
-        return product.id == id;
-      });
-      if (isItemInWishlist) {
-        await this.$store.dispatch("deleteItemFromUserWishlist", { id: wishId })
-        this.wishIconColor = "#fff";
+      if (this.$store.getters.getUser?.id) {
+
+        const wishId = this.$store.getters.getterUserWishlistIndexes[this.$store.getters.getterUserWishlist.findIndex(product => product.id == id)]
+        const isItemInWishlist = this.$store.getters.getterUserWishlist.some((product) => {
+          return product.id == id;
+        });
+        if (isItemInWishlist) {
+          await this.$store.dispatch("deleteItemFromUserWishlist", { id: wishId })
+          this.wishIconColor = "#fff";
+        } else {
+          await this.$store.dispatch("addItemInUserWishlist", { id: id });
+          this.wishIconColor = "#46A358";
+        }
+        await this.$store.dispatch("getUserWishlist", this.$store.getters.getUser.id);
       } else {
-        await this.$store.dispatch("addItemInUserWishlist", { id: id });
-        this.wishIconColor = "#46A358";
+        errorTost("You must be authorize")
       }
-      await this.$store.dispatch("getUserWishlist", this.$store.getters.getUser.id);
 
     }
   },
@@ -86,14 +109,18 @@ export default {
         return product.id == this.item.id;
       }) ? "#46A358" : "#fff";
     },
-    checkWishItemInWishlist(id) {
-      return this.$store.getters.getterUserWishlist.some((product) => {
-        return product.id == id;
-      })
-    }
+    shoppingCartIconColorComputed() {
+      this.shoppingCartIconColor = this.$store.getters.getterUserShoppingCart.some((product) => {
+        return product.id == this.item.id;
+      }) ? "#46A358" : "#fff";
+    },
   },
   mounted() {
-    this.wishIconColorComputed;
+    setTimeout(() => {
+      this.wishIconColorComputed;
+      this.shoppingCartIconColorComputed;
+    }, 0)
+
   }
 }
 </script>

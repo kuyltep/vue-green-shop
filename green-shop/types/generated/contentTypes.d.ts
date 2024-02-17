@@ -693,6 +693,11 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'manyToMany',
       'api::wishlist.wishlist'
     >;
+    shopping_carts: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'manyToMany',
+      'api::shopping-cart.shopping-cart'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1065,6 +1070,11 @@ export interface ApiProductProduct extends Schema.CollectionType {
       'manyToMany',
       'api::wishlist.wishlist'
     >;
+    shopping_carts: Attribute.Relation<
+      'api::product.product',
+      'manyToMany',
+      'api::shopping-cart.shopping-cart'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1076,6 +1086,46 @@ export interface ApiProductProduct extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::product.product',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiShoppingCartShoppingCart extends Schema.CollectionType {
+  collectionName: 'shopping_carts';
+  info: {
+    singularName: 'shopping-cart';
+    pluralName: 'shopping-carts';
+    displayName: 'shopping-cart';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    users: Attribute.Relation<
+      'api::shopping-cart.shopping-cart',
+      'manyToMany',
+      'plugin::users-permissions.user'
+    >;
+    products: Attribute.Relation<
+      'api::shopping-cart.shopping-cart',
+      'manyToMany',
+      'api::product.product'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::shopping-cart.shopping-cart',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::shopping-cart.shopping-cart',
       'oneToOne',
       'admin::user'
     > &
@@ -1230,6 +1280,7 @@ declare module '@strapi/types' {
       'api::footer-image.footer-image': ApiFooterImageFooterImage;
       'api::icon.icon': ApiIconIcon;
       'api::product.product': ApiProductProduct;
+      'api::shopping-cart.shopping-cart': ApiShoppingCartShoppingCart;
       'api::size.size': ApiSizeSize;
       'api::slide.slide': ApiSlideSlide;
       'api::test.test': ApiTestTest;

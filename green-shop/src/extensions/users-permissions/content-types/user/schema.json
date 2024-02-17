@@ -119,6 +119,12 @@
       "relation": "manyToMany",
       "target": "api::wishlist.wishlist",
       "mappedBy": "users"
+    },
+    "shopping_carts": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::shopping-cart.shopping-cart",
+      "mappedBy": "users"
     }
   }
 }

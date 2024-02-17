@@ -6,6 +6,7 @@ import addresses from "./addresses";
 import products from "./products";
 import wishlist from "./wishlist";
 import coupones from "./coupones";
+import shoppingCart from "./shopping-cart";
 export default createStore({
   state: {},
   getters: {},
@@ -19,5 +20,6 @@ export default createStore({
     products,
     wishlist,
     coupones,
+    shoppingCart,
   },
 });
