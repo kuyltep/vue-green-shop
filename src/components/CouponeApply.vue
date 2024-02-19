@@ -7,6 +7,7 @@
         <button @click.prevent="checkCoupone" class="check-coupone">Apply</button>
       </div>
       <span v-if="isErrorCoupone" class="error-text">Invalid coupone...</span>
+      <span v-if="showSale" class="sale-text">Your sale is {{ sale }}%</span>
     </div>
   </transition>
 </template>
@@ -19,6 +20,7 @@ export default {
       sale: 0,
       coupones: {},
       isErrorCoupone: false,
+      showSale: false,
     }
   },
   methods: {
@@ -36,6 +38,7 @@ export default {
         this.coupone = '';
         return;
       }
+      this.showSale = true;
       this.sale = this.coupones[this.coupone.toUpperCase()];
       this.$emit('setSale', this.sale);
     }
@@ -77,6 +80,12 @@ export default {
   margin-bottom: 10px;
 }
 
+.sale-text {
+  font-size: 12px;
+  color: #46A358;
+  margin-bottom: 10px;
+}
+
 .coupone-input {
   width: 230px;
   border-radius: 3px 0 0 3px;
@@ -105,5 +114,6 @@ export default {
   padding: 12px 25px 12px 35px;
   border-radius: 0px 3px 3px 0px;
   background: #46A358;
+  cursor: pointer;
 }
 </style>

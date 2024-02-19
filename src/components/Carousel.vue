@@ -50,7 +50,7 @@ export default {
 }
 </script>
 
-<style >
+<style>
 .swiper {
   height: 450px;
   width: 1200px;

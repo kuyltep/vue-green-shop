@@ -119,7 +119,7 @@ export default {
     setTimeout(() => {
       this.wishIconColorComputed;
       this.shoppingCartIconColorComputed;
-    }, 0)
+    }, 100)
 
   }
 }

@@ -14,7 +14,7 @@
         <button :style="{ background: this.searchBackground }" alt="" class="header__search"></button>
       </div>
       <router-link :style="{ background: this.chunkBackground }" alt="" class="header__chunk"
-        to="/shop/checkout"></router-link>
+        to="/shop/shopping-cart"></router-link>
       <transition name="login-menu">
         <button v-if="!this.$store.getters.getJwt" @click.prevent="showLoginMenu"
           class="header__login-link">Login</button>

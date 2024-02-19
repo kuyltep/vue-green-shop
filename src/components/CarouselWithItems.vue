@@ -1,6 +1,6 @@
 <template>
   <Swiper :loop="true" :modules="modules" :pagination="true" :autoplay="{
-    delay: 2500,
+    delay: 6000,
     disableOnInteraction: false,
   }">
     <SwiperSlide v-for="slide  in  dataForSlider" :key="slide">
@@ -55,17 +55,20 @@ export default {
 .swiper {
   height: 400px;
   width: 1200px;
+  background-color: transparent;
+}
+
+.swiper-wrapper {
+  margin-bottom: 15px;
 }
 
 .slide-block {
-  justify-content: center;
-  display: grid;
-  grid-template-columns: repeat(3, 250px);
-  grid-gap: 50px;
+  display: flex;
+  justify-content: space-evenly;
 }
-
-
+</style>
+<style>
 .swiper-pagination-bullet-active {
-  background: #46A358;
+  background-color: #46A358;
 }
 </style>
