@@ -2,22 +2,22 @@
   <div class="shopping-cart-sidebar">
     <h4 class="title_h4">Cart Totals</h4>
     <p class="shopping-cart-sidebar__text">Coupon Apply</p>
-    <CouponeApply></CouponeApply>
+    <CouponeApply @setSale="setSale"></CouponeApply>
     <div class="subtotal-section">
       <p class="subtotal-text">Subtotal</p>
-      <p class="subtotal-value">${{ }}</p>
+      <p class="subtotal-value">{{ calcSubtotal }}$</p>
     </div>
     <div class="discont-section">
       <p class="discont-text">Coupon Discount</p>
-      <p class="discont-value">(-{{ sale ? sale + "%" : '' }}) {{ }}</p>
+      <p class="discont-value">(-{{ sale ? sale + "%" : '' }}) {{ sale ? calcDiscount : '' }}</p>
     </div>
     <div class="shiping-section">
       <p class="shiping-text">Shiping</p>
-      <p class="shiping-value"></p>
+      <p class="shiping-value">{{ shipping.toFixed(2) }}$</p>
     </div>
     <div class="total-section">
       <p class="total-text">Total</p>
-      <p class="total-value">${{ }}</p>
+      <p class="total-value">${{ calcTotal }}</p>
     </div>
     <router-link to="/shop/checkout" class="checkout-page-button">Proceed To Checkout</router-link>
     <router-link to="/" class="shopping-page-button">Continue Shopping</router-link>
@@ -29,6 +29,31 @@ import CouponeApply from './CouponeApply.vue';
 export default {
   components: {
     CouponeApply,
+  },
+  data() {
+    return {
+      sale: 0,
+      shipping: 16,
+      subtotal: 0,
+      total: 0,
+      discount: 0,
+    }
+  },
+  methods: {
+    setSale(sale) {
+      this.sale = sale;
+    }
+  },
+  computed: {
+    calcSubtotal() {
+      //TODO:CREATE CALC SUBTOTAL METHOD
+    },
+    calcTotal() {
+      //TODO: CREATE CALC TOTAL METHOD
+    },
+    calcDiscount() {
+      //TODO: CREATE DISCOUNT METHOD
+    }
   }
 }
 </script>
