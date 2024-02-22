@@ -11,7 +11,7 @@
           <div class="order-header">
             <div class="order-header-column">
               <p class="order-header__top-text">Order Number</p>
-              <p class="order-header__bottom-text">{{ }}</p>
+              <p class="order-header__bottom-text">{{ generateOrderNumber }}</p>
             </div>
             <div class="order-header-column">
               <p class="order-header__top-text">Date</p>
@@ -19,11 +19,11 @@
             </div>
             <div class="order-header-column">
               <p class="order-header__top-text">Total</p>
-              <p class="order-header__bottom-text">{{ }}</p>
+              <p class="order-header__bottom-text">{{ thankYouPageData.total }}</p>
             </div>
             <div class="order-header-column">
               <p class="order-header__top-text">Payment Method</p>
-              <p class="order-header__bottom-text">{{ }}</p>
+              <p class="order-header__bottom-text">{{ payMethods[thankYouPageData.payMethod] }}</p>
             </div>
           </div>
           <div class="order-body">
@@ -35,25 +35,24 @@
                 <p class="body-header__title title_subtotal">Subtotal</p>
               </div>
             </div>
-            <div class="body-products" v-for="item in this.$store.getters.getProducts" :key="item.id">
-              <!-- TODO:!! Made body products section -->
+            <div class="body-products" v-for="item in this.$store.getters.getterUserShoppingCartProducts" :key="item.id">
               <SmallProductCard :productData="item"></SmallProductCard>
             </div>
             <div class="body-total">
               <div class="shiping-section">
                 <p class="shiping-text">Shiping</p>
-                <p class="shiping-value">${{ }}</p>
+                <p class="shiping-value">${{ thankYouPageData.shipping }}</p>
               </div>
               <div class="total-section">
                 <p class="total-text">Total</p>
-                <p class="total-value">${{ }}</p>
+                <p class="total-value">${{ thankYouPageData.total }}</p>
               </div>
             </div>
           </div>
           <div class="order-end">
             <p class="thank-you-description">Your order is currently being processed. You will receive an order
               confirmation email shortly with the expected delivery date for your items.</p>
-            <button class="track-button">Track your order</button>
+            <router-link to="/" class="track-button">Track your order</router-link>
           </div>
         </div>
       </div>
@@ -64,9 +63,17 @@
 <script>
 import SmallProductCard from '../components/SmallProductCard.vue';
 export default {
+  props: {
+    thankYouPageData: Object,
+  },
   data() {
     return {
-
+      payMethods: {
+        'card': 'Payment card',
+        'bank': 'Online bank',
+        'cash': 'Cash on delivery'
+      },
+      orderNumber: null,
     }
   },
   components: {
@@ -75,6 +82,38 @@ export default {
   methods: {
     closeThankYouPage() {
       this.$emit('closeThankYouPage')
+    }
+  },
+  computed: {
+    calcSubtotal() {
+      let subtotalSum = 0;
+      this.$store.getters.getterUserShoppingCartProducts.forEach((element,) => {
+        subtotalSum += element?.sale ? element.price * (100 - element?.sale) / 100 * this.$store.getters.getterUserShoppingCartProductsQuantitites[element.id] : element.price * this.$store.getters.getterUserShoppingCartProductsQuantitites[element.id];
+      });
+      this.subtotal = subtotalSum.toFixed(2);
+      return subtotalSum.toFixed(2);
+    },
+    calcTotal() {
+      this.total = (+this.subtotal - +this.discount + +this.shipping).toFixed(2);
+      return this.total;
+    },
+    calcDiscount() {
+      if (this.sale) {
+        this.discount = (this.subtotal * this.sale / 100).toFixed(2);
+        return this.discount;
+      }
+    },
+    generateOrderNumber() {
+      //TODO: Create order number function
+      //TODO: Create order date function with format
+      // fetch("http://localhost:1337/api/orders", {
+      //   headers: {
+      //     Authorization: `Bearer ${this.$store.getters.getJwt}`,
+      //     "Content-Type": "application/json",
+      //   },
+      // }).then((response) => {
+      //   console.log(response);
+      // })
     }
   }
 }
@@ -229,6 +268,9 @@ export default {
   border-radius: 5px;
   background: #46A358;
   padding: 15px 18px;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
   cursor: pointer;
 }
 

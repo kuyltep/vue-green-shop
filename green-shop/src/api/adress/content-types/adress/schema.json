@@ -47,6 +47,12 @@
     },
     "zip": {
       "type": "integer"
+    },
+    "orders": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::order.order",
+      "mappedBy": "address"
     }
   }
 }

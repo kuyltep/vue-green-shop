@@ -138,6 +138,21 @@ export default {
     },
     isFormCorrect() {
       return !(this.firstnameValidate && this.lastnameValidate && this.countryValidate && this.cityValidate && this.addressValidate && this.stateValidate && this.zipValidate && this.emailValidate && this.phoneValidate);
+    },
+    isFormReadyToSend() {
+      if (this.zipValidate && this.emailValidate && this.phoneValidate && this.addressValidate && this.stateValidate && this.addressValidate && this.cityValidate && this.countryValidate && this.firstnameValidate && this.lastnameValidate) {
+        const addressData = {
+          firstName: this.firstName,
+          lastName: this.lastName,
+          country: this.country,
+          city: this.city,
+          state: this.state,
+          zip: this.zip,
+          email: this.email,
+          phone: this.phone,
+        };
+        this.$emit("sendAddressData", addressData);
+      }
     }
   },
   computed: {
@@ -176,7 +191,8 @@ export default {
     phoneValidate() {
       const phoneRegExp = /^\d{5,}$/;
       return !phoneRegExp.test(this.phone) && this.phone.length;
-    }
+    },
+
     // firstnameValidate() {
     //   return this.v$.firstname.$dirty && this.v$.firstname.required.$invalid || this.v$.firstname.$dirty && this.v$.firstname.minLength.$invalid;
     // },

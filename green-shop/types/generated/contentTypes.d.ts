@@ -698,6 +698,11 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'manyToMany',
       'api::shopping-cart.shopping-cart'
     >;
+    orders: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::order.order'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -742,6 +747,11 @@ export interface ApiAdressAdress extends Schema.CollectionType {
     >;
     appartment: Attribute.Integer;
     zip: Attribute.Integer;
+    orders: Attribute.Relation<
+      'api::adress.adress',
+      'oneToMany',
+      'api::order.order'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1024,6 +1034,56 @@ export interface ApiIconIcon extends Schema.CollectionType {
   };
 }
 
+export interface ApiOrderOrder extends Schema.CollectionType {
+  collectionName: 'orders';
+  info: {
+    singularName: 'order';
+    pluralName: 'orders';
+    displayName: 'order';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    quantities: Attribute.JSON;
+    products: Attribute.Relation<
+      'api::order.order',
+      'manyToMany',
+      'api::product.product'
+    >;
+    user: Attribute.Relation<
+      'api::order.order',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    address: Attribute.Relation<
+      'api::order.order',
+      'manyToOne',
+      'api::adress.adress'
+    >;
+    orderNumber: Attribute.String;
+    payMethod: Attribute.String;
+    total: Attribute.Decimal;
+    shipping: Attribute.Decimal;
+    description: Attribute.Text;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::order.order',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::order.order',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiProductProduct extends Schema.CollectionType {
   collectionName: 'products';
   info: {
@@ -1074,6 +1134,11 @@ export interface ApiProductProduct extends Schema.CollectionType {
       'api::product.product',
       'manyToMany',
       'api::shopping-cart.shopping-cart'
+    >;
+    orders: Attribute.Relation<
+      'api::product.product',
+      'manyToMany',
+      'api::order.order'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -1279,6 +1344,7 @@ declare module '@strapi/types' {
       'api::delivery.delivery': ApiDeliveryDelivery;
       'api::footer-image.footer-image': ApiFooterImageFooterImage;
       'api::icon.icon': ApiIconIcon;
+      'api::order.order': ApiOrderOrder;
       'api::product.product': ApiProductProduct;
       'api::shopping-cart.shopping-cart': ApiShoppingCartShoppingCart;
       'api::size.size': ApiSizeSize;

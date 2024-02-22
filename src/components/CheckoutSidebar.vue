@@ -16,19 +16,19 @@
           <CouponeApply v-show="showCuponeComponent" @setSale="setSale"></CouponeApply>
           <div class="subtotal-section">
             <p class="subtotal-text">Subtotal</p>
-            <p class="subtotal-value">${{ }}</p>
+            <p class="subtotal-value">${{ calcSubtotal }}</p>
           </div>
           <div class="discont-section">
             <p class="discont-text">Coupon Discount</p>
-            <p class="discont-value">(-{{ sale ? sale + "%" : '' }}) {{ }}</p>
+            <p class="discont-value">(-{{ sale ? sale + "%" : '' }}) {{ calcDiscount }}</p>
           </div>
           <div class="shiping-section">
             <p class="shiping-text">Shiping</p>
-            <p class="shiping-value"></p>
+            <p class="shiping-value">{{ shipping }}$</p>
           </div>
           <div class="total-section">
             <p class="total-text">Total</p>
-            <p class="total-value">${{ }}</p>
+            <p class="total-value">${{ calcTotal }}</p>
           </div>
         </div>
       </div>
@@ -53,7 +53,7 @@
         <span class="checkmark"></span>
         <p class="method method_cash">Cash on delivery</p>
       </label>
-      <button class="order-button" type="submit">Place Order</button>
+      <button @click.prevent="showThankYouPage" class="order-button" type="submit">Place Order</button>
     </div>
   </div>
 </template>
@@ -71,6 +71,11 @@ export default {
       activeElement: null,
       showCuponeComponent: false,
       sale: 0,
+      discount: 0,
+      total: 0,
+      subtotal: 0,
+      shipping: 16,
+      payMethod: '',
     }
   },
   methods: {
@@ -80,11 +85,36 @@ export default {
       }
       this.activeElement = this.$refs[event.target._value];
       this.activeElement.classList.add('active');
+      this.payMethod = this.activeElement.querySelector(".method-input").value;
+      console.log(this.payMethod)
     },
     setSale(sale) {
       this.sale = sale;
+    },
+    showThankYouPage() {
+      this.$emit('changeShowThankYouPage', { total: this.total, shipping: this.shipping, value: true, payMethod: this.payMethod });
     }
   },
+  computed: {
+    calcSubtotal() {
+      let subtotalSum = 0;
+      this.$store.getters.getterUserShoppingCartProducts.forEach((element,) => {
+        subtotalSum += element?.sale ? element.price * (100 - element?.sale) / 100 * this.$store.getters.getterUserShoppingCartProductsQuantitites[element.id] : element.price * this.$store.getters.getterUserShoppingCartProductsQuantitites[element.id];
+      });
+      this.subtotal = subtotalSum.toFixed(2);
+      return subtotalSum.toFixed(2);
+    },
+    calcTotal() {
+      this.total = Math.floor(+this.subtotal - +this.discount + +this.shipping).toFixed(2);
+      return this.total;
+    },
+    calcDiscount() {
+      if (this.sale) {
+        this.discount = (this.subtotal * this.sale / 100).toFixed(2);
+        return this.discount;
+      }
+    }
+  }
 }
 </script>
 
@@ -136,8 +166,8 @@ export default {
   content: "";
   display: none;
   position: absolute;
-  top: 2.5px;
-  left: 2.5px;
+  top: 3px;
+  left: 3px;
   width: 10px;
   height: 10px;
   background-color: #46A358;

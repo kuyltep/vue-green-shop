@@ -125,6 +125,12 @@
       "relation": "manyToMany",
       "target": "api::shopping-cart.shopping-cart",
       "mappedBy": "users"
+    },
+    "orders": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::order.order",
+      "mappedBy": "user"
     }
   }
 }
