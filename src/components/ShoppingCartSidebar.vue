@@ -30,6 +30,8 @@ export default {
   components: {
     CouponeApply,
   },
+  props: {
+  },
   data() {
     return {
       sale: 0,
@@ -47,12 +49,24 @@ export default {
   computed: {
     calcSubtotal() {
       //TODO:CREATE CALC SUBTOTAL METHOD
+      let subtotalSum = 0;
+      this.$store.getters.getterUserShoppingCartProducts.forEach((element,) => {
+        subtotalSum += element?.sale ? element.price * (100 - element?.sale) / 100 * this.$store.getters.getterUserShoppingCartProductsQuantitites[element.id] : element.price * this.$store.getters.getterUserShoppingCartProductsQuantitites[element.id];
+      });
+      this.subtotal = subtotalSum.toFixed(2);
+      return subtotalSum.toFixed(2);
     },
     calcTotal() {
       //TODO: CREATE CALC TOTAL METHOD
+      this.total = (+this.subtotal - +this.discount + +this.shipping).toFixed(2);
+      return this.total;
     },
     calcDiscount() {
       //TODO: CREATE DISCOUNT METHOD
+      if (this.sale) {
+        this.discount = (this.subtotal * this.sale / 100).toFixed(2);
+        return this.discount;
+      }
     }
   }
 }

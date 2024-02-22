@@ -4,6 +4,7 @@ export default {
     userShoppingCart: [],
     userShoppingCartIndexes: [],
     userShoppingCartProducts: [],
+    userShoppingCartProductsQuantities: [],
   },
   getters: {
     getterUserShoppingCart(state) {
@@ -15,6 +16,9 @@ export default {
     getterUserShoppingCartProducts(state) {
       return state.userShoppingCartProducts;
     },
+    getterUserShoppingCartProductsQuantitites(state) {
+      return state.userShoppingCartProductsQuantities;
+    },
   },
   mutations: {
     setUserShoppingCart(state, shoppingCart) {
@@ -24,7 +28,17 @@ export default {
       state.userShoppingCartIndexes = shoppingCartIndexes;
     },
     setUserShoppingCartProducts(state, shoppingCartProducts) {
-      return (state.userShoppingCartProducts = shoppingCartProducts);
+      state.userShoppingCartProducts = shoppingCartProducts;
+    },
+    setUserShoppingCartProductsQuantitites(
+      state,
+      shoppingCartProductsQuantities
+    ) {
+      state.userShoppingCartProductsQuantities = shoppingCartProductsQuantities;
+    },
+    setUserShoppingCartCurrentProductQuantity(state, { productId, quantity }) {
+      console.log(quantity);
+      state.userShoppingCartProductsQuantities[productId] += +quantity;
     },
   },
   actions: {
@@ -110,15 +124,18 @@ export default {
     },
     loadUserShoppingCart({ commit, getters }) {
       console.log("loadUserShoppingCart");
+      const userProductsQuantities = {};
       const items = [];
       getters.getAllProducts.forEach((allProductsItem) => {
         getters.getterUserShoppingCart.forEach((userShoppingCartItem) => {
           if (allProductsItem.id === userShoppingCartItem.id) {
             items.push(allProductsItem);
           }
+          userProductsQuantities[userShoppingCartItem.id] = 1;
         });
       });
       commit("setUserShoppingCartProducts", items);
+      commit("setUserShoppingCartProductsQuantitites", userProductsQuantities);
     },
   },
 };

@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="qty-section">
-      <p class="qty-text">(x {{ }})</p>
+      <p class="qty-text">(x {{ this.$store.getters.getterUserShoppingCartProductsQuantitites[productData.id] }})</p>
     </div>
     <div class="total-section">
       <p class="total-text">${{ calcProductPrice().toFixed(2) }}</p>

@@ -8,7 +8,11 @@
       </div>
     </div>
     <div class="price-section">
-      <p class="product-price">{{ item.price }}$</p>
+      <p v-if="!item.sale" class="product-price">{{ item.price }}$</p>
+      <div v-else class="price-section_sale">
+        <p class="product-price_sale">{{ (item.price * (100 - item.sale) / 100).toFixed(0) }}$</p>
+        <p class="product-price product-price_no-sale">{{ item.price }}$</p>
+      </div>
     </div>
     <div class="quantity-section">
       <button @click.prevent="removeProduct" class="remove-product-button product-button">-</button>
@@ -16,7 +20,9 @@
       <button @click.prevent="addProduct" class="add-product-button product-button">+</button>
     </div>
     <div class="total-section">
-      <p class="product-total">{{ item.price * productQuantity }}$</p>
+      <p class="product-total">{{ item?.sale ? (item.price * (100 - item.sale) / 100).toFixed(0) * productQuantity :
+        item.price *
+        productQuantity }}$</p>
     </div>
     <button @click.prevent="deleteProductFromShoppingCart"
       :style="{ 'background': `url(${this.$store.getters.getCardIcons[3].image}) no-repeat` }"
@@ -38,6 +44,7 @@ export default {
     removeProduct() {
       if (this.productQuantity > 1) {
         this.productQuantity--;
+        this.$store.commit("setUserShoppingCartCurrentProductQuantity", { productId: this.item.id, quantity: -1 });
       }
       //TODO: Made emit event to update prices on the shopping cart sidebar
       /**
@@ -46,10 +53,12 @@ export default {
        * При измении вызываем событие у родителя, эмитим индекс, который должен увеличится (количество продуктов увеличивается)
        * А этот объект передаем в сайдбар и исходя из этого считаем количество продуктов, умножаем на цену и выводим
        */
+
     },
     addProduct() {
       if (this.productQuantity < 10) {
         this.productQuantity++;
+        this.$store.commit("setUserShoppingCartCurrentProductQuantity", { productId: this.item.id, quantity: 1 });
       }
       //TODO: Made emit event to update prices on the shopping cart sidebar
 
@@ -113,6 +122,16 @@ export default {
 .product-price {
   font-size: 16px;
   color: #727272;
+  font-weight: 500;
+}
+
+.product-price_no-sale {
+  text-decoration: line-through;
+}
+
+.product-price_sale {
+  font-size: 16px;
+  color: #46A358;
   font-weight: 500;
 }
 

@@ -14,7 +14,8 @@
         </transition-group>
       </div>
       <div class="shopping-cart-page__sidebar">
-        <ShoppingCartSidebar></ShoppingCartSidebar>
+        <ShoppingCartSidebar :productsQuantities="this.$store.getters.getterUserShoppingCartProductsQuantities">
+        </ShoppingCartSidebar>
       </div>
     </form>
     <div class="intrested-section">
@@ -33,6 +34,12 @@ export default {
     ShoppingCartSidebar,
     CarouselWithItems,
     ShoppingCartPageProductCard,
+  },
+  data() {
+    return {
+    }
+  },
+  mounted() {
   }
 }
 </script>
@@ -85,4 +92,5 @@ export default {
   font-size: 17px;
   color: #46A358;
   font-weight: 700;
-}</style>
+}
+</style>

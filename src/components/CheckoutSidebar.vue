@@ -7,7 +7,7 @@
           <p class="products-text">Products</p>
           <p class="total-header-text">Subtotal</p>
         </div>
-        <div class="products-body" v-for="item in this.$store.getters.getProducts" :key="item.id">
+        <div class="products-body" v-for="item in this.$store.getters.getterUserShoppingCartProducts" :key="item.id">
           <SmallProductCard :productData="item"></SmallProductCard>
         </div>
         <div class="products-total">
