@@ -137,5 +137,22 @@ export default {
       commit("setUserShoppingCartProducts", items);
       commit("setUserShoppingCartProductsQuantitites", userProductsQuantities);
     },
+    clearUserShoppingCart({ commit, getters, dispatch }) {
+      getters.getterUserShoppingCartIndexes.forEach((item) => {
+        axios
+          .delete("http://localhost:1337/api/shopping-carts/" + item, {
+            headers: {
+              Authorization: `Bearer ${getters.getJwt}`,
+            },
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      });
+      dispatch("getUserShoppingCart", getters.getUser.id);
+      setTimeout(() => {
+        dispatch("loadUserShoppingCart");
+      }, 1000);
+    },
   },
 };

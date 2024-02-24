@@ -60,6 +60,7 @@
 </template>
 
 <script>
+import errorTost from '@/toasts-plugins/error.tost';
 import CouponeApply from './CouponeApply.vue';
 import SmallProductCard from './SmallProductCard.vue';
 export default {
@@ -97,8 +98,10 @@ export default {
       this.sale = sale;
     },
     showThankYouPage() {
-      if (this.payMethod.length > 0 && this.deliveryAddress !== null) {
+      if (this.payMethod.length > 0 && this.deliveryAddress !== null && this.$store.getters.getterUserShoppingCartProducts.length > 0) {
         this.$emit('changeShowThankYouPage', { total: this.total, shipping: this.shipping, value: true, payMethod: this.payMethod });
+      } else {
+        errorTost("Error order create")
       }
     }
   },

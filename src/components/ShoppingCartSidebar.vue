@@ -19,12 +19,13 @@
       <p class="total-text">Total</p>
       <p class="total-value">${{ calcTotal }}</p>
     </div>
-    <router-link to="/shop/checkout" class="checkout-page-button">Proceed To Checkout</router-link>
+    <button @click.prevent="routeCheckoutPage" class="checkout-page-button">Proceed To Checkout</button>
     <router-link to="/" class="shopping-page-button">Continue Shopping</router-link>
   </div>
 </template>
 
 <script>
+import errorTost from '@/toasts-plugins/error.tost';
 import CouponeApply from './CouponeApply.vue';
 export default {
   components: {
@@ -44,6 +45,13 @@ export default {
   methods: {
     setSale(sale) {
       this.sale = sale;
+    },
+    routeCheckoutPage() {
+      if (this.$store.getters.getterUserShoppingCartProducts.length > 0) {
+        this.$router.push('checkout')
+      } else {
+        errorTost("Error process!")
+      }
     }
   },
   computed: {

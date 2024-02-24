@@ -63,6 +63,7 @@
 <script>
 import axios from 'axios';
 import SmallProductCard from '../components/SmallProductCard.vue';
+import successTost from '@/toasts-plugins/success.tost';
 export default {
   props: {
     thankYouPageData: Object,
@@ -117,6 +118,13 @@ export default {
         year: "numeric"
       }).format(new Date());
     }
+  },
+  mounted() {
+    setTimeout(() => {
+      this.$store.dispatch("clearUserShoppingCart");
+      this.$emit('closeThankYouPage')
+    }, 10000)
+    successTost("Success order!");
   }
 }
 </script>
