@@ -1040,6 +1040,7 @@ export interface ApiOrderOrder extends Schema.CollectionType {
     singularName: 'order';
     pluralName: 'orders';
     displayName: 'order';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -1061,7 +1062,6 @@ export interface ApiOrderOrder extends Schema.CollectionType {
       'manyToOne',
       'api::adress.adress'
     >;
-    orderNumber: Attribute.String;
     payMethod: Attribute.String;
     total: Attribute.Decimal;
     shipping: Attribute.Decimal;

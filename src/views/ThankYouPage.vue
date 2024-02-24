@@ -15,7 +15,7 @@
             </div>
             <div class="order-header-column">
               <p class="order-header__top-text">Date</p>
-              <p class="order-header__bottom-text">{{ }}</p>
+              <p class="order-header__bottom-text">{{ generateDate }}</p>
             </div>
             <div class="order-header-column">
               <p class="order-header__top-text">Total</p>
@@ -61,6 +61,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import SmallProductCard from '../components/SmallProductCard.vue';
 export default {
   props: {
@@ -106,14 +107,15 @@ export default {
     generateOrderNumber() {
       //TODO: Create order number function
       //TODO: Create order date function with format
-      // fetch("http://localhost:1337/api/orders", {
-      //   headers: {
-      //     Authorization: `Bearer ${this.$store.getters.getJwt}`,
-      //     "Content-Type": "application/json",
-      //   },
-      // }).then((response) => {
-      //   console.log(response);
-      // })
+      this.$store.dispatch("getOrders")
+      return this.$store.getters.getOrdersLength + 1;
+    },
+    generateDate() {
+      return new Intl.DateTimeFormat('en-US', {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+      }).format(new Date());
     }
   }
 }

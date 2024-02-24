@@ -4,7 +4,8 @@
   "info": {
     "singularName": "order",
     "pluralName": "orders",
-    "displayName": "order"
+    "displayName": "order",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -31,9 +32,6 @@
       "relation": "manyToOne",
       "target": "api::adress.adress",
       "inversedBy": "orders"
-    },
-    "orderNumber": {
-      "type": "string"
     },
     "payMethod": {
       "type": "string"

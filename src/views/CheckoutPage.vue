@@ -1,13 +1,17 @@
 <template>
   <div class="checkout-page">
-    <ThankYouPage :thankYouPageData="thankYouPageData" v-if="showThankYouPage"></ThankYouPage>
+    <ThankYouPage @closeThankYouPage="showThankYouPage = !showThankYouPage" :thankYouPageData="thankYouPageData"
+      v-if="showThankYouPage"></ThankYouPage>
     <form action="" class="checkout-form">
       <div class="main-content-sectioni">
-        <SaveAddress @sendAddressData="sendAddressData" :deliveryAddress="deliveryAddress"></SaveAddress>
+        <SaveAddress @changeOrderDescription="changeOrderDescription" @sendAddressData="sendAddressData"
+          :deliveryAddress="deliveryAddress"></SaveAddress>
         <ShippingAdress @addAddress="addAddress" :isProfilePage="false"></ShippingAdress>
       </div>
       <div class="sidebar-section">
-        <CheckoutSidebar @changeShowThankYouPage="changeShowThankYouPage"></CheckoutSidebar>
+        <CheckoutSidebar :canCreateOrder="canCreateOrder" :deliveryAddress="deliveryAddress"
+          @changeShowThankYouPage="changeShowThankYouPage">
+        </CheckoutSidebar>
       </div>
     </form>
   </div>
@@ -35,7 +39,7 @@ export default {
   methods: {
     addAddress(address) {
       this.deliveryAddress = address;
-      console.log(this.deliveryAddress)
+      console.log(this.deliveryAddress);
     },
     sendAddressData(data) {
       console.log(data)
@@ -45,9 +49,20 @@ export default {
       this.thankYouPageData["total"] = obj['total'];
       this.thankYouPageData["shipping"] = obj['shipping'];
       this.thankYouPageData.payMethod = obj.payMethod;
+      this.thankYouPageData.address = this.deliveryAddress;
       setTimeout(() => {
         this.showThankYouPage = obj.value;
       }, 1000)
+      this.$store.dispatch('createOrder', this.thankYouPageData);
+      //TODO:AFTER CREATING ORDER USER SHOPPING CART MUST BE EMPTY
+    },
+    changeOrderDescription(data) {
+      this.thankYouPageData.orderDescription = data;
+    }
+  },
+  computed: {
+    canCreateOrder() {
+      return this.deliveryAddress !== null;
     }
   }
 }

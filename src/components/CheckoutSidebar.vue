@@ -53,7 +53,8 @@
         <span class="checkmark"></span>
         <p class="method method_cash">Cash on delivery</p>
       </label>
-      <button @click.prevent="showThankYouPage" class="order-button" type="submit">Place Order</button>
+      <button :disabled="!canCreateOrder" @click.prevent="showThankYouPage" class="order-button" type="submit">Place
+        Order</button>
     </div>
   </div>
 </template>
@@ -65,6 +66,10 @@ export default {
   components: {
     SmallProductCard,
     CouponeApply,
+  },
+  props: {
+    deliveryAddress: Object || null,
+    canCreateOrder: Boolean,
   },
   data() {
     return {
@@ -92,7 +97,9 @@ export default {
       this.sale = sale;
     },
     showThankYouPage() {
-      this.$emit('changeShowThankYouPage', { total: this.total, shipping: this.shipping, value: true, payMethod: this.payMethod });
+      if (this.payMethod.length > 0 && this.deliveryAddress !== null) {
+        this.$emit('changeShowThankYouPage', { total: this.total, shipping: this.shipping, value: true, payMethod: this.payMethod });
+      }
     }
   },
   computed: {

@@ -61,7 +61,7 @@
       </div>
       <div v-if="!isProfilePage" class="order-description">
         <label for="descr" class="descr-title">Order description (optionaly)</label>
-        <textarea class="order-textarea" name="descr" id="" cols="30" rows="10"></textarea>
+        <textarea v-model="orderDescription" class="order-textarea" name="descr" id="" cols="30" rows="10"></textarea>
       </div>
       <button v-if="isProfilePage" type="submit" class="submit-btn">Save Address</button>
     </form>
@@ -96,6 +96,7 @@ export default {
       zip: "",
       email: "",
       phone: "",
+      orderDescription: '',
     }
   },
   methods: {
@@ -246,6 +247,9 @@ export default {
       this.phone = this.deliveryAddress.phone || '';
       this.appartment = this.deliveryAddress.appartment || '';
       this.zip = this.deliveryAddress.zip || '';
+    },
+    orderDescription() {
+      this.$emit('changeOrderDescription', this.orderDescription);
     }
   }
 }
