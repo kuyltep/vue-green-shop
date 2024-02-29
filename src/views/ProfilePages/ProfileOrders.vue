@@ -2,6 +2,8 @@
   <transition-group tag="div" name="cards" class="cards">
     <ProfileOrderItem v-for="item in this.$store.getters.getUserOrders" :key="item.id" :orderItem="item">
     </ProfileOrderItem>
+    <!-- TODO!!:Create orders pagination pages for 5-10 orders on one page -->
+    <!-- TODO!!:Create orders filtration by date or may be smth else -->
   </transition-group>
 </template>
 
