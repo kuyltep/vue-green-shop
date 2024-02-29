@@ -1,6 +1,9 @@
 <template>
   <transition-group tag="div" name="cards" class="cards">
-    <ProfileOrderItem v-for="item in this.$store.getters.getUserOrders" :key="item.id" :orderItem="item">
+    <DetailOrderItem @closeDetailOrderPage="closeDetailOrderPage" v-if="isShowDetailOrderItem" :orderItem="orderItem">
+    </DetailOrderItem>
+    <ProfileOrderItem @clickOnProfileOrderItem="showDetailOrderItem" v-for="item in this.$store.getters.getUserOrders"
+      :key="item.id" :orderItem="item">
     </ProfileOrderItem>
     <!-- TODO!!:Create orders pagination pages for 5-10 orders on one page -->
     <!-- TODO!!:Create orders filtration by date or may be smth else -->
@@ -8,10 +11,29 @@
 </template>
 
 <script>
-import ProfileOrderItem from '@/components/ProfileOrderItem.vue'
+import ProfileOrderItem from '@/components/ProfileOrderItem.vue';
+import DetailOrderItem from '@/components/DetailOrderItem.vue';
 export default {
   components: {
     ProfileOrderItem,
+    DetailOrderItem,
+  },
+  data() {
+    return {
+      orderItem: {},
+      isShowDetailOrderItem: false,
+    }
+  },
+  methods: {
+    showDetailOrderItem(orderItem) {
+      this.orderItem = orderItem;
+      setTimeout(() => {
+        this.isShowDetailOrderItem = true;
+      }, 500);
+    },
+    closeDetailOrderPage() {
+      this.isShowDetailOrderItem = false;
+    }
   }
 }
 </script>

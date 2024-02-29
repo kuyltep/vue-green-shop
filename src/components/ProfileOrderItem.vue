@@ -1,5 +1,5 @@
 <template>
-  <div class="profile-order-item">
+  <div @click.prevent="clickOnProfileOrderItem" class="profile-order-item">
     <div class="header-section">
       <p class="header-section__title header-section__products">Products</p>
       <p class="header-section__title header-section__address">Address</p>
@@ -44,6 +44,9 @@ export default {
         hour: "numeric",
         minute: "numeric",
       }).format(formatDate);
+    },
+    clickOnProfileOrderItem() {
+      this.$emit("clickOnProfileOrderItem", this.orderItem);
     }
   }
 }
@@ -58,6 +61,11 @@ export default {
   background: #FBFBFB;
   border-radius: 15px;
   margin-bottom: 20px;
+}
+
+.profile-order-item:hover {
+  transition: transform .6s ease-in-out;
+  transform: scale(1.02);
 }
 
 .header-section {
