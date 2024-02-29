@@ -3,6 +3,7 @@ export default {
   state: {
     ordersLength: 0,
     allOrders: [],
+    userOrders: [],
   },
   getters: {
     getOrdersLength(state) {
@@ -11,6 +12,9 @@ export default {
     getAllOrders(state) {
       return state.allOrders;
     },
+    getUserOrders(state) {
+      return state.userOrders;
+    },
   },
   mutations: {
     setOrdersLength(state, ordersLength) {
@@ -18,6 +22,9 @@ export default {
     },
     setAllOrders(state, allOrders) {
       state.allOrders = allOrders;
+    },
+    setUserOrders(state, userOrders) {
+      state.userOrders = userOrders;
     },
   },
   actions: {
@@ -32,6 +39,24 @@ export default {
         .then((response) => {
           commit("setAllOrders", response.data.data);
           commit("setOrdersLength", response.data.data.length);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    getUserOrders({ commit, getters }) {
+      axios
+        .get("http://localhost:1337/api/orders?populate=*", {
+          headers: {
+            Authorization: `Bearer ${getters.getJwt}`,
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          const userOrders = [...response.data.data].filter((item) => {
+            return item.attributes.user.data.id === getters.getUser.id;
+          });
+          commit("setUserOrders", userOrders);
         })
         .catch((error) => {
           console.log(error);

@@ -3,7 +3,7 @@
     <div class="product-section">
       <img class="product-img" :src="'http://localhost:1337' + productData.image.data[0].attributes.url" alt="">
       <div class="product-description">
-        <p class="product-title">Name {{ productData.name }}</p>
+        <p class="product-title">{{ productData.name }}</p>
         <p class="product-sku">SKU: <span class="product-sku_bold">{{ productData.id }}</span></p>
       </div>
     </div>

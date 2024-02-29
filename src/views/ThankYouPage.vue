@@ -123,6 +123,7 @@ export default {
     setTimeout(() => {
       this.$store.dispatch("clearUserShoppingCart");
       this.$emit('closeThankYouPage')
+      this.$router.push('/');
     }, 10000)
     successTost("Success order!");
   }
@@ -296,8 +297,10 @@ export default {
 }
 
 .block-for-window {
+  overflow: scroll;
   position: relative;
   width: 578px;
+  height: 90%;
   background: #FFF;
   text-align: center;
   border-bottom: 5px solid #46A358;

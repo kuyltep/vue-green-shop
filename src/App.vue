@@ -26,11 +26,13 @@ export default {
     this.$store.commit('updateUser', JSON.parse(window.localStorage.getItem('userData')))
     this.$store.commit('updateJwt', window.localStorage.getItem('jwt'))
     if (this.$store.getters.getUser?.id) {
-      await this.$store.dispatch('getCardIcons');
-      await this.$store.dispatch('fetchAllProducts');
-      await this.$store.dispatch("getUserWishlist", this.$store.getters.getUser.id);
-      await this.$store.dispatch("loadWishlistInProfilePage")
-      await this.$store.dispatch("getUserShoppingCart", this.$store.getters.getUser.id)
+      this.$store.dispatch('getCardIcons');
+      this.$store.dispatch('fetchAllProducts');
+      this.$store.dispatch("getUserWishlist", this.$store.getters.getUser.id);
+      this.$store.dispatch("loadWishlistInProfilePage")
+      this.$store.dispatch("getUserShoppingCart", this.$store.getters.getUser.id)
+      this.$store.dispatch("getOrders");
+      this.$store.dispatch("getUserOrders");
     }
   },
 }

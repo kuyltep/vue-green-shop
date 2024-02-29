@@ -1,27 +1,20 @@
 <template>
   <transition-group tag="div" name="cards" class="cards">
-    <Card :item="item" v-for="item in this.$store.getters.getterUserShoppingCartProducts" :key="item.id"
-      :icons="this.$store.getters.getCardIcons"></Card>
+    <ProfileOrderItem v-for="item in this.$store.getters.getUserOrders" :key="item.id" :orderItem="item">
+    </ProfileOrderItem>
   </transition-group>
 </template>
 
 <script>
-import Card from '@/components/HomePage/Card.vue';
+import ProfileOrderItem from '@/components/ProfileOrderItem.vue'
 export default {
   components: {
-    Card,
+    ProfileOrderItem,
   }
 }
 </script>
 
 <style scoped>
-.cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-row-gap: 30px;
-  grid-column-gap: 15px;
-}
-
 .cards-enter-active,
 .cards-leave-active {
   transition: all .8s ease-in-out;
