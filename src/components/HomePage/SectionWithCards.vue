@@ -20,7 +20,7 @@
     <transition-group tag="div" name="cards" class="cards">
       <Card v-for="item in items" :key="item.id" :item="item" :icons="cardIcons"></Card>
     </transition-group>
-    <Pagination @changePage="changePaginationPage"></Pagination>
+    <Pagination :pageCount="this.$store.getters.getPagesCounter" @changePage="changePaginationPage"></Pagination>
   </div>
 </template>
 

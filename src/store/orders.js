@@ -4,6 +4,10 @@ export default {
     ordersLength: 0,
     allOrders: [],
     userOrders: [],
+    paginationUserOrders: [],
+    paginationPageNumber: 1,
+    ordersPageSize: 5,
+    ordersPagesCounter: 0,
   },
   getters: {
     getOrdersLength(state) {
@@ -15,6 +19,18 @@ export default {
     getUserOrders(state) {
       return state.userOrders;
     },
+    getPaginationOrdersPageNumber(state) {
+      return state.paginationPageNumber;
+    },
+    getPaginationUserOrders(state) {
+      return state.paginationUserOrders;
+    },
+    getOrdersPagesCounter(state) {
+      return state.ordersPagesCounter;
+    },
+    getOrdersPageSize(state) {
+      return state.ordersPageSize;
+    },
   },
   mutations: {
     setOrdersLength(state, ordersLength) {
@@ -25,6 +41,27 @@ export default {
     },
     setUserOrders(state, userOrders) {
       state.userOrders = userOrders;
+    },
+    setPaginationOrdersPagNumber(state, pageNumber) {
+      state.paginationPageNumber = pageNumber;
+    },
+    setPaginationUserOrders(state, orders) {
+      let pageContent = [];
+      state.ordersPagesCounter = Math.ceil(
+        orders.length / state.ordersPageSize
+      );
+      orders.forEach((element, index) => {
+        if (pageContent.length < state.ordersPageSize) {
+          pageContent.push(element);
+        } else {
+          state.paginationUserOrders.push(pageContent);
+          pageContent = [];
+        }
+        if (index === orders.length - 1) {
+          state.paginationUserOrders.push(pageContent);
+          pageContent = [];
+        }
+      });
     },
   },
   actions: {
@@ -57,6 +94,7 @@ export default {
             return item.attributes.user.data.id === getters.getUser.id;
           });
           commit("setUserOrders", userOrders);
+          commit("setPaginationUserOrders", userOrders);
         })
         .catch((error) => {
           console.log(error);

@@ -1,8 +1,7 @@
 <template>
-  <paginate v-model="pageNumber" class="pagination-block" :page-count="this.$store.getters.getPagesCounter"
-    :initial-page="1" :page-range="3" :margin-pages="3" :click-handler="changePage" :prev-text="'<'" :next-text="'>'"
-    :container-class="'pagination'" :page-class="'page-item'" :active-class="'active-item-pagination'"
-    :hide-prev-next="true">
+  <paginate v-model="pageNumber" class="pagination-block" :page-count="pageCount" :initial-page="1" :page-range="3"
+    :margin-pages="3" :click-handler="changePage" :prev-text="'<'" :next-text="'>'" :container-class="'pagination'"
+    :page-class="'page-item'" :active-class="'active-item-pagination'" :hide-prev-next="true">
   </paginate>
 </template>
 
@@ -12,6 +11,9 @@ import Paginate from "vuejs-paginate-next";
 export default {
   components: {
     Paginate,
+  },
+  props: {
+    pageCount: Number,
   },
   data() {
     return {

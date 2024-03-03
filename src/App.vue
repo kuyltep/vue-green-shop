@@ -25,6 +25,7 @@ export default {
 
     this.$store.commit('updateUser', JSON.parse(window.localStorage.getItem('userData')))
     this.$store.commit('updateJwt', window.localStorage.getItem('jwt'))
+
     if (this.$store.getters.getUser?.id) {
       this.$store.dispatch('getCardIcons');
       this.$store.dispatch('fetchAllProducts');
@@ -37,6 +38,7 @@ export default {
   },
 }
 </script>
+
 <style>
 @font-face {
   font-family: 'CeraPro';
