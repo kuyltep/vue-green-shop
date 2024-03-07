@@ -42,15 +42,15 @@ export default {
       this.activeElement = null;
     },
     async changePaginationPage(page) {
-      this.pageNumber = page;
-      await this.$store.dispatch('fetchProducts', { pageSize: this.pageSize, page: this.pageNumber });
+      this.$store.commit('setProductsPageNumber', page);
+      await this.$store.dispatch('fetchProducts');
       this.items = this.$store.getters.getFilteredProducts;
     }
   },
   async mounted() {
-    await this.$store.dispatch('fetchProducts', { pageSize: this.pageSize, page: this.pageNumber });
+    await this.$store.dispatch('fetchProducts');
     this.items = this.$store.getters.getFilteredProducts;
-    console.log(this.items);
+
   },
 }
 </script>

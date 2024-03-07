@@ -6,8 +6,16 @@ export default {
     filteredProducts: [],
     cardIcons: [],
     pagesCounter: 0,
+    pageSize: 3,
+    pageNumber: 1,
   },
   getters: {
+    getProductsPageSize(state) {
+      return state.pageSize;
+    },
+    getProductsPageNumber(state) {
+      return state.pageNumber;
+    },
     getProducts(state) {
       return state.products;
     },
@@ -25,6 +33,9 @@ export default {
     },
   },
   mutations: {
+    setProductsPageNumber(state, pageNumber) {
+      state.pageNumber = pageNumber;
+    },
     setProducts(state, products) {
       state.products = products;
     },
@@ -45,12 +56,16 @@ export default {
     },
   },
   actions: {
-    async fetchProducts({ commit }, data) {
+    async fetchProducts({ commit, getters }) {
       commit("clearProducts");
       const response = await axios.get(
         `http://localhost:1337/api/products?pagination[pageSize]=${
-          data?.pageSize
-        }${data?.page ? "&pagination[page]=" + data?.page : ""}&populate=*`
+          getters.getProductsPageSize
+        }${
+          getters.getProductsPageNumber
+            ? "&pagination[page]=" + getters.getProductsPageNumber
+            : ""
+        }&populate=*`
       );
       const products = response.data.data.map((product) => {
         return {

@@ -3,8 +3,7 @@
     <DetailOrderItem @closeDetailOrderPage="closeDetailOrderPage" v-if="isShowDetailOrderItem" :orderItem="orderItem">
     </DetailOrderItem>
     <ProfileOrderItem @clickOnProfileOrderItem="showDetailOrderItem"
-      v-for="item in this.orderItems.length ? this.orderItems[paginationPage - 1] : this.$store.getters.getPaginationUserOrders[paginationPage - 1]"
-      :key="item.id" :orderItem="item">
+      v-for="item in  this.$store.getters.getPaginationUserOrders[paginationPage - 1]" :key="item.id" :orderItem="item">
     </ProfileOrderItem>
     <!-- TODO!!:Create orders pagination pages for 5-10 orders on one page -->
     <!-- TODO!!:Create orders filtration by date or may be smth else -->
@@ -40,6 +39,7 @@ export default {
     closeDetailOrderPage() {
       this.isShowDetailOrderItem = false;
     },
+
 
     changePaginationPage(value) {
       this.paginationPage = value;
