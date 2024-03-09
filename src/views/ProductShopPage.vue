@@ -1,18 +1,14 @@
 <template>
-  <div class="top-section"></div>
+  <div class="top-section">
+    <div class="top-section__left">
+      Image section
+    </div>
+    <div class="top-section__right">
+      <ProductRightDescription :product="product"></ProductRightDescription>
+    </div>
+  </div>
   <div class="bottom-section">
-    <div class="bottom-section__title-section">
-      <h4 @click.prevent="changeActiveElement" ref="description" class="bottom-section__title description">
-        Product
-        description</h4>
-      <h4 @click.prevent="changeActiveElement" ref="reviews" class="bottom-section__title reviews">Reviews ()</h4>
-    </div>
-    <div v-for="description in this.product.fullDescription" :key="description.children"
-      class="bottom-section__description-block">
-      <p v-if="description.type === 'paragraph'" class="bottom-section__description">{{ description.children[0].text }}
-      </p>
-      <p v-else class="bottom-section__title-description">{{ description.children[0].text }}</p>
-    </div>
+    <product-description :fullDescription="this.product.fullDescription"></product-description>
   </div>
   <div class="carousel-section">
     <h3 class="title_h3 carousel-section__title">Releated Products</h3>
@@ -21,56 +17,49 @@
 </template>
 
 <script>
+import ProductRightDescription from '@/components/ProductPage/ProductRightDescription.vue';
 import CarouselWithItems from '@/components/CarouselWithItems.vue';
+import ProductDescription from '@/components/ProductPage/ProductDescription.vue';
 export default {
   components: {
     CarouselWithItems,
+    ProductDescription,
+    ProductRightDescription,
   },
   data() {
     return {
       product: {
       },
-      activeElement: null,
     }
   },
   methods: {
-    changeActiveElement(event) {
-      if (this.activeElement) {
-        this.activeElement.classList.remove('active');
-        this.activeElement = null;
-      }
-      this.activeElement = event.target;
-      this.activeElement.classList.add('active');
-      console.log(this.activeElement);
-    }
+
   },
   mounted() {
     setTimeout(() => {
-
-      this.activeElement = this.$refs["description"];
-      this.activeElement.classList.add('active');
       this.product = [...this.$store.getters.getAllProducts].find(item => {
         return item.id == this.$route.params.id;
       });
       console.log(this.product);
-    }, 10)
+    }, 0)
   }
 }
 </script>
 
 <style scoped>
+.top-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 50px;
+  margin-bottom: 90px;
+  margin-top: 40px;
+}
+
 .bottom-section {
   margin-bottom: 130px;
 }
 
-.active {
-  color: #46A358;
-  font-size: 18px;
-  font-weight: 700;
-  border-bottom: 3px solid #46A358;
-  opacity: 1;
-  transition: opacity .5s ease-in-out;
-}
+
 
 
 
@@ -83,41 +72,7 @@ export default {
   border-bottom: .5px solid #46A358;
 }
 
-.bottom-section__title-section {
-  display: flex;
-  border-bottom: .5px solid #46A358;
-  margin-bottom: 10px;
 
-}
-
-.bottom-section__title {
-  font-size: 16px;
-  cursor: pointer;
-  padding-bottom: 10px;
-  transition: transform .5s ease;
-}
-
-.bottom-section__title:hover {
-  transform: scale(1.03);
-}
-
-.bottom-section__title:not(:last-child) {
-  margin-right: 30px;
-}
-
-.bottom-section__description {
-  font-size: 14px;
-  color: #727272;
-  font-weight: 400;
-  margin-bottom: 30px;
-}
-
-.bottom-section__title-description {
-  font-size: 14px;
-  color: #3d3d3d;
-  font-weight: 700;
-  margin-bottom: 10px;
-}
 
 .carousel-section {
   margin-bottom: 50px;
