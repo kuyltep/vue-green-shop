@@ -16,7 +16,19 @@
       class="product-description__size-item">
       {{ item }}</p>
   </div>
-  <div class="product-buttons"></div>
+  <div class="product-buttons">
+    <div class="product-buttons__count-buttons">
+      <button @click.prevent="changeProductCounter('decrement')"
+        class="prdouct-buttons__count-button decrement-button">-</button>
+      <p class="product-buttons__product-counter">{{ productCounter }}</p>
+      <button @click.prevent="changeProductCounter('increment')"
+        class="prdouct-buttons__count-button increment-button">+</button>
+    </div>
+    <!-- TODO!!:Add button click logic -->
+    <button @click.prevent="" class="product-button__buy-now">buy now</button>
+    <button @click.prevent="" class="product-button__add-to-cart">add to cart</button>
+    <button @click.prevent="" class="product-button__add-wish"></button>
+  </div>
   <div class="product-links">
     <p class="product-links__sku">SKU: <span class="products-links__gray-text">{{ product.id }}</span></p>
     <p class="product-links__categories">Categories: <span class="products-links__gray-text">{{
@@ -24,15 +36,17 @@
     <p class="product-links__tags">Tags: <span class="products-links__gray-text">{{ product.tags }}</span></p>
     <div class="product-links__links">
       <p class="product-links__text-link">Share this products:</p>
-      <a href="#" class="product-links__link-item instagram"></a>
-      <a href="#" class="product-links__link-item facebook"></a>
-      <a href="#" class="product-links__link-item twitter"></a>
-      <a href="#" class="product-links__link-item linkedin"></a>
+      <a href="https://instagram.com" class="product-links__link-item instagram"></a>
+      <a href="https://facebook.com" class="product-links__link-item facebook"></a>
+      <a href="https://twitter.com" class="product-links__link-item twitter"></a>
+      <a href="https://linkedin.com" class="product-links__link-item linkedin"></a>
     </div>
   </div>
 </template>
 
 <script>
+import errorTost from '@/toasts-plugins/error.tost';
+
 
 export default {
   props: {
@@ -43,6 +57,7 @@ export default {
       activeSizeItem: null,
       priceWithSize: null,
       productCategories: "",
+      productCounter: 1,
     }
   },
   methods: {
@@ -54,6 +69,21 @@ export default {
       this.activeSizeItem = this.$refs[item][0];
       this.activeSizeItem.classList.add("product-description__size-item_active")
       this.priceWithSize = this.product.prices[item];
+    },
+    changeProductCounter(operation) {
+      if (operation === 'decrement') {
+        if (this.productCounter > 1) {
+          this.productCounter -= 1;
+        } else {
+          errorTost('Counter must be more 1')
+        }
+      } else if (operation === 'increment') {
+        if (this.productCounter < 10) {
+          this.productCounter += 1;
+        } else {
+          errorTost('Counter must be less 10')
+        }
+      }
     },
     mapProductCategories() {
       return this.product.categories.map(item => {
@@ -215,5 +245,80 @@ export default {
 
 .linkedin {
   background: url("../../assets/img/footer/social-icons/Linkedin.svg") center/cover no-repeat;
+}
+
+.product-buttons {
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.product-buttons__count-buttons {
+  display: grid;
+  grid-template-columns: 35px 50px 35px;
+  margin-right: 30px;
+}
+
+.product-buttons__product-counter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+}
+
+.prdouct-buttons__count-button {
+  width: 35px;
+  height: 35px;
+  background: #46A358;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .2s ease;
+}
+
+.product-button__add-wish:hover,
+.product-button__add-to-cart:hover,
+.product-button__buy-now:hover,
+.prdouct-buttons__count-button:hover {
+  transform: scale(1.05);
+}
+
+.product-button__buy-now {
+  text-transform: uppercase;
+  width: 130px;
+  height: 40px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  background: #46A358;
+  border-radius: 5px;
+  margin-right: 20px;
+  transition: transform .2s ease;
+}
+
+.product-button__add-to-cart {
+  color: #46A358;
+  font-size: 16px;
+  background: transparent;
+  width: 130px;
+  font-weight: 500;
+  height: 40px;
+  border-radius: 5px;
+  border: 2px solid #46A358;
+  text-transform: uppercase;
+  transition: transform .2s ease;
+  margin-right: 20px;
+}
+
+.product-button__add-wish {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #46A358;
+  border-radius: 5px;
+  background: url("../../assets/img/cards/heartGreen.svg") center/cover no-repeat;
+  background-size: 20px 20px;
+  transition: transform .2s ease;
 }
 </style>
