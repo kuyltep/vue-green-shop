@@ -1,7 +1,7 @@
 <template>
   <div class="top-section">
     <div class="top-section__left">
-      Image section
+      <ProductImages :productImages="product?.image"></ProductImages>
     </div>
     <div class="top-section__right">
       <ProductRightDescription :product="product"></ProductRightDescription>
@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import ProductImages from '@/components/ProductPage/ProductImages.vue';
 import ProductRightDescription from '@/components/ProductPage/ProductRightDescription.vue';
 import CarouselWithItems from '@/components/CarouselWithItems.vue';
 import ProductDescription from '@/components/ProductPage/ProductDescription.vue';
@@ -25,6 +26,7 @@ export default {
     CarouselWithItems,
     ProductDescription,
     ProductRightDescription,
+    ProductImages
   },
   data() {
     return {
@@ -35,7 +37,7 @@ export default {
   methods: {
 
   },
-  mounted() {
+  created() {
     setTimeout(() => {
       this.product = [...this.$store.getters.getAllProducts].find(item => {
         return item.id == this.$route.params.id;

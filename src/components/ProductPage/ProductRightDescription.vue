@@ -308,7 +308,7 @@ export default {
   border-radius: 5px;
   border: 2px solid #46A358;
   text-transform: uppercase;
-  transition: transform .2s ease;
+  transition: all .2s ease;
   margin-right: 20px;
 }
 
@@ -319,6 +319,6 @@ export default {
   border-radius: 5px;
   background: url("../../assets/img/cards/heartGreen.svg") center/cover no-repeat;
   background-size: 20px 20px;
-  transition: transform .2s ease;
+  transition: all .2s ease;
 }
 </style>
