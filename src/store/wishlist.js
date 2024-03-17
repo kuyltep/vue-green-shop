@@ -1,4 +1,5 @@
 import axios from "axios";
+import successTost from "@/toasts-plugins/success.tost";
 export default {
   state: {
     userWishlist: [],
@@ -87,7 +88,8 @@ export default {
           dispatch("getUserWishlist", getters.getUser.id);
           setTimeout(() => {
             dispatch("loadWishlistInProfilePage");
-          }, 1000);
+            successTost("Product has been added in wishlist");
+          }, 10);
         })
         .catch((error) => console.log(error));
     },
@@ -106,7 +108,8 @@ export default {
           dispatch("getUserWishlist", getters.getUser.id);
           setTimeout(() => {
             dispatch("loadWishlistInProfilePage");
-          }, 1000);
+            successTost("Product has been removed from wishlist");
+          }, 10);
         })
         .catch((error) => console.log(error));
     },

@@ -1,7 +1,11 @@
 <template>
+  <transition name="scale">
+    <CardImageScale @closeImageScale="closeProductImageScale" :image="productImage" v-if="isCardImageScaleOpen">
+    </CardImageScale>
+  </transition>
   <div class="top-section">
     <div class="top-section__left">
-      <ProductImages :productImages="product?.image"></ProductImages>
+      <ProductImages @openProductImageScale="openProductImageScale" :productImages="product?.image"></ProductImages>
     </div>
     <div class="top-section__right">
       <ProductRightDescription :product="product"></ProductRightDescription>
@@ -17,6 +21,7 @@
 </template>
 
 <script>
+import CardImageScale from '@/components/HomePage/CardImageScale.vue';
 import ProductImages from '@/components/ProductPage/ProductImages.vue';
 import ProductRightDescription from '@/components/ProductPage/ProductRightDescription.vue';
 import CarouselWithItems from '@/components/CarouselWithItems.vue';
@@ -26,16 +31,25 @@ export default {
     CarouselWithItems,
     ProductDescription,
     ProductRightDescription,
-    ProductImages
+    ProductImages,
+    CardImageScale,
   },
   data() {
     return {
       product: {
       },
+      isCardImageScaleOpen: false,
+      productImage: null,
     }
   },
   methods: {
-
+    openProductImageScale(image) {
+      this.isCardImageScaleOpen = true;
+      this.productImage = image;
+    },
+    closeProductImageScale() {
+      this.isCardImageScaleOpen = false;
+    }
   },
   created() {
     setTimeout(() => {
@@ -43,7 +57,10 @@ export default {
         return item.id == this.$route.params.id;
       });
       console.log(this.product);
-    }, 0)
+    }, 30)
+    if (this.$store.getters.getUser.id) {
+      this.$store.dispatch('getUserShoppingCart', this.$store.getters.getUser.id)
+    }
   }
 }
 </script>
@@ -82,5 +99,19 @@ export default {
 
 .carousel-section__title {
   margin-bottom: 50px;
+}
+
+.scale-enter-active {
+  transition: all .3s ease;
+}
+
+.scale-leave-active {
+  transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+
+.scale-enter,
+.scale-leave-to {
+  transform: translateX(50px);
+  opacity: 0;
 }
 </style>

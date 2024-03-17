@@ -1,4 +1,5 @@
 import axios from "axios";
+import successTost from "@/toasts-plugins/success.tost";
 export default {
   state: {
     userShoppingCart: [],
@@ -69,7 +70,7 @@ export default {
           commit("setUserShoppingCart", currentUserProductsInShoppingCart);
           setTimeout(() => {
             dispatch("loadUserShoppingCart");
-          });
+          }, 0);
         })
         .catch((error) => {
           console.log(error);
@@ -99,7 +100,8 @@ export default {
           dispatch("getUserShoppingCart", getters.getUser.id);
           setTimeout(() => {
             dispatch("loadUserShoppingCart");
-          }, 1000);
+            successTost("Product has been added in shopping cart");
+          }, 10);
         })
         .catch((error) => console.log(error));
     },
@@ -118,7 +120,8 @@ export default {
           dispatch("getUserShoppingCart", getters.getUser.id);
           setTimeout(() => {
             dispatch("loadUserShoppingCart");
-          }, 1000);
+            successTost("Product has been removed from shopping cart");
+          }, 10);
         })
         .catch((error) => console.log(error));
     },

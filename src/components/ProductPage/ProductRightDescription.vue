@@ -25,9 +25,12 @@
         class="prdouct-buttons__count-button increment-button">+</button>
     </div>
     <!-- TODO!!:Add button click logic -->
-    <button @click.prevent="" class="product-button__buy-now">buy now</button>
-    <button @click.prevent="" class="product-button__add-to-cart">add to cart</button>
-    <button @click.prevent="" class="product-button__add-wish"></button>
+    <button @click.prevent="buyNowProduct" class="product-button__buy-now">buy now</button>
+    <button @click.prevent="addProductInTheShoppingCart" :class="{ 'active-cart-button': isItemInCart }"
+      class="product-button__add-to-cart">add to
+      cart</button>
+    <button @click.prevent="addProductInTheWishList" :class="{ 'active-wish-button': isItemInWishlts }"
+      class="product-button__add-wish"></button>
   </div>
   <div class="product-links">
     <p class="product-links__sku">SKU: <span class="products-links__gray-text">{{ product.id }}</span></p>
@@ -46,6 +49,7 @@
 
 <script>
 import errorTost from '@/toasts-plugins/error.tost';
+import successTost from '@/toasts-plugins/success.tost';
 
 
 export default {
@@ -58,6 +62,8 @@ export default {
       priceWithSize: null,
       productCategories: "",
       productCounter: 1,
+      isItemInCart: false,
+      isItemInWishlts: false,
     }
   },
   methods: {
@@ -74,22 +80,71 @@ export default {
       if (operation === 'decrement') {
         if (this.productCounter > 1) {
           this.productCounter -= 1;
+          this.$store.commit("setUserShoppingCartCurrentProductQuantity", { productId: this.product.id, quantity: -1 });
         } else {
-          errorTost('Counter must be more 1')
+          errorTost('Counter must be more 0')
         }
       } else if (operation === 'increment') {
         if (this.productCounter < 10) {
           this.productCounter += 1;
+          this.$store.commit("setUserShoppingCartCurrentProductQuantity", { productId: this.product.id, quantity: 1 });
         } else {
-          errorTost('Counter must be less 10')
+          errorTost('Counter must be less 11')
         }
       }
     },
     mapProductCategories() {
-      return this.product.categories.map(item => {
-        const [firstWord, secondWord] = item.split('-');
-        return `${firstWord[0].toUpperCase() + firstWord.slice(1)} ${secondWord[0].toUpperCase() + secondWord.slice(1)}`;
-      }).join(", ");
+      if (this.product.categories.length) {
+        return this.product.categories.map(item => {
+          if (item.includes("-")) {
+            const [firstWord, secondWord] = item.split('-');
+            return `${firstWord[0].toUpperCase() + firstWord.slice(1)} ${secondWord[0].toUpperCase() + secondWord.slice(1)}`;
+          } else {
+            return (item[0].toUpperCase() + item.slice(1));
+          }
+        }).join(", ");
+      }
+    },
+    buyNowProduct() {
+      if (this.$store.getters.getUser.id) {
+        this.$store.dispatch("clearUserShoppingCart");
+        this.$store.dispatch('addItemInUserShoppingCart', { id: this.product.id });
+        this.$store.commit('setUserShoppingCartCurrentProductQuantity', { productId: this.product.id, quantity: this.productCounter });
+        successTost("Now you are going to the checkout page");
+        setTimeout(() => {
+          console.log(this.$router.push('/shop/checkout'))
+          // this.$router.route("shop/checkout")
+        }, 1000)
+      }
+    },
+    async addProductInTheShoppingCart() {
+      if (this.$store.getters.getUser.id) {
+        if (!this.isItemInCart) {
+          this.$store.dispatch('addItemInUserShoppingCart', { id: this.product.id });
+          this.isItemInCart = true;
+        } else {
+          const shoppingCartProductId = this.$store.getters.getterUserShoppingCartIndexes[this.$store.getters.getterUserShoppingCart.findIndex(product => product.id === this.product.id)];
+          await this.$store.dispatch('deleteItemFromUserShoppingCart', { id: shoppingCartProductId });
+          document.querySelector(".product-button__add-to-cart").classList.remove('active-cart-button');
+          this.isItemInCart = false;
+        }
+      } else {
+        errorTost("User must be authorized");
+      }
+    },
+    addProductInTheWishList() {
+      if (this.$store.getters.getUser.id) {
+        if (!this.isItemInWishlts) {
+          this.$store.dispatch('addItemInUserWishlist', { id: this.product.id });
+          this.isItemInWishlts = true;
+        } else {
+          const wishId = this.$store.getters.getterUserWishlistIndexes[this.$store.getters.getterUserWishlist.findIndex(product => product.id == this.product.id)];
+          this.$store.dispatch("deleteItemFromUserWishlist", { id: wishId });
+          this.isItemInWishlts = false;
+        }
+      } else {
+        errorTost("User must authorized")
+      }
     }
   },
   mounted() {
@@ -98,7 +153,17 @@ export default {
       this.activeSizeItem = this.$refs[Object.keys(this.$refs)[0]][0];
       this.activeSizeItem.classList.add("product-description__size-item_active")
       this.productCategories = this.mapProductCategories();
-    }, 10)
+      console.log(this.$store.getters.getterUserShoppingCart)
+      this.isItemInCart = this.$store.getters.getterUserShoppingCart.some(item => item.id === this.product.id);
+      this.isItemInWishlts = this.$store.getters.getterUserWishlist.some(item => item.id === this.product.id);
+      console.log(this.isItemInWishlts);
+      if (this.isItemInWishlts) {
+        document.querySelector(".product-button__add-wish").classList.add("active-wish-button");
+      }
+      if (this.isItemInCart) {
+        document.querySelector(".product-button__add-to-cart").classList.add('active-cart-button');
+      }
+    }, 100)
   }
 }
 </script>
@@ -130,6 +195,15 @@ export default {
   color: #727272;
   font-weight: 500;
   text-decoration: line-through;
+}
+
+.active-cart-button {
+  background: #46A358 !important;
+  color: #fff !important;
+}
+
+.active-wish-button {
+  background-color: #419c53 !important;
 }
 
 .price-section__price {
@@ -296,6 +370,7 @@ export default {
   border-radius: 5px;
   margin-right: 20px;
   transition: transform .2s ease;
+  cursor: pointer;
 }
 
 .product-button__add-to-cart {
@@ -310,6 +385,8 @@ export default {
   text-transform: uppercase;
   transition: all .2s ease;
   margin-right: 20px;
+  cursor: pointer;
+
 }
 
 .product-button__add-wish {
@@ -320,5 +397,7 @@ export default {
   background: url("../../assets/img/cards/heartGreen.svg") center/cover no-repeat;
   background-size: 20px 20px;
   transition: all .2s ease;
+  cursor: pointer;
+
 }
 </style>
