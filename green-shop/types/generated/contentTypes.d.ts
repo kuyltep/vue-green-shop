@@ -703,6 +703,11 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToMany',
       'api::order.order'
     >;
+    product_comments: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::product-comment.product-comment'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1140,6 +1145,11 @@ export interface ApiProductProduct extends Schema.CollectionType {
       'manyToMany',
       'api::order.order'
     >;
+    product_comments: Attribute.Relation<
+      'api::product.product',
+      'oneToMany',
+      'api::product-comment.product-comment'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1151,6 +1161,48 @@ export interface ApiProductProduct extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::product.product',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiProductCommentProductComment extends Schema.CollectionType {
+  collectionName: 'product_comments';
+  info: {
+    singularName: 'product-comment';
+    pluralName: 'product-comments';
+    displayName: 'product-comment';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    comment: Attribute.Text;
+    raiting: Attribute.Integer;
+    product: Attribute.Relation<
+      'api::product-comment.product-comment',
+      'manyToOne',
+      'api::product.product'
+    >;
+    user: Attribute.Relation<
+      'api::product-comment.product-comment',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::product-comment.product-comment',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::product-comment.product-comment',
       'oneToOne',
       'admin::user'
     > &
@@ -1346,6 +1398,7 @@ declare module '@strapi/types' {
       'api::icon.icon': ApiIconIcon;
       'api::order.order': ApiOrderOrder;
       'api::product.product': ApiProductProduct;
+      'api::product-comment.product-comment': ApiProductCommentProductComment;
       'api::shopping-cart.shopping-cart': ApiShoppingCartShoppingCart;
       'api::size.size': ApiSizeSize;
       'api::slide.slide': ApiSlideSlide;

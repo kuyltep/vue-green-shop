@@ -57,6 +57,7 @@ export default {
         return item.id == this.$route.params.id;
       });
       console.log(this.product);
+      this.$store.dispatch("getProductCommentsFromServer", { id: this.product.id });
     }, 30)
     if (this.$store.getters.getUser.id) {
       this.$store.dispatch('getUserShoppingCart', this.$store.getters.getUser.id)

@@ -8,6 +8,7 @@ import wishlist from "./wishlist";
 import coupones from "./coupones";
 import shoppingCart from "./shopping-cart";
 import orders from "./orders";
+import productComments from "./product-comments";
 export default createStore({
   state: {},
   getters: {},
@@ -23,5 +24,6 @@ export default createStore({
     coupones,
     shoppingCart,
     orders,
+    productComments,
   },
 });

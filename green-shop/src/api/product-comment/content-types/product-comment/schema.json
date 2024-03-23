@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "product_comments",
+  "info": {
+    "singularName": "product-comment",
+    "pluralName": "product-comments",
+    "displayName": "product-comment",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "comment": {
+      "type": "text"
+    },
+    "raiting": {
+      "type": "integer"
+    },
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product.product",
+      "inversedBy": "product_comments"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "product_comments"
+    }
+  }
+}

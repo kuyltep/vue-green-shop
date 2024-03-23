@@ -88,6 +88,12 @@
       "relation": "manyToMany",
       "target": "api::order.order",
       "mappedBy": "products"
+    },
+    "product_comments": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product-comment.product-comment",
+      "mappedBy": "product"
     }
   }
 }

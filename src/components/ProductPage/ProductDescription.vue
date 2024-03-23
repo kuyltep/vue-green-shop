@@ -15,6 +15,16 @@
         <p v-else class="bottom-section__title-description">{{ description.children[0].text }}</p>
       </div>
     </div>
+    <div v-else class="comments-section">
+      <div class="comment-element">
+        <div class="comment__header-section">
+          <p class="commment__user">Vlad</p>
+          <div ref="comment-raiting" class="commment__raiting"></div>
+        </div>
+        <p class="comment-body">jfaslk;fjaasljfldsjflsd;fjsal;fjslkfjsdjfffffffffffffffffsalfjsadlfjsdlkafjlsdajf</p>
+        <p class="comment-date">01.12.2023</p>
+      </div>
+    </div>
   </transition>
 </template>
 
@@ -39,7 +49,22 @@ export default {
       this.activeElement = event.target;
       this.activeElement.classList.add('active');
       console.log(this.activeElement);
+      setTimeout(() => {
+        this.showProductRaiting(2);
+      }, 10)
     },
+    showProductRaiting(raiting) {
+      const raitingElements = [];
+      for (let i = 1; i <= raiting; i++) {
+        const raitingStarElement = `<div class="raiting-point raiting-point_active"></div>`;
+        this.$refs['comment-raiting'].insertAdjacentHTML('beforeEnd', raitingStarElement);
+      }
+      for (let j = 5 - raiting; j <= 5; j++) {
+        const raitingStarElementEmpty = `<div class="raiting-point"></div>`;
+        this.$refs['comment-raiting'].insertAdjacentHTML('beforeEnd', raitingStarElementEmpty);
+      }
+      return raitingElements.join('').slice(1, -1);
+    }
   },
   mounted() {
     setTimeout(() => {
@@ -51,6 +76,49 @@ export default {
 </script>
 
 <style scoped>
+.comments-section {
+  padding: 20px;
+  height: 500px;
+  overflow: scroll;
+}
+
+.comment-element {
+  background: #FBFBFB;
+  border-radius: 20px;
+  padding: 20px 40px;
+}
+
+.commment__user {
+  font-size: 28px;
+  color: #46A358;
+  font-weight: 500;
+}
+
+.comment-body {
+  font-size: 24px;
+  line-height: 24px;
+  margin-bottom: 30px;
+}
+
+.comment-date {
+  text-align: right;
+  font-size: 16px;
+}
+
+.comment__header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.commment__raiting {
+  height: 30px;
+  display: grid;
+  grid-template-columns: repeat(5, 30px);
+  grid-gap: 15px;
+}
+
 .description-enter-active {
   transition: all 0.3s ease-out;
 }

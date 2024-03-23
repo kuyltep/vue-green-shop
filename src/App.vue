@@ -124,4 +124,20 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #46A358;
 }
+
+.raiting-point {
+  z-index: 10;
+  width: 30px;
+  height: 30px;
+  background-image: url("./assets/img/cards/StarEmpty.svg");
+  background-size: 30px 30px;
+}
+
+.raiting-point_active {
+  z-index: 10;
+  width: 30px;
+  height: 30px;
+  background-image: url("./assets/img/cards/Star.svg");
+  background-size: 30px 30px;
+}
 </style>
