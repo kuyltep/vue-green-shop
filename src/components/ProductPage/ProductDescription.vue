@@ -19,7 +19,11 @@
       <div class="comment-element">
         <div class="comment__header-section">
           <p class="commment__user">Vlad</p>
-          <div ref="comment-raiting" class="commment__raiting"></div>
+          <div ref="comment-raiting" class="commment__raiting">
+            <div v-for="star in raiting" :key="star" class="raiting-point raiting-point_active"></div>
+            <div v-for="star in (5 - raiting)" :key="star" class="raiting-point"></div>
+
+          </div>
         </div>
         <p class="comment-body">jfaslk;fjaasljfldsjflsd;fjsal;fjslkfjsdjfffffffffffffffffsalfjsadlfjsdlkafjlsdajf</p>
         <p class="comment-date">01.12.2023</p>
@@ -37,6 +41,7 @@ export default {
     return {
       activeElement: null,
       activeBlock: 'description',
+      raiting: 3,
     }
   },
   methods: {
@@ -50,21 +55,21 @@ export default {
       this.activeElement.classList.add('active');
       console.log(this.activeElement);
       setTimeout(() => {
-        this.showProductRaiting(2);
+        // this.showProductRaiting(2);
       }, 10)
     },
-    showProductRaiting(raiting) {
-      const raitingElements = [];
-      for (let i = 1; i <= raiting; i++) {
-        const raitingStarElement = `<div class="raiting-point raiting-point_active"></div>`;
-        this.$refs['comment-raiting'].insertAdjacentHTML('beforeEnd', raitingStarElement);
-      }
-      for (let j = 5 - raiting; j <= 5; j++) {
-        const raitingStarElementEmpty = `<div class="raiting-point"></div>`;
-        this.$refs['comment-raiting'].insertAdjacentHTML('beforeEnd', raitingStarElementEmpty);
-      }
-      return raitingElements.join('').slice(1, -1);
-    }
+    // showProductRaiting(raiting) {
+    //   const raitingElements = [];
+    //   for (let i = 1; i <= raiting; i++) {
+    //     const raitingStarElement = `<div class="raiting-point raiting-point_active"></div>`;
+    //     this.$refs['comment-raiting'].insertAdjacentHTML('beforeEnd', raitingStarElement);
+    //   }
+    //   for (let j = 5 - raiting; j <= 5; j++) {
+    //     const raitingStarElementEmpty = `<div class="raiting-point"></div>`;
+    //     this.$refs['comment-raiting'].insertAdjacentHTML('beforeEnd', raitingStarElementEmpty);
+    //   }
+    //   return raitingElements.join('').slice(1, -1);
+    // }
   },
   mounted() {
     setTimeout(() => {
@@ -76,6 +81,22 @@ export default {
 </script>
 
 <style scoped>
+.raiting-point {
+  z-index: 10;
+  width: 30px;
+  height: 30px;
+  background-image: url("../../assets/img/cards/StarEmpty.svg");
+  background-size: 30px 30px;
+}
+
+.raiting-point_active {
+  z-index: 10;
+  width: 30px;
+  height: 30px;
+  background-image: url("../../assets/img/cards/Star.svg");
+  background-size: 30px 30px;
+}
+
 .comments-section {
   padding: 20px;
   height: 500px;

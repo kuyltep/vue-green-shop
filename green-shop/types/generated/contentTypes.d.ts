@@ -1232,6 +1232,7 @@ export interface ApiShoppingCartShoppingCart extends Schema.CollectionType {
       'manyToMany',
       'api::product.product'
     >;
+    quantity: Attribute.Integer;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
