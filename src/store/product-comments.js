@@ -18,15 +18,22 @@ export default {
   actions: {
     getProductCommentsFromServer({ commit, gettters }, { id }) {
       axios
-        .get("http://localhost:1337/api/product-comments")
+        .get("http://localhost:1337/api/product-comments?populate=*")
         .then((response) => {
           console.log(response.data.data);
+          const currentProductComments = response.data.data.filter(
+            (comment) => {
+              return comment.attributes.product.data.id == id;
+            }
+          );
+          commit("setProductComments", currentProductComments);
+          console.log(currentProductComments);
         })
         .catch((error) => {
           console.log(error);
         });
     },
-    createProductCommentToServer({ dispatch }, commentData) {
+    createProductCommentToServer({ dispatch, getters }, commentData) {
       if (!this.getters.getUser.id) {
         return errorTost("User must be autorized to create comments");
       }
@@ -39,7 +46,7 @@ export default {
               connect: [commentData.productId],
             },
             user: {
-              connect: [commentData.userId],
+              connect: [getters.getUser.id],
             },
           },
           headers: {
@@ -49,6 +56,9 @@ export default {
         })
         .then((response) => {
           console.log(response);
+          dispatch("getProductCommentsFromServer", {
+            id: commentData.productId,
+          });
         })
         .catch((error) => {
           console.log(error);

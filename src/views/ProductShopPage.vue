@@ -12,7 +12,7 @@
     </div>
   </div>
   <div class="bottom-section">
-    <product-description :fullDescription="this.product.fullDescription"></product-description>
+    <product-description :productId="product.id" :fullDescription="this.product.fullDescription"></product-description>
   </div>
   <div class="carousel-section">
     <h3 class="title_h3 carousel-section__title">Releated Products</h3>
