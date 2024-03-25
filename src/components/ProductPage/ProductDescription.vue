@@ -3,10 +3,10 @@
     <h4 @click.prevent="changeActiveElement" ref="description" class="bottom-section__title description">
       Product
       description</h4>
-    <h4 @click.prevent="changeActiveElement" ref="reviews" class="bottom-section__title reviews">Reviews ()</h4>
+    <h4 @click.prevent="changeActiveElement" ref="reviews" class="bottom-section__title reviews">Reviews ({{
+      this.$store.getters.getProductComments.length }})</h4>
   </div>
   <transition name="description">
-
     <div v-if="this.activeBlock === 'description' && this.fullDescription" class="description-section">
       <div v-for="description in fullDescription" :key="description.children" class="bottom-section__description-block">
         <p v-if="description.type === 'paragraph'" class="bottom-section__description">{{ description.children[0].text

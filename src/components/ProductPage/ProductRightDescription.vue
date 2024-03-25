@@ -112,7 +112,7 @@ export default {
     buyNowProduct() {
       if (this.$store.getters.getUser.id) {
         this.$store.dispatch("clearUserShoppingCart");
-        this.$store.dispatch('addItemInUserShoppingCart', { id: this.product.id });
+        this.$store.dispatch('addItemInUserShoppingCart', { id: this.product.id, qty: this.productCounter });
         this.$store.commit('setUserShoppingCartCurrentProductQuantity', { productId: this.product.id, quantity: this.productCounter });
         successTost("Now you are going to the checkout page");
         setTimeout(() => {
@@ -122,10 +122,9 @@ export default {
       }
     },
     async addProductInTheShoppingCart() {
-      this.productCounter = 1;
       if (this.$store.getters.getUser.id) {
         if (!this.isItemInCart) {
-          this.$store.dispatch('addItemInUserShoppingCart', { id: this.product.id, qty: this.productCounter });
+          await this.$store.dispatch('addItemInUserShoppingCart', { id: this.product.id, qty: this.productCounter });
           this.isItemInCart = true;
         } else {
           const shoppingCartProductId = this.$store.getters.getterUserShoppingCartIndexes[this.$store.getters.getterUserShoppingCart.findIndex(product => product.id === this.product.id)];
@@ -136,6 +135,9 @@ export default {
       } else {
         errorTost("User must be authorized");
       }
+      setTimeout(() => {
+        this.productCounter = this.$store.getters.getterUserShoppingCartProductsQuantitites[this.product.id] ?? 1;
+      }, 100)
     },
     addProductInTheWishList() {
       if (this.$store.getters.getUser.id) {

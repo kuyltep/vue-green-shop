@@ -5,7 +5,7 @@
   }">
     <SwiperSlide v-for="slide  in  dataForSlider" :key="slide">
       <div class="slide-block">
-        <Card v-for="item in slide" :key="item.id" :item="item"></Card>
+        <Card @click.prevent="routeToTheProductPage(item.id)" v-for="item in slide" :key="item.id" :item="item"></Card>
       </div>
     </SwiperSlide>
   </Swiper>
@@ -33,6 +33,16 @@ export default {
       dataForSlider: [],
     }
   },
+  methods: {
+    routeToTheProductPage(id) {
+      this.$router.push(`/shop/product/${id}`);
+      setTimeout(() => {
+        location.reload();
+        window.scrollTo({ left: 0, top: 0 });
+      }, 100)
+    }
+  },
+
   async mounted() {
     await this.$store.dispatch('fetchAllProducts');
     console.log(this.$store.getters.getAllProducts)

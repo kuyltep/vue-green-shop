@@ -15,9 +15,9 @@
       </div>
     </div>
     <div class="quantity-section">
-      <button @click.prevent="removeProduct" class="remove-product-button product-button">-</button>
+      <button @click.prevent="changeProductCounter('decrement')" class="remove-product-button product-button">-</button>
       <p class="product-quantity">{{ productQuantity }}</p>
-      <button @click.prevent="addProduct" class="add-product-button product-button">+</button>
+      <button @click.prevent="changeProductCounter('increment')" class="add-product-button product-button">+</button>
     </div>
     <div class="total-section">
       <p class="product-total">{{ item?.sale ? (item.price * (100 - item.sale) / 100).toFixed(0) * productQuantity :
@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import errorTost from '@/toasts-plugins/error.tost';
 export default {
   props: {
     item: Object
@@ -41,24 +42,21 @@ export default {
     }
   },
   methods: {
-    removeProduct() {
-      if (this.productQuantity > 1) {
-        this.productQuantity--;
-        this.$store.commit("setUserShoppingCartCurrentProductQuantity", { productId: this.item.id, quantity: -1 });
-      }
-      //TODO: Made emit event to update prices on the shopping cart sidebar
-      /**
-       * Создать объект/массив (если объект, то ключи - индексы продуктов, которые находятся в корзине, 
-       * с массивом сложене, либо по порядку, если индексы совпадают, либо лучше объект)
-       * При измении вызываем событие у родителя, эмитим индекс, который должен увеличится (количество продуктов увеличивается)
-       * А этот объект передаем в сайдбар и исходя из этого считаем количество продуктов, умножаем на цену и выводим
-       */
-
-    },
-    addProduct() {
-      if (this.productQuantity < 10) {
-        this.productQuantity++;
-        this.$store.commit("setUserShoppingCartCurrentProductQuantity", { productId: this.item.id, quantity: 1 });
+    changeProductCounter(operation) {
+      if (operation === 'decrement') {
+        if (this.productQuantity > 1) {
+          this.productQuantity -= 1;
+          this.$store.dispatch('updateProductQuantityInShoppingCart', { id: this.item.id, qty: this.productQuantity });
+        } else {
+          errorTost('Counter must be more 0')
+        }
+      } else if (operation === 'increment') {
+        if (this.productQuantity < 10) {
+          this.productQuantity += 1;
+          this.$store.dispatch('updateProductQuantityInShoppingCart', { id: this.item.id, qty: this.productQuantity });
+        } else {
+          errorTost('Counter must be less 11')
+        }
       }
       //TODO: Made emit event to update prices on the shopping cart sidebar
 
@@ -68,6 +66,16 @@ export default {
       await this.$store.dispatch("deleteItemFromUserShoppingCart", { id: shoppingCartProductId });
     }
   },
+  computed: {
+    calcProductQty() {
+      this.productQuantity = +this.$store.getters.getterUserShoppingCartProductsQuantitites[this.item.id];
+    }
+  },
+  mounted() {
+    setTimeout(() => {
+      this.calcProductQty;
+    }, 0)
+  }
 }
 </script>
 

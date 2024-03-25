@@ -74,7 +74,7 @@ export default {
           await this.$store.dispatch("deleteItemFromUserShoppingCart", { id: shoppingCartProductId })
           this.shoppingCartIconColor = "#fff";
         } else {
-          await this.$store.dispatch("addItemInUserShoppingCart", { id: id });
+          await this.$store.dispatch("addItemInUserShoppingCart", { id: id, qty: 1 });
           this.shoppingCartIconColor = "#46A358";
         }
         await this.$store.dispatch("getUserShoppingCart", this.$store.getters.getUser.id);
