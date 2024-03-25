@@ -62,6 +62,7 @@ export default {
             (item) => {
               return {
                 ...item.attributes.products.data[0],
+                quantity: item.attributes.quantity,
               };
             }
           );
@@ -76,7 +77,7 @@ export default {
           console.log(error);
         });
     },
-    addItemInUserShoppingCart({ commit, getters, dispatch }, { id }) {
+    addItemInUserShoppingCart({ commit, getters, dispatch }, { id, qty }) {
       axios
         .post(
           "http://localhost:1337/api/shopping-carts?populate=*",
@@ -88,6 +89,7 @@ export default {
               users: {
                 connect: [getters.getUser.id],
               },
+              quantity: qty,
             },
           },
           {
@@ -125,6 +127,33 @@ export default {
         })
         .catch((error) => console.log(error));
     },
+    updateProductQuantityInShoppingCart({ getters, dispatch }, { id, qty }) {
+      const productIndex = getters.getterUserShoppingCartProducts.findIndex(
+        (item) => item.id === id
+      );
+      const shoppingCartProductIndex =
+        getters.getterUserShoppingCartIndexes[productIndex];
+      axios
+        .put(
+          `http://localhost:1337/api/shopping-carts/${shoppingCartProductIndex}`,
+          {
+            data: {
+              quantity: qty,
+            },
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${getters.getJwt}`,
+            },
+          }
+        )
+        .then((response) => {
+          dispatch("loadUserShoppingCart");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     loadUserShoppingCart({ commit, getters }) {
       console.log("loadUserShoppingCart");
       const userProductsQuantities = {};
@@ -134,7 +163,8 @@ export default {
           if (allProductsItem.id === userShoppingCartItem.id) {
             items.push(allProductsItem);
           }
-          userProductsQuantities[userShoppingCartItem.id] = 1;
+          userProductsQuantities[userShoppingCartItem.id] =
+            userShoppingCartItem.quantity;
         });
       });
       commit("setUserShoppingCartProducts", items);

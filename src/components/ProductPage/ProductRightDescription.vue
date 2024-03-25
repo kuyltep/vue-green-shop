@@ -80,14 +80,18 @@ export default {
       if (operation === 'decrement') {
         if (this.productCounter > 1) {
           this.productCounter -= 1;
-          this.$store.commit("setUserShoppingCartCurrentProductQuantity", { productId: this.product.id, quantity: -1 });
+          if (this.$store.getters.getUser.id && this.isItemInCart) {
+            this.$store.dispatch('updateProductQuantityInShoppingCart', { id: this.product.id, qty: this.productCounter });
+          }
         } else {
           errorTost('Counter must be more 0')
         }
       } else if (operation === 'increment') {
         if (this.productCounter < 10) {
           this.productCounter += 1;
-          this.$store.commit("setUserShoppingCartCurrentProductQuantity", { productId: this.product.id, quantity: 1 });
+          if (this.$store.getters.getUser.id && this.isItemInCart) {
+            this.$store.dispatch('updateProductQuantityInShoppingCart', { id: this.product.id, qty: this.productCounter });
+          }
         } else {
           errorTost('Counter must be less 11')
         }
@@ -118,9 +122,10 @@ export default {
       }
     },
     async addProductInTheShoppingCart() {
+      this.productCounter = 1;
       if (this.$store.getters.getUser.id) {
         if (!this.isItemInCart) {
-          this.$store.dispatch('addItemInUserShoppingCart', { id: this.product.id });
+          this.$store.dispatch('addItemInUserShoppingCart', { id: this.product.id, qty: this.productCounter });
           this.isItemInCart = true;
         } else {
           const shoppingCartProductId = this.$store.getters.getterUserShoppingCartIndexes[this.$store.getters.getterUserShoppingCart.findIndex(product => product.id === this.product.id)];
@@ -157,13 +162,16 @@ export default {
       this.isItemInCart = this.$store.getters.getterUserShoppingCart.some(item => item.id === this.product.id);
       this.isItemInWishlts = this.$store.getters.getterUserWishlist.some(item => item.id === this.product.id);
       console.log(this.isItemInWishlts);
+      if (this.$store.getters.getUser.id) {
+        this.productCounter = this.$store.getters.getterUserShoppingCartProductsQuantitites[this.product.id] ?? 1;
+      }
       if (this.isItemInWishlts) {
         document.querySelector(".product-button__add-wish").classList.add("active-wish-button");
       }
       if (this.isItemInCart) {
         document.querySelector(".product-button__add-to-cart").classList.add('active-cart-button');
       }
-    }, 100)
+    }, 300)
   }
 }
 </script>
