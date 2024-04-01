@@ -1,12 +1,17 @@
 <template>
-  <Carousel></Carousel>
-  <div class="filter-and-cards">
-    <ShopSidebar :itemsProps="this.$store.getters.getProducts" @filterProductsBy="filterProducts"></ShopSidebar>
-    <SectionWithCards @changePaginationPage="changePaginationPage" :filterByHeader="clearActiveElemet"
-      :itemsProps="items"></SectionWithCards>
+  <div class="spinner" v-show="!items.length">
+    <PulseLoader :color="'#46A358'" :size="'30px'" :margin="'10px'"></PulseLoader>
   </div>
-  <BannerWithTwoCards></BannerWithTwoCards>
-  <BlogPostsSection></BlogPostsSection>
+  <div v-show="items.length" class="">
+    <Carousel></Carousel>
+    <div class="filter-and-cards">
+      <ShopSidebar :itemsProps="this.$store.getters.getProducts" @filterProductsBy="filterProducts"></ShopSidebar>
+      <SectionWithCards @changePaginationPage="changePaginationPage" :filterByHeader="clearActiveElemet"
+        :itemsProps="items"></SectionWithCards>
+    </div>
+    <BannerWithTwoCards></BannerWithTwoCards>
+    <BlogPostsSection></BlogPostsSection>
+  </div>
 </template>
 
 <script>
@@ -17,6 +22,7 @@ import Carousel from '@/components/Carousel.vue';
 import ShopSidebar from '@/components/ShopSidebar.vue';
 import SectionWithCards from '@/components/HomePage/SectionWithCards.vue';
 import Paginate from "vuejs-paginate-next";
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
 export default {
   components: {
     Carousel,
@@ -26,6 +32,7 @@ export default {
     SectionWithCards,
     CarouselWithItems,
     Paginate,
+    PulseLoader
   },
   data() {
     return {
@@ -48,8 +55,11 @@ export default {
     }
   },
   async mounted() {
-    await this.$store.dispatch('fetchProducts');
-    this.items = this.$store.getters.getFilteredProducts;
+    setTimeout(() => {
+
+      this.$store.dispatch('fetchProducts');
+      this.items = this.$store.getters.getFilteredProducts;
+    }, 1000)
 
   },
 }
@@ -61,5 +71,12 @@ export default {
   grid-template-columns: 310px 1fr;
   grid-gap: 50px;
   margin-top: 45px;
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  margin-top: 10%;
 }
 </style>

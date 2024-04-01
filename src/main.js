@@ -4,7 +4,6 @@ import router from "./router";
 import store from "./store";
 import Toast from "vue-toastification";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
-import "vue-toastification/dist/index.css";
 createApp(App)
   .use(Toast, {
     transition: "Vue-Toastification__bounce",

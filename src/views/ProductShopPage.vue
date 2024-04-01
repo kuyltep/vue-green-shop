@@ -1,23 +1,30 @@
 <template>
-  <transition name="scale">
-    <CardImageScale @closeImageScale="closeProductImageScale" :image="productImage" v-if="isCardImageScaleOpen">
-    </CardImageScale>
-  </transition>
-  <div class="top-section">
-    <div class="top-section__left">
-      <ProductImages @openProductImageScale="openProductImageScale" :productImages="product?.image"></ProductImages>
+  <div class="spinner" v-show="!product.name">
+    <PulseLoader :color="'#46A358'" :size="'30px'" :margin="'10px'"></PulseLoader>
+  </div>
+  <div v-show="product.name" class="">
+    <transition name="scale">
+      <CardImageScale @closeImageScale="closeProductImageScale" :image="productImage" v-if="isCardImageScaleOpen">
+      </CardImageScale>
+    </transition>
+    <div class="top-section">
+      <div class="top-section__left">
+        <ProductImages @openProductImageScale="openProductImageScale" :productImages="product?.image"></ProductImages>
+      </div>
+      <div class="top-section__right">
+        <ProductRightDescription :product="product"></ProductRightDescription>
+      </div>
     </div>
-    <div class="top-section__right">
-      <ProductRightDescription :product="product"></ProductRightDescription>
+    <div class="bottom-section">
+      <product-description :productId="product.id"
+        :fullDescription="this.product.fullDescription"></product-description>
+    </div>
+    <div class="carousel-section">
+      <h3 class="title_h3 carousel-section__title">Releated Products</h3>
+      <CarouselWithItems></CarouselWithItems>
     </div>
   </div>
-  <div class="bottom-section">
-    <product-description :productId="product.id" :fullDescription="this.product.fullDescription"></product-description>
-  </div>
-  <div class="carousel-section">
-    <h3 class="title_h3 carousel-section__title">Releated Products</h3>
-    <CarouselWithItems></CarouselWithItems>
-  </div>
+
 </template>
 
 <script>
@@ -79,7 +86,12 @@ export default {
   margin-bottom: 130px;
 }
 
-
+.spinner {
+  display: flex;
+  margin-top: 10%;
+  justify-content: center;
+  align-items: center;
+}
 
 
 
